@@ -9,6 +9,9 @@ rustup target add wasm32v1-none
 rustc --version
 cargo --version
 
+echo "== Dependencia de la CLI de Stellar (libdbus) =="
+(sudo apt-get update -qq && sudo apt-get install -y -qq libdbus-1-3) || echo "AVISO: no se pudo instalar libdbus-1-3"
+
 echo "== Stellar CLI por binario (fuente: developers.stellar.org/docs/build/smart-contracts/getting-started/setup) =="
 if ! command -v stellar >/dev/null 2>&1; then
   curl -fsSL https://github.com/stellar/stellar-cli/raw/main/install.sh | sh
