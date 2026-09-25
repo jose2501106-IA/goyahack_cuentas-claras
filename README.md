@@ -6,7 +6,7 @@
 
 Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de Ingeniería, Semana DIE 2026), track **Blockchain**. Evento del 22 al 26 de septiembre de 2026.
 
-> Estado (25-sep-2026, 17:15): contrato `cuentas_claras` desplegado en testnet con 11 pruebas en verde; `demo/demo.sh` en construcción. Investigación cerrada en siete documentos (`research/00`–`06`), especificación v2 vigente, campaña, modelo de negocio, Lean Canvas y borradores de pitch. Para ubicar cualquier tema sin leer todo, empieza por [`llms.txt`](llms.txt) o [`docs/indice.md`](docs/indice.md). Este README se completa al entregar (enlaces al video, la app y los contratos en testnet).
+> Estado (25-sep-2026, 17:40): contrato `cuentas_claras` desplegado en testnet con 11 pruebas en verde y `demo/demo.sh` corriendo el flujo completo contra la red (salida en `demo/salida-demo.txt`). Investigación cerrada en siete documentos (`research/00`–`06`), especificación v2 vigente, campaña, modelo de negocio, Lean Canvas y borradores de pitch. Para ubicar cualquier tema sin leer todo, empieza por [`llms.txt`](llms.txt) o [`docs/indice.md`](docs/indice.md). Este README se completa al entregar (enlaces al video, la app y los contratos en testnet).
 
 ## En vivo en Stellar testnet
 

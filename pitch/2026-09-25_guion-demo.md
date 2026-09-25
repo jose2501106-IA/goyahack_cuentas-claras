@@ -6,6 +6,8 @@
 
 > **Actualización (25-sep, 17:15):** el contrato está en testnet: [`CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH`](https://stellar.expert/explorer/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH). Hoy la demo es **nivel 2: `demo/demo.sh`** (sin frontend). Usa las filas 5 y 6 de la tabla de preparación y el plan B como demo principal; la vista de app queda como siguiente paso.
 
+> **Qué muestra hoy `demo.sh` (17:40):** seis pasos. (1) Bodega A crea la nota; (2) Doña Mary la acepta; (3) Bodega A confirma el pago; (4) Bodega B pide el resumen **sin permiso** y el contrato lo rechaza en simulación (`NoConsent`), sin enviar transacción; (5) Doña Mary da permiso por 30 días; (6) Bodega B consulta y la consulta queda registrada (evento `aggregate_read`). El resumen suma notas entre corridas (es historial real que crece): narra el número que aparezca, con un solo emisor eso es «historial insuficiente». Grabación: `./demo/demo.sh --paso-a-paso`.
+
 Base: `spec/2026-09-25_especificacion-tecnica-v2.md` (§7 eventos, §9 frontend, §10 guion y plan B, §12 datos ficticios), `research/00_sintesis-estrategica.md` ("Pitch, demo y README"), `docs/riesgos.md` (fila «Demo en vivo que falla»). El video como entregable y no solo como respaldo: [Devpost](https://info.devpost.com/blog/6-tips-for-making-a-hackathon-demo-video); las convocatorias de Stellar aceptan capturas de testnet como evidencia ([Rise In](https://www.risein.com/programs/build-on-stellar-philippines-hackathon)).
 
 ---
