@@ -17,7 +17,7 @@ Actualizado: 25-sep-2026, 12:35. Proyecto **Cuentas Claras**; equipo **Palabra**
 | ¿Qué construye Claude Code y con qué reglas? | `spec/2026-09-25_especificacion-tecnica-v2.md`; `CLAUDE.md` |
 | ¿Qué garantiza la privacidad y qué no? | spec v2, sección 3b; decisión #29 |
 | ¿Qué cifras se pueden decir y con qué fuente? | `docs/hoja-de-hechos.md` (H-01 a H-25) |
-| ¿Quién paga? | `docs/modelo-de-negocio.md` |
+| ¿Quién paga? | `docs/modelo-de-negocio.md`; `docs/lean-canvas.md` |
 | ¿Es legal? (LRSIC, LFPDPPP, pagaré) | `docs/riesgos.md`; `research/01_historial-crediticio-ceda.md`; `research/notas/ronda-1/marco_legal.md` |
 | ¿Qué buscan el organizador y el jurado? | `research/02_que-busca-el-organizador.md`; `research/03_talleres-y-evaluadores.md` |
 | ¿Quién más compite? | `research/04_competencia-y-ganadores.md` |
@@ -48,6 +48,7 @@ Actualizado: 25-sep-2026, 12:35. Proyecto **Cuentas Claras**; equipo **Palabra**
 |---|---|---|---|---|---|
 | [`docs/problema-solucion.md`](problema-solucion.md) | El proyecto en una página: problema, solución, por qué blockchain, por qué Stellar, qué se construye hoy, implementación. | #problema #solucion | 1,136 | Antes de explicar el proyecto | vigente |
 | [`docs/plan-maestro.md`](plan-maestro.md) | Qué busca el organizador, tesis, método en fases, plan de hoy (entrega antes de las 20:00), plan posterior P0–P7, ruta con la administración (5b), presentación y métricas. | #plan #implementacion #organizador | 3,222 | Para ubicar el proyecto completo | vigente |
+| [`docs/lean-canvas.md`](lean-canvas.md) | Lean Canvas en 9 bloques con IDs de hechos, supuestos más riesgosos y versión de una diapositiva. | #negocio #pitch | 758 | Mentoría y deck | borrador |
 | [`docs/modelo-de-negocio.md`](modelo-de-negocio.md) | Quién paga y por qué: principios con fuente, opciones A–E, cautela por la LRSIC, qué mide el piloto, preguntas para mentores. Recomendación A + D (propuesta). | #negocio #legal | 681 | Mentoría y pregunta «¿quién paga?» | borrador |
 | [`docs/nombre-y-marca.md`](nombre-y-marca.md) | Por qué el proyecto se llama Cuentas Claras y el equipo Palabra: evidencia, riesgos verificados, cómo se usa cada nombre; candidatos anteriores y sistema de nombres del producto. | #marca | 2,145 | Al escribir cualquier pieza pública | vigente |
 | [`docs/campana-marketing.md`](campana-marketing.md) | Campaña «Tu palabra vale»: audiencias, 12 barreras con táctica y métrica, paradoja de la portabilidad, fases 0–3, ecosistema (Círculo, Guardianes), principios de comportamiento con fuente, piezas listas, métricas y 12 decisiones pendientes. | #campana #adopcion #marca | 16,684 | Al diseñar el piloto o una pieza | borrador v1 |

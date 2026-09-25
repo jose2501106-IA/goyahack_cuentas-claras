@@ -27,6 +27,7 @@ Cómo leer este repositorio sin gastar de más:
 - [Hoja de hechos](docs/hoja-de-hechos.md): cifras citables con ID, fuente y estatus; vocabulario vetado
 - [Riesgos](docs/riesgos.md): legales, técnicos, de adopción y de marca, con la respuesta para el jurado
 - [Modelo de negocio](docs/modelo-de-negocio.md): quién paga y por qué (borrador)
+- [Lean Canvas](docs/lean-canvas.md): el modelo en nueve bloques (borrador)
 - [Nombre y marca](docs/nombre-y-marca.md): por qué Cuentas Claras y Palabra
 - [Plan maestro](docs/plan-maestro.md): método, plan de hoy, plan posterior y ruta con la administración
 - [Preguntas pendientes](docs/preguntas-pendientes.md): lo que falta confirmar

@@ -29,6 +29,7 @@ En la cadena solo hay identificadores seudónimos, rangos de monto, fechas y est
 | [`docs/plan-maestro.md`](docs/plan-maestro.md) | **Empieza aquí.** Qué busca el organizador, tesis, cómo se desarrolló el proyecto (método replicable), plan del día, plan posterior paso a paso, presentación, métricas |
 | [`docs/problema-solucion.md`](docs/problema-solucion.md) | El proyecto en una página: problema, solución, por qué blockchain, por qué Stellar, qué se construye hoy, estrategia de implementación |
 | [`docs/campana-marketing.md`](docs/campana-marketing.md) | Campaña «Tu palabra vale» (borrador v1): plataforma de marca, audiencias, barreras de entrada y cómo se vencen, fases alineadas al plan, ecosistema y comunidad, principios de comportamiento con fuente, piezas listas, embudo y métricas |
+| [`docs/lean-canvas.md`](docs/lean-canvas.md) | Lean Canvas: el modelo en nueve bloques y los supuestos que mide el piloto (borrador) |
 | [`docs/modelo-de-negocio.md`](docs/modelo-de-negocio.md) | Quién paga y por qué: opciones, riesgos legales y recomendación (borrador para decidir) |
 | [`docs/nombre-y-marca.md`](docs/nombre-y-marca.md) | Por qué **Cuentas Claras** (proyecto) y **Palabra** (equipo), con evidencia y riesgos; sistema de nombres del producto |
 | [`docs/guia-codespaces.md`](docs/guia-codespaces.md) | Cómo se dirige la construcción con Claude Code en GitHub Codespaces (prompts, checkpoints, reglas) |
