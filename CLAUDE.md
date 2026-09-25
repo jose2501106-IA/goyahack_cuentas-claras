@@ -75,3 +75,14 @@ plano/                  plano de la CEDA (solo versión aprobada)
 - **Claude Code (este repo, Codespaces):** contrato, backend, frontend, `demo.sh`, despliegue, README técnico.
 - **Claude (chat con José):** investigación, definición del problema, documentos, especificaciones, pitch, deck y guion de demo. No escribe código.
 - **José:** decisiones, datos de la CEDA (etiquetados como experiencia), aprobación del plano, entrega en el dashboard.
+
+## Modo automático (auto mode): límites que no se cruzan
+
+José trabaja con aprobación automática. Estas reglas valen aunque nadie esté mirando:
+
+- **Nunca:** mainnet; `git push --force` o reescribir historial; borrar ramas; tocar `research/` o `privado/`; subir `.env`, llaves, `identity/` o semillas; instalar crates o paquetes npm que no pida la spec; cambiar la configuración de GitHub, de la cuenta o del Codespace.
+- **Antes de cada push:** `git pull --rebase origin main`; si hay conflicto en `docs/`, conserva ambas versiones y avisa. Nunca resuelvas un conflicto borrando trabajo ajeno.
+- **Alcance de hoy:** contrato, pruebas, despliegue en testnet y `demo/demo.sh`. Nada de backend ni frontend hasta que José lo pida.
+- **Si algo falla dos veces seguidas,** detente: explica el error exacto y propone la corrección más pequeña. No improvises cambios grandes para "hacerlo pasar".
+- **Agentes en paralelo:** solo para tareas que no tocan los mismos archivos (por ejemplo, uno escribe el contrato y otro `demo/demo.sh` sobre la interfaz ya acordada). Un solo agente hace commits.
+- **Cada commit:** mensaje en español, `cargo test` en verde si tocó el contrato, y registro en `docs/decisiones.md` si cambió una decisión.
