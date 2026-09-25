@@ -1,0 +1,57 @@
+# Cuentas Claras
+
+> Bitácora de fiado co-firmada para la Central de Abasto de la Ciudad de México, en Stellar (Soroban, testnet). Cada nota de crédito la firman la bodega y el cliente; nadie la altera ni la borra; el historial de cumplimiento es del cliente y él decide quién lo consulta. No es un buró, no mueve dinero, no emite token. Proyecto del Equipo Palabra para GOYA HACK · Hackathon UNAM 2026, track Blockchain.
+
+Cómo leer este repositorio sin gastar de más:
+
+- Todo dato sobre la Central lleva fuente o la etiqueta «experiencia de José»; los hechos citables tienen ID (H-01 a H-25) en docs/hoja-de-hechos.md y las decisiones, número (#1 a #38) en docs/decisiones.md.
+- docs/indice.md dice qué contiene cada archivo, sus etiquetas, cuántas palabras tiene y cuándo leerlo. Busca ahí antes de abrir documentos largos.
+- Los documentos marcados «bitácora» usan los nombres anteriores del proyecto (CREDI-CEDA, Palabra); los «vigentes» mandan.
+- Nombres: proyecto «Cuentas Claras»; equipo «Palabra»; contrato, crate y carpeta `cuentas_claras`; repositorio `cuentas-claras`.
+
+## Empieza aquí
+
+- [README](README.md): qué es, el problema con fuentes, qué hace el contrato y por qué no basta una base de datos
+- [Problema y solución](docs/problema-solucion.md): el proyecto en una página
+- [Índice](docs/indice.md): mapa completo con etiquetas, tamaño y cuándo leer cada archivo
+
+## Construcción
+
+- [Especificación v2](spec/2026-09-25_especificacion-tecnica-v2.md): contrato, invariantes, eventos, backend, frontend, demo y criterios de aceptación; la sección 3b explica qué garantiza la privacidad y qué no
+- [CLAUDE.md](CLAUDE.md): reglas y contexto para Claude Code
+- [Guía de Codespaces](docs/guia-codespaces.md): prompt de arranque y puntos de control de hoy
+
+## Decisiones, datos y riesgos
+
+- [Decisiones](docs/decisiones.md): bitácora con fecha, motivo y estado
+- [Hoja de hechos](docs/hoja-de-hechos.md): cifras citables con ID, fuente y estatus; vocabulario vetado
+- [Riesgos](docs/riesgos.md): legales, técnicos, de adopción y de marca, con la respuesta para el jurado
+- [Modelo de negocio](docs/modelo-de-negocio.md): quién paga y por qué (borrador)
+- [Nombre y marca](docs/nombre-y-marca.md): por qué Cuentas Claras y Palabra
+- [Plan maestro](docs/plan-maestro.md): método, plan de hoy, plan posterior y ruta con la administración
+- [Preguntas pendientes](docs/preguntas-pendientes.md): lo que falta confirmar
+
+## Presentación
+
+- [Pitch de 3 minutos](pitch/2026-09-25_pitch-3-minutos.md): guion con tiempos y variante con el refrán
+- [Deck](pitch/2026-09-25_deck.md): diez diapositivas con notas y fuentes
+- [Guion de demo](pitch/2026-09-25_guion-demo.md): pasos, plan B y versión de stand
+- [Preguntas del jurado](pitch/2026-09-25_preguntas-jurado.md): respuestas preparadas con fuente
+
+## Investigación
+
+- [Índice de investigación](research/README.md): qué hay, correcciones y lo que no se encontró
+- [Talleres y evaluadores](research/03_talleres-y-evaluadores.md): qué buscan los jueces según cada taller
+- [Competencia y ganadores](research/04_competencia-y-ganadores.md)
+- [Implementación y replicabilidad](research/05_implementacion-y-replicabilidad.md)
+- [Barreras de adopción](research/06_barreras-de-adopcion.md)
+- [Qué busca el organizador](research/02_que-busca-el-organizador.md)
+
+## Optional
+
+- [Síntesis estratégica](research/00_sintesis-estrategica.md): fundamento de las decisiones, 143 fuentes (largo)
+- [Historial crediticio y marco legal](research/01_historial-crediticio-ceda.md)
+- [Campaña «Tu palabra vale»](docs/campana-marketing.md): sistema completo de marketing y adopción (largo)
+- [Notas de investigación](research/notas/): materia prima de las rondas 1, 2 y 3
+- [Especificación de búsqueda (RAG)](spec/2026-09-25_especificacion-rag.md): para después de la demo
+- [Especificaciones anteriores](spec/README.md): v0 y v1, superadas

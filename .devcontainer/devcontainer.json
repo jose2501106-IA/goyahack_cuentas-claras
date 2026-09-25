@@ -1,0 +1,34 @@
+{
+  "name": "Cuentas Claras (Stellar/Soroban + Claude Code)",
+  "image": "mcr.microsoft.com/devcontainers/rust:1-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "hostRequirements": { "cpus": 4, "memory": "8gb" },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "forwardPorts": [5173, 3000],
+  "portsAttributes": {
+    "5173": { "label": "frontend (Vite)" },
+    "3000": { "label": "backend" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "esbenp.prettier-vscode",
+        "anthropic.claude-code"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "rust-analyzer.check.command": "clippy"
+      }
+    }
+  },
+  "remoteEnv": {
+    "STELLAR_NETWORK": "testnet",
+    "STELLAR_RPC_URL": "https://soroban-testnet.stellar.org",
+    "STELLAR_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015"
+  }
+}
