@@ -14,9 +14,13 @@
   "contract_id": "CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH",
   "wasm_hash": "985c9beea88dcd74a83416e256a62143c9db23787d0800131980f6dee6bd4ea5",
   "cuentas_publicas": {
-    "plataforma": "GCUHYSD6KDDZQQZPH7BBVDB3FXRNV5VRYCSEQVFF5MYCYTJK4T4QH3DD"
+    "plataforma": "GCUHYSD6KDDZQQZPH7BBVDB3FXRNV5VRYCSEQVFF5MYCYTJK4T4QH3DD",
+    "bodega_a": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
+    "bodega_b": "GD2TUPI6ZZE7BGCQIEBTWA2AIZHEVALYF3UTEJFF6ENP7K76ERRNY55D",
+    "dona_mary": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO"
   },
-  "nota_cuentas": "Solo claves PÚBLICAS. Las secretas viven en ~/.config/stellar/identity (fuera del repo). plataforma paga comisiones y es admin del MVP. Las cuentas de demo (Bodega A/B, Doña Mary, Cliente 2/3) las crea y fondea demo/demo.sh.",
+  "emisores_registrados": ["bodega_a", "bodega_b"],
+  "nota_cuentas": "Solo claves PÚBLICAS. Las secretas viven en ~/.config/stellar/identity (fuera del repo). plataforma paga comisiones y es admin del MVP; bodega_a y bodega_b están registradas como emisores; dona_mary es el cliente ficticio. Doña Mary firma en persona en producción; aquí su cuenta G de testnet la custodia la demo.",
   "params": {
     "accept_window": 259200,
     "grace_period": 2592000,

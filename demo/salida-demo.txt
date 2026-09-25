@@ -1,0 +1,37 @@
+════════════════════════════════════════════════════════════════════
+ Cuentas Claras — demo en Stellar testnet
+   Contrato:   CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH
+   Explorer:   https://stellar.expert/explorer/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH
+   Seudónimo de Doña Mary (subject_id): fe1b5cfb1b99ba1b…
+   Nota de esta corrida (note_id):      acf69a1e07d41a21…
+════════════════════════════════════════════════════════════════════
+
+1) Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).
+   ↳ https://stellar.expert/explorer/testnet/tx/839ad06fcde080410f06876518f547bc7568a0adcbd8ac0f649bdf12f2c88b70
+
+2) Doña Mary acepta la nota: sin su firma la deuda no existe.
+   ↳ https://stellar.expert/explorer/testnet/tx/1e01c5953df7b750ab5f1918ffeefb4008d0a80388aa4688b86fbd0fcc3c4b08
+
+3) Doña Mary paga y Bodega A confirma el pago.
+   ↳ https://stellar.expert/explorer/testnet/tx/23cfb465cf80fd54326c651fd5bde71d3011f5ab196bfd5af594b5852664af7f
+
+4) Bodega B pide el resumen de Doña Mary SIN permiso.
+   ✅ Esperado: el contrato NO entrega el resumen sin permiso (NoConsent) y así queda registrado.
+
+5) Doña Mary autoriza a Bodega B a leer su resumen por 30 días.
+   ↳ https://stellar.expert/explorer/testnet/tx/f91f60747f9e04cf79c9f4e489a5e5a73be11fc09d2541de25bab5e196e9acf4
+
+6) Bodega B consulta con permiso vigente y ve el resumen de cumplimiento.
+   ↳ https://stellar.expert/explorer/testnet/tx/0d14d0e7574e56922e96ab173897eacc0767032da791b020508230e6c68c8c91
+   ── Resumen de Doña Mary ──────────────────────────────
+   Notas aceptadas:      1
+   Pagadas a tiempo:     1
+   Pagadas tarde:        0
+   Vencidas abiertas:    0
+   Incumplidas:          0
+   Emisores distintos:   1
+   Rango máximo visto:   B5k_20k
+
+✅ Demo completa. Todo lo anterior quedó registrado en la cadena (enlaces arriba).
+   Nota: la cadena es pública; el permiso controla la consulta oficial y deja
+   constancia. En cadena no van nombre, teléfono ni monto exacto (spec v2, §3b).
