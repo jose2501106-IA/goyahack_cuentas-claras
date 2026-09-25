@@ -524,6 +524,8 @@ Son unas 33 palabras. El plan maestro proponía abrir con el dato del gota a got
 
 ## 9. Dirección de identidad visual (propuesta, no final)
 
+> **Actualización (25-sep, 15:00):** la paleta vigente y su estrategia están en `docs/identidad-visual.md` (paleta «Tinta y Sello»), que manda sobre esta sección.
+
 **Metáfora.** La nota de remisión con **original y copia**: cada parte tiene la suya y ninguna puede cambiar la del otro. Encima, la **doble línea de firma** («Firma de la bodega ____ · Firma del cliente ____») y el **sello de goma** «Palabra cumplida» con la fecha. Es papel, tinta y mostrador, no pantallas brillantes.
 
 **Logotipo (propuesta).** El nombre «Cuentas Claras» en letras sólidas, con **dos trazos de bolígrafo debajo** que representan las dos firmas. Nunca «Cuentas Claras App» ni «CuentasChain» (`docs/nombre-y-marca.md`).

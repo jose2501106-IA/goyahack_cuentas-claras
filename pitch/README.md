@@ -11,3 +11,5 @@ Borradores v1 del 25-sep-2026, **pendientes de aprobación de José**. Proyecto:
 | `2026-09-25_preguntas-jurado.md` | 21 preguntas probables con respuesta corta y fuente | Q&A |
 
 Reglas: máximo cinco datos con fuente (`docs/hoja-de-hechos.md`); vocabulario vetado; sin nombre de la bodega del equipo ni cifra exacta en materiales públicos (decisión #28); privacidad dicha con el matiz de la spec v2, sección 3b; el plano solo en versión aprobada.
+
+- `2026-09-25_prompt-claude-design.md`: prompt listo para pegar en Claude Design (presentación minimalista con el Lean Canvas y la paleta de `docs/identidad-visual.md`).
