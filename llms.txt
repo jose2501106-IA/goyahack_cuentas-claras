@@ -4,7 +4,7 @@
 
 Cómo leer este repositorio sin gastar de más:
 
-- Todo dato sobre la Central lleva fuente o la etiqueta «experiencia de José»; los hechos citables tienen ID (H-01 a H-25) en docs/hoja-de-hechos.md y las decisiones, número (#1 a #39) en docs/decisiones.md.
+- Todo dato sobre la Central lleva fuente o la etiqueta «experiencia de José»; los hechos citables tienen ID (H-01 a H-25) en docs/hoja-de-hechos.md y las decisiones, número (#1 a #40) en docs/decisiones.md.
 - docs/indice.md dice qué contiene cada archivo, sus etiquetas, cuántas palabras tiene y cuándo leerlo. Busca ahí antes de abrir documentos largos.
 - Los documentos marcados «bitácora» usan los nombres anteriores del proyecto (CREDI-CEDA, Palabra); los «vigentes» mandan.
 - Nombres: proyecto «Cuentas Claras»; equipo «Palabra»; contrato, crate y carpeta `cuentas_claras`; repositorio `goyahack_cuentas-claras`.

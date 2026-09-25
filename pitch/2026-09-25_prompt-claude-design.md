@@ -4,6 +4,8 @@
 
 Base: `docs/lean-canvas.md`, `docs/identidad-visual.md`, `pitch/2026-09-25_deck.md`, `docs/hoja-de-hechos.md`.
 
+**Lámina opcional «La Central, por sectores»:** ya está hecha en `pitch/2026-09-25_lamina-central-por-sectores.png` (y `.svg`). Súbela a Claude Design como imagen y pide que la inserte entre la diapositiva 3 y la 4, sin modificarla. Es un esquema no a escala, sin ubicaciones reales (decisión #40).
+
 ---
 
 ```
