@@ -52,7 +52,7 @@ Lo que hace replicable el método: cada fase deja un archivo en el repositorio, 
 | Hora | Quién | Qué | Listo cuando |
 |---|---|---|---|
 | 12:15–13:15 | Claude (chat) | Renombre a Cuentas Claras, índice del repo (`llms.txt`, `docs/indice.md`), este plan, opciones de modelo de negocio; instantánea limpia lista para publicar. | Todo en la carpeta y en el proyecto de Claude |
-| 12:15–13:30 | José | Traslado a la UNAM. Desde el teléfono: crear el repo `cuentas-claras` (público y vacío) y registrar «Equipo Palabra» en el dashboard. | Repo creado; equipo registrado |
+| 12:15–13:30 | José | Traslado a la UNAM. Desde el teléfono: crear el repo público (hoy `goyahack_cuentas-claras`, decisión #39) y registrar «Equipo Palabra» en el dashboard. | Repo creado; equipo registrado |
 | En cuanto exista el repo | Claude (chat) | Publicar la instantánea limpia (sin historial viejo ni `privado/`). | Repo público con los documentos |
 | 13:30–14:00 | José | Abrir el Codespace y dar a Claude Code el prompt de arranque (`docs/guia-codespaces.md`, sección 3). Mientras se instala el entorno (unos 10 minutos), primera visita a mentoría. | Plan de Claude Code aprobado |
 | 13:30–17:00 | José | **Mentoría** (CIA o Discord) con `pitch/2026-09-25_mentoria-5-minutos.md` y `docs/modelo-de-negocio.md`. Cada comentario, a `docs/decisiones.md` (sección «Retroalimentación de mentores»). | Comentarios registrados |

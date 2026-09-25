@@ -28,7 +28,7 @@ José, 25-sep, 12:06: el refrán es muy conocido y, «solamente con el nombre, c
 - **Línea para el jurado:** «Fiado de palabra, firmado por los dos.»
 - **Línea para la Central (campaña):** «Tu palabra vale.» y, desde la segunda bodega, «Ahora también viaja.»
 - **Apertura del pitch (propuesta):** decir «Cuentas claras…», hacer una pausa y dejar que el público complete. Guion en `pitch/2026-09-25_pitch-3-minutos.md` (variante con el refrán).
-- **Nombre técnico:** repositorio `cuentas-claras`; contrato, crate y carpeta `cuentas_claras`; tópico de eventos `cclaras` (`symbol_short!` admite máximo 9 caracteres).
+- **Nombre técnico:** repositorio `goyahack_cuentas-claras` (decisión #39); contrato, crate y carpeta `cuentas_claras`; tópico de eventos `cclaras` (`symbol_short!` admite máximo 9 caracteres).
 - **Cuentas en redes y dominio:** por verificar; no se ha revisado ninguno.
 
 ## 0a. Decisión anterior: Palabra (25-sep, 10:28; hoy es el nombre del equipo)

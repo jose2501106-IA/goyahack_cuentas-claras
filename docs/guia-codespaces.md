@@ -4,7 +4,7 @@ Para José. Objetivo: que todo el desarrollo ocurra en el navegador, en un Codes
 
 ## 0. Antes de empezar (una sola vez)
 
-1. **Repositorio.** Crea el repo público `cuentas-claras` en github.com (sin README, sin licencia: ya existen en la carpeta). Dime tu usuario y yo subo todo desde aquí.
+1. **Repositorio.** El repo público es `goyahack_cuentas-claras` en github.com (sin README, sin licencia: ya existen en la carpeta). Dime tu usuario y yo subo todo desde aquí.
 2. **Cuenta de Claude.** Claude Code se inicia con tu cuenta de Claude (suscripción) o con una API key de Anthropic. Eso lo haces tú en la terminal del Codespace; nunca pegues llaves en este chat.
 3. **Codespaces.** Necesitas una cuenta de GitHub con Codespaces (el plan gratuito incluye horas mensuales; una máquina de 4 núcleos consume más rápido; si te quedas sin horas, baja a 2 núcleos).
 

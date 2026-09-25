@@ -1,6 +1,6 @@
 # CLAUDE.md — contexto para Claude Code
 
-Este repositorio es **Cuentas Claras** (proyecto; equipo **Palabra**; nombres anteriores: Palabra y CREDI-CEDA). Nombre técnico: contrato, crate y carpeta `cuentas_claras`; repositorio `cuentas-claras`. Proyecto para GOYA HACK · Hackathon UNAM 2026 (CriptoUNAM × Facultad de Ingeniería). **Entrega: hoy, viernes 25 de septiembre, antes de las 20:00 CDMX** (José, 12:15; decisión #37); todo debe estar listo a las 19:00. Horario y recorte de alcance: `docs/guia-codespaces.md`, sección 3. Track: **Blockchain** (el principal según el organizador). Red: **Stellar testnet** (Soroban).
+Este repositorio es **Cuentas Claras** (proyecto; equipo **Palabra**; nombres anteriores: Palabra y CREDI-CEDA). Nombre técnico: contrato, crate y carpeta `cuentas_claras`; repositorio `goyahack_cuentas-claras`. Proyecto para GOYA HACK · Hackathon UNAM 2026 (CriptoUNAM × Facultad de Ingeniería). **Entrega: hoy, viernes 25 de septiembre, antes de las 20:00 CDMX** (José, 12:15; decisión #37); todo debe estar listo a las 19:00. Horario y recorte de alcance: `docs/guia-codespaces.md`, sección 3. Track: **Blockchain** (el principal según el organizador). Red: **Stellar testnet** (Soroban).
 
 ## Qué es el producto (una frase)
 

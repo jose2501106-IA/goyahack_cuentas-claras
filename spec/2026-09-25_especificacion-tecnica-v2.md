@@ -4,7 +4,7 @@
 
 **Hechos de operación que fija esta spec (experiencia de José, 25-sep):** no existe ningún registro ni custodio compartido del crédito en la CEDA; las bodegas no se pasan referencias; cada bodega fía solo a clientes específicos (alto volumen y años de relación) y evalúa "de forma muy empírica"; cada cliente tiene un plazo propio, de 1 a 15 días típicamente y en casos muy seleccionados más de un mes; la bodega ancla fía cientos de miles de pesos al día (colocación diaria) y es persona moral.
 
-Destinatario: Claude Code en GitHub Codespaces. Lee primero `CLAUDE.md` en la raíz. Proyecto: **Cuentas Claras**. Equipo: **Palabra**. Nombre técnico del contrato, del crate y de la carpeta: `cuentas_claras`; repositorio: `cuentas-claras`. Entrega: hoy antes de las 20:00 (orden de construcción y recorte de alcance en `docs/guia-codespaces.md`, sección 3).
+Destinatario: Claude Code en GitHub Codespaces. Lee primero `CLAUDE.md` en la raíz. Proyecto: **Cuentas Claras**. Equipo: **Palabra**. Nombre técnico del contrato, del crate y de la carpeta: `cuentas_claras`; repositorio: `goyahack_cuentas-claras`. Entrega: hoy antes de las 20:00 (orden de construcción y recorte de alcance en `docs/guia-codespaces.md`, sección 3).
 
 ---
 
