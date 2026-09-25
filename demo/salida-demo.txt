@@ -3,35 +3,38 @@
    Contrato:   CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH
    Explorer:   https://stellar.expert/explorer/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH
    Seudónimo de Doña Mary (subject_id): fe1b5cfb1b99ba1b…
-   Nota de esta corrida (note_id):      acf69a1e07d41a21…
+   Nota de esta corrida (note_id):      3894349252c8cc65…
 ════════════════════════════════════════════════════════════════════
 
 1) Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).
-   ↳ https://stellar.expert/explorer/testnet/tx/839ad06fcde080410f06876518f547bc7568a0adcbd8ac0f649bdf12f2c88b70
+   ↳ https://stellar.expert/explorer/testnet/tx/3e89f1f315c6ccdc08376e3d18adae9baeb1268ef121b87d1b3407cd62fd9df8
 
 2) Doña Mary acepta la nota: sin su firma la deuda no existe.
-   ↳ https://stellar.expert/explorer/testnet/tx/1e01c5953df7b750ab5f1918ffeefb4008d0a80388aa4688b86fbd0fcc3c4b08
+   ↳ https://stellar.expert/explorer/testnet/tx/2467d7bea822f01ce365a3e14adf09431e125c660a84aafc4296035bc0c35cfc
 
 3) Doña Mary paga y Bodega A confirma el pago.
-   ↳ https://stellar.expert/explorer/testnet/tx/23cfb465cf80fd54326c651fd5bde71d3011f5ab196bfd5af594b5852664af7f
+   ↳ https://stellar.expert/explorer/testnet/tx/32b83a6549d13a6136cdd979028a754794cd7ed46d89a043a0c5c229bc8eb6da
 
 4) Bodega B pide el resumen de Doña Mary SIN permiso.
-   ✅ Esperado: el contrato NO entrega el resumen sin permiso (NoConsent) y así queda registrado.
+   ✅ esperado: NoConsent — el contrato no entrega el resumen sin permiso (no se envía transacción)
 
 5) Doña Mary autoriza a Bodega B a leer su resumen por 30 días.
-   ↳ https://stellar.expert/explorer/testnet/tx/f91f60747f9e04cf79c9f4e489a5e5a73be11fc09d2541de25bab5e196e9acf4
+   ↳ https://stellar.expert/explorer/testnet/tx/f703dae5cb9caf420d10b609c1c4df1a4d5a9a9378245f1e0fb810d89d459a62
 
 6) Bodega B consulta con permiso vigente y ve el resumen de cumplimiento.
-   ↳ https://stellar.expert/explorer/testnet/tx/0d14d0e7574e56922e96ab173897eacc0767032da791b020508230e6c68c8c91
+   ↳ https://stellar.expert/explorer/testnet/tx/24eaa7a723cdb8fdab7c70d3d2fb6da44db7d2526469d1989ecfb35b2d1c1c63
+   Esta consulta queda registrada (evento aggregate_read).
    ── Resumen de Doña Mary ──────────────────────────────
-   Notas aceptadas:      1
-   Pagadas a tiempo:     1
+   Notas aceptadas:      2
+   Pagadas a tiempo:     2
    Pagadas tarde:        0
    Vencidas abiertas:    0
    Incumplidas:          0
    Emisores distintos:   1
    Rango máximo visto:   B5k_20k
 
-✅ Demo completa. Todo lo anterior quedó registrado en la cadena (enlaces arriba).
-   Nota: la cadena es pública; el permiso controla la consulta oficial y deja
+✅ Demo completa. Las transacciones enviadas (pasos 1, 2, 3, 5 y 6) quedaron
+   registradas en la cadena (enlaces arriba). El paso 4 se rechazó en
+   simulación: no se envió transacción.
+   La cadena es pública; el permiso controla la consulta oficial y deja
    constancia. En cadena no van nombre, teléfono ni monto exacto (spec v2, §3b).

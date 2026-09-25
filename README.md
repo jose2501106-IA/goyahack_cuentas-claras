@@ -75,7 +75,45 @@ Todo dato sobre la CEDA lleva fuente, o se marca como *experiencia del equipo* o
 
 ## Cómo correrlo
 
-Se completa cuando exista el código. Objetivo: cinco comandos, variables de entorno en `.env.example`, Contract ID y hashes de la demo en `demo/deploy.json`.
+En GitHub Codespaces el devcontainer ya trae Rust con el target `wasm32v1-none` y la Stellar CLI 28.
+
+```bash
+# 1) Clonar
+git clone https://github.com/jose2501106-IA/goyahack_cuentas-claras.git
+cd goyahack_cuentas-claras
+
+# 2) Variables locales (el .env no se versiona; solo demo/testnet)
+cp .env.example .env
+openssl rand -hex 32          # copia el resultado en DEMO_HMAC_KEY dentro de .env
+
+# 3) Pruebas del contrato (11 invariantes de la spec §6)
+cd contracts/cuentas_claras && cargo test && cd ../..
+
+# 4) Demo por CLI contra el contrato ya desplegado en testnet (lee demo/deploy.json)
+./demo/demo.sh                 # corrido
+./demo/demo.sh --paso-a-paso   # títulos grandes y pausa con Enter, para el video
+```
+
+`cargo test` corre en cualquier máquina. `demo/demo.sh` firma con las identidades de
+testnet `plataforma`, `bodega_a`, `bodega_b` y `dona_mary`: sus **claves públicas** están
+en [`demo/deploy.json`](demo/deploy.json), pero las secretas viven fuera del repo (en
+`~/.config/stellar/identity`). Para recrearlas y desplegar un contrato propio desde cero,
+sigue «Comandos de referencia» en [`CLAUDE.md`](CLAUDE.md).
+
+## Criterios de aceptación (spec v2 §11)
+
+Cumplido hoy:
+
+- ✅ `cargo test` en verde con las pruebas de la sección 6 (11 invariantes).
+- ✅ Contrato desplegado **e inicializado** en testnet; [`demo/deploy.json`](demo/deploy.json) con Contract ID, cuentas públicas y hashes de transacción.
+- ✅ `demo/demo.sh` corre el flujo completo (camino feliz + paso negativo sin permiso) contra testnet, con enlaces al explorador en cada paso.
+- ✅ Ningún dato personal real, ninguna llave real, ningún dato de la CEDA sin fuente; datos de demo ficticios.
+
+Siguiente paso (no bloquea la entrega de hoy):
+
+- ⏳ Backend mínimo: HMAC del teléfono → `subject_id`, datos fuera de cadena y semáforo (spec §8).
+- ⏳ Frontend con el flujo 1–5 y enlaces al explorador (spec §9).
+- ⏳ Video de la demo.
 
 ## Licencia
 

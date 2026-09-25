@@ -19,6 +19,10 @@
 # Requisitos: stellar CLI 28, identidades locales plataforma/bodega_a/bodega_b/
 # dona_mary (fondeadas), demo/deploy.json y un .env con DEMO_HMAC_KEY.
 # Solo claves PÚBLICAS viven en el repo; las secretas están en ~/.config/stellar.
+#
+# Uso:
+#   ./demo/demo.sh                 # corrido, para captura de salida
+#   ./demo/demo.sh --paso-a-paso   # títulos grandes y pausa con Enter, para el video
 
 set -euo pipefail
 
@@ -27,6 +31,15 @@ DEPLOY="$ROOT/demo/deploy.json"
 ENV_FILE="$ROOT/.env"
 NET="testnet"
 EXPLORER="https://stellar.expert/explorer/testnet"
+
+# Modo presentación: --paso-a-paso muestra títulos grandes y espera Enter entre
+# pasos (para grabar el video). Sin la opción, corre de corrido.
+STEP_BY_STEP=0
+case "${1:-}" in
+  --paso-a-paso|-p) STEP_BY_STEP=1 ;;
+  "") ;;
+  *) echo "Uso: $(basename "$0") [--paso-a-paso]"; exit 1 ;;
+esac
 
 # --- Configuración -----------------------------------------------------------
 
@@ -84,6 +97,21 @@ _link() {  # imprime "   ↳ <url>" a partir del stderr de la CLI
   [ -n "$url" ] && echo "   ↳ $url"
 }
 
+# Título de un paso. Con --paso-a-paso: banner grande y espera Enter; si no, una línea.
+paso() {  # paso <numero> <texto>
+  if [ "$STEP_BY_STEP" = 1 ]; then
+    echo
+    echo "════════════════════════════════════════════════════════════════════"
+    echo "   PASO $1"
+    echo "   $2"
+    echo "════════════════════════════════════════════════════════════════════"
+    read -rp "   ⏎  Enter para ejecutar este paso… " _ </dev/tty || true
+    echo
+  else
+    echo "$1) $2"
+  fi
+}
+
 # --- Encabezado --------------------------------------------------------------
 
 echo "════════════════════════════════════════════════════════════════════"
@@ -97,7 +125,7 @@ echo
 
 # --- 1) Bodega A crea la nota ------------------------------------------------
 
-echo "1) Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k)."
+paso 1 "Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k)."
 call bodega_a create_note \
   --issuer "$BODEGA_A" --note_id "$NOTE_ID" --subject_id "$SUBJECT_ID" \
   --amount_bucket B5k_20k --due_ts "$DUE_TS"
@@ -105,13 +133,13 @@ echo
 
 # --- 2) Doña Mary acepta -----------------------------------------------------
 
-echo "2) Doña Mary acepta la nota: sin su firma la deuda no existe."
+paso 2 "Doña Mary acepta la nota: sin su firma la deuda no existe."
 call dona_mary accept_note --subject "$DONA_MARY" --note_id "$NOTE_ID"
 echo
 
 # --- 3) Bodega A confirma el pago --------------------------------------------
 
-echo "3) Doña Mary paga y Bodega A confirma el pago."
+paso 3 "Doña Mary paga y Bodega A confirma el pago."
 call bodega_a confirm_paid --issuer "$BODEGA_A" --note_id "$NOTE_ID"
 echo
 
@@ -121,14 +149,14 @@ echo
 stellar contract invoke --id "$CONTRACT_ID" --source dona_mary --network "$NET" --send=yes -- \
   revoke_consent --subject "$DONA_MARY" --reader "$BODEGA_B" >/dev/null 2>&1 || true
 
-echo "4) Bodega B pide el resumen de Doña Mary SIN permiso."
+paso 4 "Bodega B pide el resumen de Doña Mary SIN permiso."
 errf="$(mktemp)"
 if stellar contract invoke --id "$CONTRACT_ID" --source bodega_b --network "$NET" --send=yes -- \
      read_stats --reader "$BODEGA_B" --subject_id "$SUBJECT_ID" >/dev/null 2>"$errf"; then
   echo "   ⚠️ INESPERADO: el contrato entregó el resumen sin permiso."
   cat "$errf"; rm -f "$errf"; exit 1
 elif grep -qiE 'NoConsent|Contract, #10|#10\b' "$errf"; then
-  echo "   ✅ Esperado: el contrato NO entrega el resumen sin permiso (NoConsent) y así queda registrado."
+  echo "   ✅ esperado: NoConsent — el contrato no entrega el resumen sin permiso (no se envía transacción)"
 else
   echo "   ⚠️ Falló por otra razón:"; cat "$errf"; rm -f "$errf"; exit 1
 fi
@@ -137,15 +165,16 @@ echo
 
 # --- 5) Doña Mary autoriza a Bodega B ----------------------------------------
 
-echo "5) Doña Mary autoriza a Bodega B a leer su resumen por 30 días."
+paso 5 "Doña Mary autoriza a Bodega B a leer su resumen por 30 días."
 call dona_mary grant_consent \
   --subject "$DONA_MARY" --reader "$BODEGA_B" --exp_ts "$EXP_TS" --nonce "$NOW"
 echo
 
 # --- 6) Bodega B consulta con permiso ----------------------------------------
 
-echo "6) Bodega B consulta con permiso vigente y ve el resumen de cumplimiento."
+paso 6 "Bodega B consulta con permiso vigente y ve el resumen de cumplimiento."
 call bodega_b read_stats --reader "$BODEGA_B" --subject_id "$SUBJECT_ID"
+echo "   Esta consulta queda registrada (evento aggregate_read)."
 STATS_JSON="$RET"
 python3 - <<PY
 import json
@@ -160,6 +189,8 @@ print(f"   Emisores distintos:   {s['issuers_count']}")
 print(f"   Rango máximo visto:   {s['max_bucket']}")
 PY
 echo
-echo "✅ Demo completa. Todo lo anterior quedó registrado en la cadena (enlaces arriba)."
-echo "   Nota: la cadena es pública; el permiso controla la consulta oficial y deja"
+echo "✅ Demo completa. Las transacciones enviadas (pasos 1, 2, 3, 5 y 6) quedaron"
+echo "   registradas en la cadena (enlaces arriba). El paso 4 se rechazó en"
+echo "   simulación: no se envió transacción."
+echo "   La cadena es pública; el permiso controla la consulta oficial y deja"
 echo "   constancia. En cadena no van nombre, teléfono ni monto exacto (spec v2, §3b)."
