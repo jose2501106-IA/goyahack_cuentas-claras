@@ -6,7 +6,16 @@
 
 Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de Ingeniería, Semana DIE 2026), track **Blockchain**. Evento del 22 al 26 de septiembre de 2026.
 
-> Estado (25-sep-2026, 12:35): investigación cerrada en siete documentos (`research/00`–`06`), diseño aprobado, especificación v2 vigente (incluye una corrección de privacidad), campaña de marketing, opciones de modelo de negocio y borradores de pitch, deck, guion de demo y preguntas del jurado listos para aprobación. Código, demo y video: en construcción hoy. Para ubicar cualquier tema sin leer todo, empieza por [`llms.txt`](llms.txt) o [`docs/indice.md`](docs/indice.md). Este README se completa al entregar (enlaces al video, la app y los contratos en testnet).
+> Estado (25-sep-2026, 17:15): contrato `cuentas_claras` desplegado en testnet con 11 pruebas en verde; `demo/demo.sh` en construcción. Investigación cerrada en siete documentos (`research/00`–`06`), especificación v2 vigente, campaña, modelo de negocio, Lean Canvas y borradores de pitch. Para ubicar cualquier tema sin leer todo, empieza por [`llms.txt`](llms.txt) o [`docs/indice.md`](docs/indice.md). Este README se completa al entregar (enlaces al video, la app y los contratos en testnet).
+
+## En vivo en Stellar testnet
+
+| | |
+|---|---|
+| Contrato | [`CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH`](https://stellar.expert/explorer/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH) |
+| Estado | Desplegado e inicializado el 25-sep-2026 (16:52 CDMX) · 11 pruebas en verde (`cargo test`) |
+| Toolchain | Stellar CLI 28.0.0 · soroban-sdk 28.0.0 · `wasm32v1-none` (decisión #41) |
+| Datos | Solo claves públicas y datos ficticios de demo en [`demo/deploy.json`](demo/deploy.json) |
 
 ## El problema, en tres líneas
 

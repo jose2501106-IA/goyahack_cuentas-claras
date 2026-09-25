@@ -4,6 +4,8 @@
 > Fecha: 2026-09-25 · Proyecto: **Cuentas Claras** · Equipo: **Palabra** (en formularios: "Equipo Palabra") · GOYA HACK · Hackathon UNAM 2026 · track Blockchain
 > Estado del código: **por construirse hoy**. Este documento describe **lo que mostraremos**. Todo lo que depende de la construcción (URL, Contract ID, hashes, textos de error, tiempos) está marcado **[CONFIRMAR]** y se ajusta después del primer ensayo real.
 
+> **Actualización (25-sep, 17:15):** el contrato está en testnet: [`CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH`](https://stellar.expert/explorer/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH). Hoy la demo es **nivel 2: `demo/demo.sh`** (sin frontend). Usa las filas 5 y 6 de la tabla de preparación y el plan B como demo principal; la vista de app queda como siguiente paso.
+
 Base: `spec/2026-09-25_especificacion-tecnica-v2.md` (§7 eventos, §9 frontend, §10 guion y plan B, §12 datos ficticios), `research/00_sintesis-estrategica.md` ("Pitch, demo y README"), `docs/riesgos.md` (fila «Demo en vivo que falla»). El video como entregable y no solo como respaldo: [Devpost](https://info.devpost.com/blog/6-tips-for-making-a-hackathon-demo-video); las convocatorias de Stellar aceptan capturas de testnet como evidencia ([Rise In](https://www.risein.com/programs/build-on-stellar-philippines-hackathon)).
 
 ---
@@ -24,7 +26,7 @@ Base: `spec/2026-09-25_especificacion-tecnica-v2.md` (§7 eventos, §9 frontend,
 | 2 | App Cuentas Claras: vista **Bodega A** (Bodega A) | *[CONFIRMAR URL]* |
 | 3 | App Cuentas Claras: vista **Cliente** (Doña Mary). Mejor en un teléfono real si el frontend está publicado; si no, simulada en la laptop | *[CONFIRMAR]* |
 | 4 | App Cuentas Claras: vista **Bodega B** (Bodega B) | *[CONFIRMAR]* |
-| 5 | Explorador de testnet abierto en la página del contrato (el que usen los enlaces de `demo.sh`, por ejemplo stellar.expert) | *[CONFIRMAR Contract ID y explorador]* |
+| 5 | Explorador de testnet abierto en la página del contrato (el que usen los enlaces de `demo.sh`, por ejemplo stellar.expert) | `CB5ACP…OIJH` en stellar.expert |
 | 6 | Terminal con `demo/demo.sh` listo (plan B), letra de 20 pt o más, tema claro | *[CONFIRMAR]* |
 | 7 | Video de respaldo, copia local en MP4 | Tras grabarlo |
 

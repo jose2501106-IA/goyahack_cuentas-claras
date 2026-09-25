@@ -78,7 +78,7 @@ DIAPOSITIVAS
    "Bodega crea la nota" → "Cliente la acepta" → "Pago confirmado" →
    "Cliente da permiso" → "Otra bodega ve su semáforo".
    Debajo, en Sello: "Sin permiso, el contrato no entrega el resumen."
-   Pie: "Stellar testnet · datos ficticios · Contract ID [CONFIRMAR]".
+   Pie: "Stellar testnet · datos ficticios · Contract ID CB5ACP…OIJH".
 6. ¿Por qué blockchain y no una base de datos?
    Título: "No hay un custodio en quien confíen bodegas que compiten."
    Tres viñetas: "Dos firmas o no hay deuda." / "Nadie edita ni borra, ni nosotros." /
@@ -101,11 +101,11 @@ DIAPOSITIVAS
    "Dictamen legal" → "Fondo de Stellar" → "Mainnet, tras auditoría".
 9. Equipo Palabra.
    "José Hugo · experiencia operativa en una bodega de la Central."
-   "Construido con Claude y Claude Code." Código QR al repositorio [CONFIRMAR URL].
+   "Construido con Claude y Claude Code." Código QR al repositorio: https://github.com/jose2501106-IA/goyahack_cuentas-claras
 10. Cierre (fondo Tinta, texto Papel).
    Grande: "Cuentas claras, amistades largas."  Pequeño: "Equipo Palabra".
    Sello rojo "CUMPLIDA" con la fecha 25·09·2026.
-   Dos QR pequeños: repositorio y video [CONFIRMAR].
+   Dos QR pequeños: repositorio (https://github.com/jose2501106-IA/goyahack_cuentas-claras) y video [CONFIRMAR].
 
 NOTAS DEL ORADOR
 Agrega en cada diapositiva una nota de 1-2 frases que siga el pitch: abrir diciendo
