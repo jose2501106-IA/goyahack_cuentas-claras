@@ -45,6 +45,61 @@
         <h1 id="t-inicio">La bitácora de fiado co-firmada de la Central de Abasto</h1>
         <p class="entrada">En la Central de Abasto el fiado se da de palabra. La palabra se cumple, pero no viaja: fuera de la bodega, nadie la conoce. <strong>Cuentas Claras</strong> hace que cada nota de fiado quede firmada por la bodega y por el cliente, que nadie pueda cambiarla ni borrarla, y que el historial de cumplimiento sea del cliente.</p>
 
+
+        <section class="historia" aria-labelledby="t-historia">
+          <h2 id="t-historia">La historia en seis pasos</h2>
+          <p class="apoyo">Pasó de verdad en Stellar testnet; cada paso con transacción trae su enlace. Bodegas y Doña Mary son ficticias.</p>
+          <div id="historia-mapa" class="historia-mapa" aria-hidden="true"></div>
+          <ol class="historia-pasos">
+            <li class="historia-paso" data-paso="1">
+              <p class="historia-num" aria-hidden="true">1</p>
+              <div>
+                <p><strong>Bodega A-17 le fía a Doña Mary</strong> y registra la nota: de $5,000 a $20,000, a 15 días. Todavía no es deuda.</p>
+                <p class="historia-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872" target="_blank" rel="noopener noreferrer">Verlo en la cadena · cea99f44…25f2d872</a></p>
+              </div>
+            </li>
+            <li class="historia-paso" data-paso="2">
+              <p class="historia-num" aria-hidden="true">2</p>
+              <div>
+                <p><strong>Doña Mary la acepta desde su teléfono.</strong> Con la segunda firma la nota existe. En la cadena no va su nombre ni el monto: un seudónimo y un rango.</p>
+                <p class="historia-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d" target="_blank" rel="noopener noreferrer">Verlo en la cadena · a1e08fc4…98f4793d</a></p>
+              </div>
+            </li>
+            <li class="historia-paso" data-paso="3">
+              <p class="historia-num" aria-hidden="true">3</p>
+              <div>
+                <p><strong>Paga, y Bodega A-17 lo confirma: cumplida.</strong> Ni la bodega ni nosotros podemos borrarlo.</p>
+                <p class="historia-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326" target="_blank" rel="noopener noreferrer">Verlo en la cadena · 09317d80…4d7d8326</a></p>
+              </div>
+            </li>
+            <li class="historia-paso" data-paso="4">
+              <p class="historia-num" aria-hidden="true">4</p>
+              <div>
+                <p><strong>Doña Mary cruza el pasillo a Bodega B-40</strong>, donde nadie la conoce. Bodega B-40 pide su resumen sin permiso y el contrato no lo entrega.</p>
+                <p class="historia-cadena tel-sin-hash">Sin hash: no se envió transacción.</p>
+              </div>
+            </li>
+            <li class="historia-paso" data-paso="5">
+              <p class="historia-num" aria-hidden="true">5</p>
+              <div>
+                <p><strong>Doña Mary le da permiso por 30 días.</strong> Puede quitarlo cuando quiera.</p>
+                <p class="historia-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814" target="_blank" rel="noopener noreferrer">Verlo en la cadena · cc1b5293…892a6814</a></p>
+              </div>
+            </li>
+            <li class="historia-paso" data-paso="6">
+              <p class="historia-num" aria-hidden="true">6</p>
+              <div>
+                <p><strong>Bodega B-40 consulta, y la consulta queda registrada.</strong> El semáforo dice «historial insuficiente»: con una sola nota, no se juzga a nadie.</p>
+                <p class="historia-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c" target="_blank" rel="noopener noreferrer">Verlo en la cadena · a8437564…8df6183c</a></p>
+              </div>
+            </li>
+          </ol>
+          <div class="llamadas">
+            <a class="boton boton-primario" href="#demo-real">Ver la demo real</a>
+            <a class="boton boton-secundario" href="#pasillo-vivo">Entrar al Pasillo vivo</a>
+          </div>
+        </section>
+
         <h2>Tres reglas que hace cumplir un contrato, no nuestra buena fe</h2>
         <ol class="reglas">
           <li class="regla">
@@ -72,10 +127,6 @@
 
         <p class="no-es">No mueve dinero, no emite monedas y no decide por nadie: la decisión de fiar siempre es de la bodega.</p>
 
-        <div class="llamadas">
-          <a class="boton boton-primario" href="#pasillo-vivo">Ver el Pasillo vivo</a>
-          <a class="boton boton-secundario" href="#demo-real">Ver la demo real, paso a paso</a>
-        </div>
         <p class="pie-inicio">Proyecto del <strong>Equipo Palabra</strong> para GOYA HACK · Hackathon UNAM 2026 (CriptoUNAM × Facultad de Ingeniería), track Blockchain. Corre en Stellar testnet. Todos los datos de este sitio son ficticios.</p>
       </div>
     </section>
@@ -201,6 +252,23 @@
             <p class="tel-pie apoyo">En la repetición, los botones del teléfono pasan al paso siguiente; no firman nada.</p>
           </aside>
         </div>
+        <div class="registro-marco">
+          <button type="button" class="boton boton-secundario ver-registro" aria-expanded="false" aria-controls="registro" hidden>Ver como registro</button>
+          <div id="registro" class="registro">
+            <table class="tabla registro-tabla">
+              <caption>Los seis pasos como renglones del libro: el seudónimo de Doña Mary (nunca su nombre), el rango, el hash y el sello.</caption>
+              <thead><tr><th scope="col">Paso</th><th scope="col">Qué pasó</th><th scope="col">Seudónimo</th><th scope="col">Rango</th><th scope="col">Hash</th><th scope="col">Sello</th></tr></thead>
+              <tbody>
+              <tr data-paso="1"><td data-col="Paso" class="mono">1</td><td data-col="Qué pasó">Bodega A-17 registra la nota</td><td data-col="Seudónimo" class="hash">fe1b5cfb1b99ba1b…</td><td data-col="Rango">$5k–$20k</td><td data-col="Hash"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872" target="_blank" rel="noopener noreferrer">cea99f44…25f2d872</a></td><td data-col="Sello">—</td></tr>
+              <tr data-paso="2"><td data-col="Paso" class="mono">2</td><td data-col="Qué pasó">Doña Mary la acepta</td><td data-col="Seudónimo" class="hash">fe1b5cfb1b99ba1b…</td><td data-col="Rango">$5k–$20k</td><td data-col="Hash"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d" target="_blank" rel="noopener noreferrer">a1e08fc4…98f4793d</a></td><td data-col="Sello">—</td></tr>
+              <tr data-paso="3"><td data-col="Paso" class="mono">3</td><td data-col="Qué pasó">Bodega A-17 confirma el pago</td><td data-col="Seudónimo" class="hash">fe1b5cfb1b99ba1b…</td><td data-col="Rango">$5k–$20k</td><td data-col="Hash"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326" target="_blank" rel="noopener noreferrer">09317d80…4d7d8326</a></td><td data-col="Sello"><span class="registro-sello">CUMPLIDA</span></td></tr>
+              <tr data-paso="4"><td data-col="Paso" class="mono">4</td><td data-col="Qué pasó">Bodega B-40 pide el resumen sin permiso: rechazado</td><td data-col="Seudónimo" class="hash">fe1b5cfb1b99ba1b…</td><td data-col="Rango">—</td><td data-col="Hash"><span class="tel-sin-hash">sin transacción</span></td><td data-col="Sello">—</td></tr>
+              <tr data-paso="5"><td data-col="Paso" class="mono">5</td><td data-col="Qué pasó">Doña Mary da permiso a Bodega B-40 (30 días)</td><td data-col="Seudónimo" class="hash">fe1b5cfb1b99ba1b…</td><td data-col="Rango">—</td><td data-col="Hash"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814" target="_blank" rel="noopener noreferrer">cc1b5293…892a6814</a></td><td data-col="Sello">—</td></tr>
+              <tr data-paso="6"><td data-col="Paso" class="mono">6</td><td data-col="Qué pasó">Bodega B-40 consulta con permiso</td><td data-col="Seudónimo" class="hash">fe1b5cfb1b99ba1b…</td><td data-col="Rango">máx. $5k–$20k</td><td data-col="Hash"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c" target="_blank" rel="noopener noreferrer">a8437564…8df6183c</a></td><td data-col="Sello">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -277,6 +345,7 @@
   <script src="datos/repeticion.js"></script>
   <script src="gemelo.js"></script>
   <script src="repeticion.js"></script>
+  <script src="portada.js"></script>
   <script src="simulacion/motor.js"></script>
   <script src="simulacion/agentes.js"></script>
   <script src="simulacion/vista.js"></script>

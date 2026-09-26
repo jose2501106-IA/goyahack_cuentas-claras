@@ -188,17 +188,31 @@
 
   // ---------- Montaje con barra, marco y rótulos ----------
 
-  let vistaPlana = false;
+  // Mapa plano en el celular e isométrico desde 900 px (docs/diseno-web-movil.md §3),
+  // salvo que la persona lo cambie con el botón.
+  let vistaPlana = typeof matchMedia === 'function' && matchMedia('(max-width: 899px)').matches;
 
+  // opciones.recorte = { x1, x2, y1, y2 } (unidades del plano): muestra solo esa ventana,
+  // siempre plana y sin botón; es el mini mapa fijo de la portada.
   function montar(contenedor, forma, opciones = {}) {
     const el = raiz.CC.el;
     const mapa = dibujar(forma, opciones);
+    if (opciones.recorte) {
+      const r = opciones.recorte;
+      const g = mapa.geo;
+      mapa.svg.setAttribute('viewBox', `${g.X(r.x1)} ${g.Y(r.y2)} ${+(r.x2 - r.x1).toFixed(2)} ${+(r.y2 - r.y1).toFixed(2)}`);
+      mapa.svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      const marco = el('div', { class: 'maqueta-marco marco-recorte' }, el('div', { class: 'maqueta plana maqueta-recorte' }, mapa.svg));
+      contenedor.append(marco);
+      mapa.maqueta = marco.firstChild;
+      return mapa;
+    }
     const maqueta = el('div', { class: `maqueta${vistaPlana ? ' plana' : ''}` });
     maqueta.append(mapa.svg);
     const boton = el('button', { type: 'button', class: 'boton boton-secundario boton-chico boton-plana', 'aria-pressed': String(vistaPlana) }, 'Vista plana');
     boton.addEventListener('click', () => {
       vistaPlana = !vistaPlana;
-      for (const m of document.querySelectorAll('.maqueta')) m.classList.toggle('plana', vistaPlana);
+      for (const m of document.querySelectorAll('.maqueta:not(.maqueta-recorte)')) m.classList.toggle('plana', vistaPlana);
       for (const b of document.querySelectorAll('.boton-plana')) b.setAttribute('aria-pressed', String(vistaPlana));
     });
     const barra = el('div', { class: 'gemelo-barra' }, opciones.barra || null, boton);

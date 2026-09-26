@@ -35,10 +35,16 @@ function leerSalida(texto) {
   let enResumen = false;
   const resumen = {};
   let contrato = null;
+  let seudonimo = null;
+  let nota = null;
   for (const cruda of lineas) {
     const l = cruda.trim();
     const mc = l.match(/^Contrato:\s+(C[A-Z2-7]{55})$/);
     if (mc) contrato = mc[1];
+    const ms = l.match(/^Seudónimo de Doña Mary \(subject_id\):\s+(\S+)$/);
+    if (ms) seudonimo = ms[1];
+    const mn = l.match(/^Nota de esta corrida \(note_id\):\s+(\S+)$/);
+    if (mn) nota = mn[1];
     const mp = l.match(/^(\d+)\)\s+(.+)$/);
     if (mp) {
       actual = { numero: Number(mp[1]), accion: mp[2], hash: null, url: null, sin_transaccion: null, notas: [] };
@@ -67,13 +73,13 @@ function leerSalida(texto) {
       actual.notas.push(l);
     }
   }
-  return { contrato, pasos, resumen };
+  return { contrato, seudonimo, nota, pasos, resumen };
 }
 
 function construir() {
   const salida = fs.readFileSync(SALIDA, 'utf8');
   const deploy = JSON.parse(fs.readFileSync(DEPLOY, 'utf8'));
-  const { contrato, pasos, resumen } = leerSalida(salida);
+  const { contrato, seudonimo, nota, pasos, resumen } = leerSalida(salida);
   if (contrato !== deploy.contract_id) {
     throw new Error(`El contrato de la salida (${contrato}) no es el de deploy.json (${deploy.contract_id}).`);
   }
@@ -85,6 +91,9 @@ function construir() {
       url: deploy.exploradores.contrato,
       desplegado_utc: deploy.desplegado_utc,
     },
+    // Prefijos tal cual los imprime la salida (demo.sh los recorta con «…»).
+    seudonimo_cliente: seudonimo,
+    nota_id: nota,
     pasos: pasos.map((p) => {
       const firma = QUIEN_FIRMA[p.numero];
       return {

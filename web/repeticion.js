@@ -35,50 +35,21 @@
 
   function hashCorto(h) { return h ? `${h.slice(0, 8)}…${h.slice(-6)}` : ''; }
 
-  CC.secciones['montaje-demo'] = function montarDemo(destino) {
-    const datos = raiz.CC_DATOS && raiz.CC_DATOS.repeticion;
-    const forma = CC.Gemelo.formaDelSitio();
-    destino.replaceChildren();
-    if (!datos || !forma) {
-      destino.append(el('p', { class: 'apoyo', role: 'alert' }, 'No se encontraron los datos de la corrida.'));
-      return;
-    }
-    const pasos = datos.pasos;
-
-    destino.append(
-      el('div', { class: 'encabezado-demo' },
-        el('p', null, el('span', { class: 'etiqueta-red' }, datos.red), ' Contrato ',
-          CC.enlaceExterno(datos.contrato.id, datos.contrato.url, 'id-contrato mono hash')),
-        el('p', { class: 'aclaracion' },
-          'Esta es la repetición de una corrida real. Para firmar en vivo usamos la app local; este sitio no firma nada.')),
-    );
-
+  // Escena de la corrida sobre un gemelo: la usan la demo real y la portada.
+  function crearEscena(contenedor, forma, opciones = {}) {
     const marcadas = {};
     for (const [nombre, id] of Object.entries(POSICIONES)) marcadas[id] = nombre;
-    const contador = el('p', { class: 'paso-contador mono' });
-    const mapa = CC.Gemelo.montar(destino, forma, {
+    const mapa = CC.Gemelo.montar(contenedor, forma, {
       marcadas,
-      barra: contador,
-      descripcion: 'Forma del Pasillo A-B con Bodega A-17, Bodega B-40 y Doña Mary en el corredor. Cada paso de la corrida real se dibuja aquí; el texto de cada paso está debajo.',
+      descripcion: 'Forma del Pasillo A-B con Bodega A-17, Bodega B-40 y Doña Mary en el corredor. Cada paso de la corrida real se dibuja aquí; el texto de cada paso está al lado.',
       rotulo: 'Posiciones ilustrativas. Bodegas y Doña Mary son ficticias.',
       centroX: 115, // entre Bodega A-17 y Doña Mary, para pantallas angostas
+      ...opciones,
     });
     const fx = mapa.xDePlano(X_FICHA);
     const fy = mapa.corredor.centro;
     const ficha = { x: fx, y: fy, r: 3 };
     CC.Gemelo.ficha(mapa, ficha, { iniciales: 'DM', nombre: 'Doña Mary', clase: 'ficha-mary' });
-
-    const tarjeta = el('div', { class: 'paso-tarjeta', 'aria-live': 'polite' });
-    const anterior = el('button', { type: 'button', class: 'boton boton-secundario' }, 'Anterior');
-    const siguiente = el('button', { type: 'button', class: 'boton boton-primario' }, 'Siguiente');
-    const reiniciar = el('button', { type: 'button', class: 'boton boton-secundario' }, 'Reiniciar');
-    const lista = el('ol', { class: 'pasos-lista' });
-    destino.append(
-      el('div', { class: 'controles-demo' }, anterior, siguiente, reiniciar),
-      tarjeta,
-      el('h3', null, 'Los seis pasos de la corrida'),
-      lista,
-    );
 
     const idA = POSICIONES['Bodega A-17'];
     const idB = POSICIONES['Bodega B-40'];
@@ -134,6 +105,45 @@
       }
     }
 
+
+    // Pinta el estado después del paso n; anima solo el último.
+    function pintar(n, animar) {
+      limpiar();
+      for (let i = 1; i <= n; i++) aplicar(i, animar && i === n && !CC.movimientoReducido());
+    }
+    return { mapa, pintar };
+  }
+  CC.crearEscena = crearEscena;
+
+  CC.secciones['montaje-demo'] = function montarDemo(destino) {
+    const datos = raiz.CC_DATOS && raiz.CC_DATOS.repeticion;
+    const forma = CC.Gemelo.formaDelSitio();
+    destino.replaceChildren();
+    if (!datos || !forma) {
+      destino.append(el('p', { class: 'apoyo', role: 'alert' }, 'No se encontraron los datos de la corrida.'));
+      return;
+    }
+    const pasos = datos.pasos;
+
+    destino.append(
+      el('div', { class: 'encabezado-demo' },
+        el('p', null, el('span', { class: 'etiqueta-red' }, datos.red), ' Contrato ',
+          CC.enlaceExterno(datos.contrato.id, datos.contrato.url, 'id-contrato mono hash')),
+        el('p', { class: 'aclaracion' },
+          'Esta es la repetición de una corrida real. Para firmar en vivo usamos la app local; este sitio no firma nada.')),
+    );
+
+    const contador = el('p', { class: 'paso-contador mono' });
+    const { mapa, pintar } = crearEscena(destino, forma, { barra: contador });
+    const tarjeta = el('div', { class: 'paso-tarjeta', 'aria-live': 'polite' });
+    const anterior = el('button', { type: 'button', class: 'boton boton-secundario' }, 'Anterior');
+    const siguiente = el('button', { type: 'button', class: 'boton boton-primario' }, 'Siguiente');
+    const reiniciar = el('button', { type: 'button', class: 'boton boton-secundario' }, 'Reiniciar');
+    destino.append(
+      el('div', { class: 'controles-demo' }, anterior, siguiente, reiniciar),
+      tarjeta,
+    );
+
     function resumenPaso6() {
       const r = datos.resumen_paso_6 || {};
       const n = (k) => Number(r[k]) || 0;
@@ -148,12 +158,10 @@
     }
 
     let actual = 0;
-    const movido = () => CC.movimientoReducido();
 
     function mostrar(n, animar) {
       actual = n;
-      limpiar();
-      for (let i = 1; i <= n; i++) aplicar(i, animar && i === n && !movido());
+      pintar(n, animar);
       contador.textContent = n === 0 ? 'Listo para empezar' : `Paso ${n} de ${pasos.length}`;
       anterior.disabled = n === 0;
       siguiente.disabled = n === pasos.length;
@@ -180,18 +188,24 @@
         );
       }
       sincronizarTelefono(n);
-      lista.querySelectorAll('li').forEach((li, i) => {
-        if (i === n - 1) li.setAttribute('aria-current', 'step');
-        else li.removeAttribute('aria-current');
+      document.querySelectorAll('.registro-tabla tbody tr').forEach((tr) => {
+        if (Number(tr.dataset.paso) === n) tr.setAttribute('aria-current', 'step');
+        else tr.removeAttribute('aria-current');
       });
     }
 
-    for (const p of pasos) {
-      lista.append(el('li', null,
-        el('span', null, conNumero(rango(p.accion))), ' ',
-        p.url
-          ? CC.enlaceExterno(`Verlo en la cadena · ${hashCorto(p.hash)}`, p.url, 'mono hash')
-          : el('span', { class: 'apoyo' }, p.sin_transaccion)));
+    // «Ver como registro» (docs/diseno-web-movil.md §3): la tabla está en el HTML; aquí se pliega.
+    const bRegistro = document.querySelector('.ver-registro');
+    const registro = document.getElementById('registro');
+    if (bRegistro && registro) {
+      bRegistro.hidden = false;
+      registro.hidden = true;
+      bRegistro.addEventListener('click', () => {
+        const abrir = registro.hidden;
+        registro.hidden = !abrir;
+        bRegistro.setAttribute('aria-expanded', String(abrir));
+        bRegistro.textContent = abrir ? 'Ocultar el registro' : 'Ver como registro';
+      });
     }
 
     // «La app en tu mano» (docs/diseno-web-movil.md §2): las pantallas están en el HTML;

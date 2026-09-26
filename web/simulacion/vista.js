@@ -55,7 +55,8 @@
     });
     mapa.maqueta.parentElement.classList.add('marco-sim');
 
-    const leyenda = el('div', { class: 'leyenda-sim' },
+    const leyenda = el('details', { class: 'leyenda-sim detalles-sim' },
+      el('summary', null, 'Cómo leer el mapa'),
       el('p', null, el('strong', null, 'Fichas: '), 'el semáforo que vería el propio cliente. ',
         el('span', { class: 'sem sem-verde' }, '● Verde'), ' · ',
         el('span', { class: 'sem sem-amarillo' }, '▲ Amarillo'), ' · ',
@@ -64,23 +65,70 @@
       el('p', null, el('strong', null, 'Bodegas: '), 'el tono de la bodega indica cuánto ha fiado ',
         el('span', { class: 'tonos', 'aria-hidden': 'true' }, TONOS.map((t) => el('span', { style: `background:${t}` }))),
         ' de poco a mucho. Trazo de tinta: nota firmada por los dos. Sello: cumplida. Marca gris: incumplida. Línea punteada: permiso.'));
+    if (typeof matchMedia === 'function' && matchMedia('(min-width: 900px)').matches) leyenda.open = true;
     destino.append(leyenda);
 
+    // ---------- Hoja: Qué pasa / Clientes / Bodegas (docs/diseno-web-movil.md §3) ----------
+    // En el celular es una hoja inferior fija que se abre y se cierra; desde 900 px va en la página.
     const tarjeta = el('div', { class: 'pensamiento' });
     const anuncio = el('p', { class: 'lector', role: 'status' });
     const feed = el('ol', { class: 'feed-sim' });
-    destino.append(el('div', { class: 'sim-columnas' },
-      el('div', null, el('h3', null, 'Lo que piensa el agente'), tarjeta, anuncio),
-      el('div', null, el('h3', null, 'Lo que pasa en el pasillo'), el('p', { class: 'apoyo' }, 'Los últimos 30 movimientos, del más nuevo al más viejo.'), feed)));
+    const VISIBLES = 10;
+    const listas = {
+      clientes: { ul: el('ul', { class: 'lista-personajes' }), buscar: null, mas: null, todos: false },
+      bodegas: { ul: el('ul', { class: 'lista-personajes' }), buscar: null, mas: null, todos: false },
+    };
+    for (const [clave, l] of Object.entries(listas)) {
+      l.buscar = el('input', { type: 'search', class: 'buscar', placeholder: 'Buscar por nombre', 'aria-label': clave === 'clientes' ? 'Buscar cliente' : 'Buscar bodega' });
+      l.mas = el('button', { type: 'button', class: 'boton boton-secundario boton-chico ver-mas' });
+      l.buscar.addEventListener('input', () => pintarListas());
+      l.mas.addEventListener('click', () => { l.todos = !l.todos; pintarListas(); });
+    }
+    const PESTANAS = [['feed', 'Qué pasa'], ['clientes', 'Clientes'], ['bodegas', 'Bodegas']];
+    const pestanas = {};
+    const paneles = {
+      feed: el('div', null, el('p', { class: 'apoyo' }, 'Los últimos 30 movimientos, del más nuevo al más viejo.'), feed),
+      clientes: el('div', null, listas.clientes.buscar, listas.clientes.ul, listas.clientes.mas),
+      bodegas: el('div', null, listas.bodegas.buscar, listas.bodegas.ul, listas.bodegas.mas),
+    };
+    const tablist = el('div', { class: 'hoja-pestanas', role: 'tablist', 'aria-label': 'Detalles del pasillo' });
+    for (const [clave, texto] of PESTANAS) {
+      const idT = `pestana-${clave}`;
+      const idP = `panel-${clave}`;
+      pestanas[clave] = el('button', { type: 'button', role: 'tab', id: idT, 'aria-controls': idP, 'aria-selected': 'false', tabindex: '-1' }, texto);
+      pestanas[clave].addEventListener('click', () => { elegirPestana(clave); abrirHoja(true); });
+      pestanas[clave].addEventListener('keydown', (e) => {
+        const orden = PESTANAS.map(([k]) => k);
+        const i = orden.indexOf(clave);
+        const sig = e.key === 'ArrowRight' ? orden[(i + 1) % orden.length] : e.key === 'ArrowLeft' ? orden[(i + orden.length - 1) % orden.length] : null;
+        if (sig) { e.preventDefault(); elegirPestana(sig); pestanas[sig].focus(); }
+      });
+      tablist.append(pestanas[clave]);
+      Object.assign(paneles[clave], { id: idP, role: 'tabpanel', tabIndex: 0 });
+      paneles[clave].setAttribute('aria-labelledby', idT);
+      paneles[clave].classList.add('hoja-panel');
+    }
+    const bHoja = el('button', { type: 'button', class: 'hoja-abrir', 'aria-expanded': 'false', 'aria-controls': 'hoja-cuerpo' }, 'Abrir');
+    const hoja = el('section', { class: 'hoja', 'aria-label': 'Qué pasa, clientes y bodegas' },
+      el('div', { class: 'hoja-cabeza' }, tablist, bHoja),
+      el('div', { class: 'hoja-cuerpo', id: 'hoja-cuerpo' }, tarjeta, anuncio, paneles.feed, paneles.clientes, paneles.bodegas));
+    destino.append(hoja);
 
-    const listaClientes = el('ul', { class: 'lista-personajes' });
-    const listaBodegas = el('ul', { class: 'lista-personajes' });
-    destino.append(
-      el('h3', null, 'Clientes y su semáforo'),
-      el('p', { class: 'apoyo' }, 'Toca un cliente o una bodega (aquí o en el mapa) para ver su historial y su última decisión.'),
-      listaClientes,
-      el('details', { class: 'detalles-sim' }, el('summary', null, 'Las 20 bodegas'), listaBodegas),
-    );
+    function elegirPestana(clave) {
+      for (const [k] of PESTANAS) {
+        const si = k === clave;
+        pestanas[k].setAttribute('aria-selected', String(si));
+        pestanas[k].tabIndex = si ? 0 : -1;
+        paneles[k].hidden = !si;
+      }
+    }
+    function abrirHoja(abierta) {
+      hoja.classList.toggle('abierta', abierta);
+      bHoja.setAttribute('aria-expanded', String(abierta));
+      bHoja.textContent = abierta ? 'Cerrar' : 'Abrir';
+    }
+    bHoja.addEventListener('click', () => abrirHoja(!hoja.classList.contains('abierta')));
+    elegirPestana('feed');
 
     // ---------- Parámetros editables ----------
     const tablaParams = el('tbody');
@@ -236,17 +284,28 @@
     }
 
     function pintarListas() {
-      listaClientes.replaceChildren(...p.clientes.map((c) => el('li', null,
-        el('button', { type: 'button', class: `personaje${seleccion && seleccion.id === c.id ? ' elegido' : ''}`, onclick: () => seleccionar('cliente', c.id) },
-          el('span', null, c.nombre), semEl(A.semaforoDe(p, c.id))))));
-      listaBodegas.replaceChildren(...p.bodegas.map((b) => el('li', null,
-        el('button', { type: 'button', class: `personaje${seleccion && seleccion.id === b.id ? ' elegido' : ''}`, onclick: () => seleccionar('bodega', b.id) },
-          el('span', null, b.nombre), el('span', { class: 'mono' }, `${b.notas} notas`)))));
+      const filas = {
+        clientes: p.clientes.map((c) => ({ id: c.id, nombre: c.nombre, tipo: 'cliente', extra: semEl(A.semaforoDe(p, c.id)) })),
+        bodegas: p.bodegas.map((b) => ({ id: b.id, nombre: b.nombre, tipo: 'bodega', extra: el('span', { class: 'mono' }, `${b.notas} notas`) })),
+      };
+      for (const [clave, l] of Object.entries(listas)) {
+        const q = l.buscar.value.trim().toLowerCase();
+        const todas = filas[clave].filter((f) => !q || f.nombre.toLowerCase().includes(q));
+        const vistas = l.todos || q ? todas : todas.slice(0, VISIBLES);
+        l.ul.replaceChildren(...vistas.map((f) => el('li', null,
+          el('button', { type: 'button', class: `personaje${seleccion && seleccion.id === f.id ? ' elegido' : ''}`, onclick: () => seleccionar(f.tipo, f.id) },
+            el('span', null, f.nombre), f.extra))));
+        if (!vistas.length) l.ul.append(el('li', { class: 'apoyo' }, 'Nadie con ese nombre.'));
+        const resto = todas.length - VISIBLES;
+        l.mas.hidden = !!q || resto <= 0;
+        l.mas.textContent = l.todos ? `Ver solo los primeros ${VISIBLES}` : `Ver los ${resto} restantes`;
+      }
     }
 
     function seleccionar(tipo, id) {
       seleccion = { tipo, id };
       pintarTarjeta();
+      abrirHoja(true);
       const quien = tipo === 'cliente' ? p.clientes.find((c) => c.id === id) : p.bodegas.find((b) => b.id === id);
       anuncio.textContent = `${quien.nombre}. ${(quien.ultima && quien.ultima.frase) || 'Sin decisiones todavía.'}`;
       pintarListas();
@@ -392,12 +451,24 @@
       visible = true;
     }
 
+    // En el celular, los controles y la hoja son fijos abajo solo mientras se ve la sección.
+    const seccion = destino.closest('section');
+    if (seccion && typeof IntersectionObserver === 'function') {
+      new IntersectionObserver((entradas) => {
+        for (const e of entradas) seccion.classList.toggle('en-vista', e.isIntersecting);
+      }, { threshold: 0 }).observe(seccion);
+    } else if (seccion) {
+      seccion.classList.add('en-vista');
+    }
+
     // Para pruebas y capturas: avanzar sin esperar.
     CC.pasillo = {
       avanzar(n) { for (let i = 0; i < n; i++) unDia(); return p.mundo.dia; },
       estado: () => p,
       seleccionar,
       pausar: () => ponerCorriendo(false),
+      abrirHoja,
+      elegirPestana,
     };
   };
 })(window);

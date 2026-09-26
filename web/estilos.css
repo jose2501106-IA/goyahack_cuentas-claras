@@ -169,7 +169,7 @@ code, .mono { font-family: var(--f-mono); }
 }
 .navegacion { display: flex; flex-wrap: wrap; gap: 0.15rem; }
 .navegacion a {
-  display: inline-block; padding: 0.45rem 0.7rem; min-height: 44px; line-height: 1.7;
+  display: inline-block; padding: 0.45rem 0.7rem; min-height: 48px; line-height: 1.7;
   color: var(--texto); text-decoration: none; font-weight: 700; font-size: 1rem;
   border-bottom: 3px solid transparent; border-radius: 6px 6px 0 0;
 }
@@ -218,7 +218,7 @@ main:focus { outline: none; }
 .boton-secundario { background: transparent; color: var(--firma); }
 .boton-secundario:hover { background: var(--resalte); }
 .boton:disabled { opacity: 0.5; cursor: not-allowed; }
-.boton-chico { min-height: 44px; padding: 0.35rem 0.8rem; font-size: 1rem; }
+.boton-chico { min-height: 48px; padding: 0.35rem 0.8rem; font-size: 1rem; }
 .boton[aria-pressed="true"] { background: var(--resalte); }
 
 /* ---------- Rótulo de simulación (fijo) ---------- */
@@ -257,7 +257,7 @@ main:focus { outline: none; }
   .encabezado-dentro { padding: 0.45rem 0.75rem; }
   .logotipo { font-size: 1.35rem; }
   .navegacion { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-  .navegacion a { padding: 0.2rem 0.3rem; min-height: 40px; font-size: 1rem; text-align: center; white-space: nowrap; }
+  .navegacion a { padding: 0.2rem 0.3rem; min-height: 48px; font-size: 1rem; text-align: center; white-space: nowrap; }
   .regla { grid-template-columns: 2.6rem 1fr; padding: 0.85rem; }
   .llamadas .boton { width: 100%; }
   .seccion { padding: 2.25rem 0 2.75rem; }
@@ -412,15 +412,15 @@ main:focus { outline: none; }
 .feed-incumplida { color: var(--texto); font-weight: 700; }
 .lista-personajes { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.4rem; }
 .personaje {
-  width: 100%; min-height: 44px; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+  width: 100%; min-height: 48px; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
   padding: 0.35rem 0.7rem; font: 1rem var(--f-texto); color: var(--texto); text-align: left;
   background: var(--superficie); border: 1px solid var(--borde); border-radius: 8px; cursor: pointer;
 }
 .personaje:hover { background: var(--resalte); }
 .personaje.elegido { border: 2px solid var(--firma); }
 .detalles-sim { margin: 1rem 0; }
-.detalles-sim summary { cursor: pointer; font-weight: 700; color: var(--firma); min-height: 44px; display: flex; align-items: center; }
-.tabla-params input { width: 5.5rem; min-height: 40px; font: 1rem var(--f-mono); padding: 0.2rem 0.4rem; border: 1px solid var(--texto-2); border-radius: 6px; background: var(--superficie); color: var(--texto); }
+.detalles-sim summary { cursor: pointer; font-weight: 700; color: var(--firma); min-height: 48px; display: flex; align-items: center; }
+.tabla-params input { width: 5.5rem; min-height: 48px; font: 1rem var(--f-mono); padding: 0.2rem 0.4rem; border: 1px solid var(--texto-2); border-radius: 6px; background: var(--superficie); color: var(--texto); }
 @media (max-width: 640px) {
   .maqueta { min-width: 64rem; margin-block: -3rem; }
 }
@@ -493,3 +493,97 @@ main:focus { outline: none; }
   }
   .con-js .telefono { max-height: 36rem; overflow-y: auto; }
 }
+
+/* ---------- Pasillo vivo: hoja con pestañas (docs/diseno-web-movil.md §3) ---------- */
+.leyenda-sim { margin-top: 0.4rem; }
+.hoja { margin-top: 1rem; border: 1px solid var(--borde); border-radius: 12px; background: var(--superficie); }
+.hoja-cabeza { display: flex; align-items: stretch; border-bottom: 1px solid var(--borde); }
+.hoja-pestanas { display: flex; flex: 1; }
+.hoja-pestanas [role="tab"] {
+  flex: 1; min-height: 48px; padding: 0.4rem 0.6rem; border: 0; border-bottom: 3px solid transparent; background: transparent;
+  font: 700 1rem var(--f-texto); color: var(--texto); cursor: pointer;
+}
+.hoja-pestanas [role="tab"][aria-selected="true"] { color: var(--firma); border-bottom-color: var(--firma); background: var(--resalte); }
+.hoja-abrir { display: none; }
+.hoja-cuerpo { padding: 0.9rem 1rem 1rem; display: grid; gap: 0.8rem; }
+.hoja-panel[hidden] { display: none; }
+.buscar { width: 100%; min-height: 48px; margin-bottom: 0.6rem; padding: 0.4rem 0.7rem; font: 1rem var(--f-texto); color: var(--texto); background: var(--fondo); border: 1px solid var(--texto-2); border-radius: 8px; }
+.ver-mas { margin-top: 0.2rem; }
+.hoja .feed-sim { max-height: 22rem; }
+
+/* Tamaño táctil: 48 px o más en todo lo que se toca (las demás reglas ya lo fijan). */
+.boton, .boton-chico { min-height: 48px; }
+
+@media (max-width: 899px) {
+  /* Controles al alcance del pulgar y hoja inferior, fijos solo con la sección a la vista. */
+  #pasillo-vivo .barra-sim {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 12; margin: 0;
+    padding: 0.4rem 0.75rem calc(0.4rem + env(safe-area-inset-bottom, 0px));
+    background: var(--superficie); border-top: 1px solid var(--borde); flex-wrap: nowrap;
+    transform: translateY(110%); transition: transform 250ms ease;
+  }
+  #pasillo-vivo .dia-simulado { font-size: 1.1rem; min-width: 0; white-space: nowrap; }
+  #pasillo-vivo .controles-sim { flex-wrap: nowrap; gap: 0.35rem; }
+  #pasillo-vivo .controles-sim .boton { padding-inline: 0.6rem; }
+  #pasillo-vivo .hoja {
+    position: fixed; left: 0; right: 0; bottom: 4.1rem; z-index: 11; margin: 0;
+    border-radius: 14px 14px 0 0; box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
+    transform: translateY(calc(100% + 5rem)); transition: transform 250ms ease;
+  }
+  #pasillo-vivo.en-vista .barra-sim, #pasillo-vivo.en-vista .hoja { transform: none; }
+  .hoja-abrir {
+    display: block; min-width: 5.5rem; min-height: 48px; border: 0; border-left: 1px solid var(--borde);
+    background: transparent; color: var(--firma); font: 700 1rem var(--f-texto); cursor: pointer;
+  }
+  .hoja-cuerpo { display: none; max-height: 55vh; overflow-y: auto; }
+  .hoja.abierta .hoja-cuerpo { display: grid; }
+  #pasillo-vivo { padding-bottom: 9rem; }
+  .hoja .feed-sim { max-height: none; }
+}
+@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+  #pasillo-vivo .barra-sim, #pasillo-vivo .hoja { transition: none; }
+}
+
+/* ---------- Portada «Historia en seis pasos» (docs/diseno-web-movil.md §3) ---------- */
+.historia { margin: 2rem 0 1rem; }
+.historia-mapa:empty { display: none; }
+.historia-mapa {
+  position: sticky; top: calc(var(--alto-encabezado) + 0.25rem); z-index: 2;
+  background: var(--fondo); padding: 0.3rem 0; margin-bottom: 0.5rem;
+}
+.marco-recorte { overflow: hidden; }
+.maqueta-recorte { min-width: 0; padding: 0.3rem 0.5rem; margin: 0; transform: none; }
+.maqueta-recorte .pasillo-svg { max-height: 11rem; }
+.historia-pasos { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.8rem; }
+.historia-paso {
+  display: grid; grid-template-columns: 2.6rem 1fr; gap: 0.8rem; align-items: start;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 10px; padding: 0.9rem 1rem;
+  min-height: 9rem;
+}
+.historia-paso p { margin-bottom: 0.4rem; }
+.historia-num {
+  display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; margin: 0;
+  border: 2px solid var(--firma); color: var(--firma); font-family: var(--f-mono); font-weight: 600;
+}
+.historia-paso.activo { border-color: var(--firma); box-shadow: inset 4px 0 0 var(--firma); }
+.historia-paso.activo .historia-num { background: var(--firma); color: var(--sobre-firma); }
+.historia-cadena { margin: 0 !important; }
+
+/* ---------- «Ver como registro» ---------- */
+.registro-marco { margin-top: 1.5rem; }
+.registro { margin-top: 0.8rem; overflow-x: auto; }
+.registro-tabla caption { text-align: left; color: var(--texto-2); padding-bottom: 0.5rem; }
+.registro-tabla tr[aria-current="step"] td { background: var(--resalte); }
+.registro-sello { color: var(--sello); border: 2px solid var(--sello); border-radius: 4px; padding: 0 0.35rem; font-family: var(--f-titulo); font-weight: 800; letter-spacing: 0.06em; }
+@media (max-width: 640px) {
+  /* En el celular, cada renglón del libro es una tarjeta: sin desplazamiento horizontal. */
+  .registro-tabla thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .registro-tabla, .registro-tabla tbody, .registro-tabla tr, .registro-tabla td { display: block; width: 100%; }
+  .registro-tabla tr { border: 1px solid var(--borde); border-radius: 10px; margin-bottom: 0.7rem; background: var(--superficie); }
+  .registro-tabla td { border: 0; border-bottom: 1px solid var(--borde); display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.5rem; }
+  .registro-tabla td:last-child { border-bottom: 0; }
+  .registro-tabla td::before { content: attr(data-col); color: var(--texto-2); font-family: var(--f-texto); }
+  .registro-tabla caption { display: block; width: 100%; }
+}
+
+.hoja .pensamiento { min-height: 0; }
