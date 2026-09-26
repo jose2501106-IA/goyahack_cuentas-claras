@@ -4,7 +4,7 @@
 
 Cómo leer este repositorio sin gastar de más:
 
-- Todo dato sobre la Central lleva fuente o la etiqueta «experiencia de José»; los hechos citables tienen ID (H-01 a H-25) en docs/hoja-de-hechos.md y las decisiones, número (#1 a #42) en docs/decisiones.md.
+- Todo dato sobre la Central lleva fuente o la etiqueta «experiencia de José»; los hechos citables tienen ID (H-01 a H-25) en docs/hoja-de-hechos.md y las decisiones, número (#1 a #45) en docs/decisiones.md.
 - docs/indice.md dice qué contiene cada archivo, sus etiquetas, cuántas palabras tiene y cuándo leerlo. Busca ahí antes de abrir documentos largos.
 - Los documentos marcados «bitácora» usan los nombres anteriores del proyecto (CREDI-CEDA, Palabra); los «vigentes» mandan.
 - Nombres: proyecto «Cuentas Claras»; equipo «Palabra»; contrato, crate y carpeta `cuentas_claras`; repositorio `goyahack_cuentas-claras`.
@@ -19,7 +19,8 @@ Cómo leer este repositorio sin gastar de más:
 
 - [Especificación v2](spec/2026-09-25_especificacion-tecnica-v2.md): contrato, invariantes, eventos, backend, frontend, demo y criterios de aceptación; la sección 3b explica qué garantiza la privacidad y qué no
 - [CLAUDE.md](CLAUDE.md): reglas y contexto para Claude Code
-- [Guía de Codespaces](docs/guia-codespaces.md): prompt de arranque y puntos de control de hoy
+- [Especificación del frontend](spec/2026-09-26_especificacion-frontend.md): app de cuatro vistas sin dependencias, semáforo honesto y prompt para Claude Code (fin de semana)
+- [Guía de Codespaces](docs/guia-codespaces.md): prompt de arranque y puntos de control del viernes
 
 ## Decisiones, datos y riesgos
 
@@ -30,7 +31,8 @@ Cómo leer este repositorio sin gastar de más:
 - [Lean Canvas](docs/lean-canvas.md): el modelo en nueve bloques (borrador)
 - [Nombre y marca](docs/nombre-y-marca.md): por qué Cuentas Claras y Palabra
 - [Identidad visual](docs/identidad-visual.md): paleta «Tinta y Sello», tipografía y reglas
-- [Plan maestro](docs/plan-maestro.md): método, plan de hoy, plan posterior y ruta con la administración
+- [Plan maestro](docs/plan-maestro.md): método, plan del fin de semana (§4b), plan posterior y ruta con la administración
+- [Guía de entrevista](docs/guia-entrevista-bodegueros.md): cinco preguntas para bodegueros, anónimas, y qué se publica
 - [Preguntas pendientes](docs/preguntas-pendientes.md): lo que falta confirmar
 
 ## Presentación

@@ -1,6 +1,6 @@
 # CLAUDE.md — contexto para Claude Code
 
-Este repositorio es **Cuentas Claras** (proyecto; equipo **Palabra**; nombres anteriores: Palabra y CREDI-CEDA). Nombre técnico: contrato, crate y carpeta `cuentas_claras`; repositorio `goyahack_cuentas-claras`. Proyecto para GOYA HACK · Hackathon UNAM 2026 (CriptoUNAM × Facultad de Ingeniería). **Entrega: hoy, viernes 25 de septiembre, antes de las 20:00 CDMX** (José, 12:15; decisión #37); todo debe estar listo a las 19:00. Horario y recorte de alcance: `docs/guia-codespaces.md`, sección 3. Track: **Blockchain** (el principal según el organizador). Red: **Stellar testnet** (Soroban).
+Este repositorio es **Cuentas Claras** (proyecto; equipo **Palabra**; nombres anteriores: Palabra y CREDI-CEDA). Nombre técnico: contrato, crate y carpeta `cuentas_claras`; repositorio `goyahack_cuentas-claras`. Proyecto para GOYA HACK · Hackathon UNAM 2026 (CriptoUNAM × Facultad de Ingeniería). **Entrega: domingo 27 de septiembre** (plazo extendido; decisión #43). Meta interna: entregar el domingo antes de las 20:00; **código congelado el domingo a las 15:00**. Plan del fin de semana y orden de recorte: `docs/plan-maestro.md`, sección 4b. Track: **Blockchain** (el principal según el organizador). Red: **Stellar testnet** (Soroban).
 
 ## Qué es el producto (una frase)
 
@@ -82,7 +82,7 @@ José trabaja con aprobación automática. Estas reglas valen aunque nadie esté
 
 - **Nunca:** mainnet; `git push --force` o reescribir historial; borrar ramas; tocar `research/` o `privado/`; subir `.env`, llaves, `identity/` o semillas; instalar crates o paquetes npm que no pida la spec; cambiar la configuración de GitHub, de la cuenta o del Codespace.
 - **Antes de cada push:** `git pull --rebase origin main`; si hay conflicto en `docs/`, conserva ambas versiones y avisa. Nunca resuelvas un conflicto borrando trabajo ajeno.
-- **Alcance de hoy:** contrato, pruebas, despliegue en testnet y `demo/demo.sh`. Nada de backend ni frontend hasta que José lo pida.
+- **Alcance del fin de semana:** lo que pide `spec/2026-09-26_especificacion-frontend.md` (servidor sin dependencias, semáforo y cuatro vistas; decisiones #43–#45). El contrato no se toca salvo error de seguridad, y cualquier redespliegue lo aprueba José. Nada fuera de esa spec sin que José lo pida.
 - **Si algo falla dos veces seguidas,** detente: explica el error exacto y propone la corrección más pequeña. No improvises cambios grandes para "hacerlo pasar".
 - **Agentes en paralelo:** solo para tareas que no tocan los mismos archivos (por ejemplo, uno escribe el contrato y otro `demo/demo.sh` sobre la interfaz ya acordada). Un solo agente hace commits.
 - **Cada commit:** mensaje en español, `cargo test` en verde si tocó el contrato, y registro en `docs/decisiones.md` si cambió una decisión.

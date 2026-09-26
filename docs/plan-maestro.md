@@ -45,6 +45,8 @@ Lo que hace replicable el método: cada fase deja un archivo en el repositorio, 
 
 ## 4. Plan de hoy (25 de septiembre): entrega antes de las 20:00
 
+> **Superado por la sección 4b** (plazo extendido al domingo 27, decisión #43). Se conserva como bitácora del viernes.
+
 **Plazo:** José confirmó a las 12:15 que se puede entregar «al menos hasta las 8pm» de hoy (decisión #37). Se planea para tener **todo listo a las 19:00** y entregar antes de las 19:15; lo que quede después es margen. El objetivo del sábado 26 queda sin efecto.
 
 **La mentoría puntúa:** los mentores asignan un puntaje que cuenta para elegir ganadores (correo del 22-sep). Hoy es la última jornada presencial en el CIA (hasta las 17:00); también hay mentoría por Discord, equipo por equipo. Son sesiones cortas: entre una y otra, José aprueba los pasos de Claude Code desde la laptop.
@@ -69,6 +71,38 @@ Lo que hace replicable el método: cada fase deja un archivo en el repositorio, 
 3. Pruebas del contrato en verde (`cargo test`) y video de las pruebas. El pitch tiene la frase para cada nivel (`pitch/2026-09-25_pitch-3-minutos.md`, cierre).
 
 Reglas: un flujo completo vale más que dos a medias; lo que no esté verde a las 18:00 pasa a «siguientes pasos»; nunca se depura en el escenario; el plano solo en versión aprobada; nada privado en el repo público.
+
+## 4b. Plan del fin de semana (26 y 27 de septiembre): entrega el domingo
+
+**Plazo:** José informó el 25-sep a las 17:41 que el plazo se extendió «hasta las 12:00 de la noche del domingo» (decisión #43; hora exacta por confirmar en el dashboard). **Meta interna: entregar el domingo antes de las 20:00.** El código se congela el domingo a las 15:00.
+
+**Dónde estamos (sábado 00:45):** contrato en testnet con 12 pruebas en verde, `get_stats` retirado y contrato redesplegado (decisión #42); `demo.sh` completo en verde (nivel 2 de demo). Falta: interfaz, evidencia de usuarios y los materiales finales.
+
+### Sábado 26
+
+| Hora | Quién | Qué | Listo cuando |
+|---|---|---|---|
+| 08:00–08:30 | José | Leer el resumen en el chat. Aprobar o corregir las decisiones #44 y #45. **Entrega preliminar** en el dashboard con lo que ya hay (repo, `demo.sh`, descripción) para no depender del domingo. Confirmar ahí la hora exacta del plazo. | Entrega preliminar hecha |
+| 08:30 | José | Pegar a Claude Code el prompt de `spec/2026-09-26_especificacion-frontend.md` §9 y dejarlo en modo automático. | Plan de Claude Code aprobado |
+| 09:00–13:00 | José | **Entrevistas a 3–5 bodegueros** con `docs/guia-entrevista-bodegueros.md`. Entre una y otra, revisar los puntos de control de Claude Code desde el teléfono. | Hoja de registro con 3 a 5 entrevistas |
+| 09:00–13:00 | Claude Code | Backend sin dependencias, semáforo con pruebas y las cuatro vistas (spec frontend). Puntos de control 10:00, 11:30 y 13:00. | Flujo completo en el navegador |
+| 13:00–14:30 | José + Claude (chat) | José pasa las notas de las entrevistas; Claude las convierte en hechos H-26 en adelante (anónimos, con la etiqueta «entrevistas de José») y ajusta pitch, deck y Lean Canvas. | Hechos y pitch v2 |
+| 14:30–18:00 | José + Claude Code | Revisión de la app en el navegador; correcciones; segundo emisor en la demo (`demo/sembrar.sh`). | App lista para grabar |
+| 18:00–20:00 | José | Deck en Claude Design con el prompt actualizado. | Deck v1 |
+
+### Domingo 27
+
+| Hora | Quién | Qué | Listo cuando |
+|---|---|---|---|
+| 09:00–12:00 | Claude Code | **Solo si la app quedó verde el sábado:** sello de IA, buscador sobre el repo (`spec/2026-09-25_especificacion-rag.md`). Si no, se pule la app. | Buscador o app pulida |
+| 12:00–15:00 | José | Video de 2–3 minutos con la app real en testnet; capturas para el README. **15:00: código congelado.** | Video público |
+| 15:00–18:00 | José + Claude (chat) | Deck final (PDF), pitch ajustado a lo que funcione, tres ensayos con cronómetro. | Deck y pitch |
+| 18:00–20:00 | José | **Entrega final** en el dashboard: repo, video, deck, descripción, track Blockchain. | Confirmación de entrega |
+| 20:00–23:59 | — | Margen. Solo se corrigen errores de la entrega. | — |
+
+**Lo que se recorta primero, en este orden:** mapa de sectores en la app → sello de IA → segundo emisor. La app de tres vistas y el video no se recortan: si la app falla, se entrega el nivel 2 (`demo.sh`).
+
+**Cambios que conviene saber:** el semáforo real de la demo dirá «historial insuficiente» (decisión #44); el frontend no instala paquetes (decisión #45).
 
 ## 5. Plan posterior: del testnet al piloto real, paso a paso
 
@@ -131,3 +165,4 @@ Logística concreta (propuesta; José confirma): según la coordinadora de la Ce
 | 2026-09-25 09:20 | v1 tras la aprobación del plan A–E y las respuestas de José. |
 | 2026-09-25 11:50 | Nombre Palabra (proyecto y equipo); ventana de capacitación corregida con horarios reales; talleres, competencia, implementación, barreras y campaña enlazados; sin identificar a la bodega del equipo; corrección de privacidad (spec v2). |
 | 2026-09-25 12:35 | Proyecto **Cuentas Claras**, equipo **Palabra** (decisión #36); entrega hoy antes de las 20:00 y plan del día rehecho con dos bloques de construcción y tres niveles de demo (#37); repo como base de conocimiento con `llms.txt` e índice (#38); opciones de modelo de negocio (`docs/modelo-de-negocio.md`). |
+| 2026-09-26 00:55 | Plazo extendido al domingo 27 (decisión #43): §4 queda como bitácora y se agrega §4b con el plan del fin de semana, entrevistas, frontend y orden de recorte. |

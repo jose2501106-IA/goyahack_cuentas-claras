@@ -2,7 +2,7 @@
 
 Mapa para personas y para modelos de lenguaje. Cada archivo trae qué contiene, sus etiquetas, su tamaño en palabras y cuándo conviene leerlo. **Lee solo lo que necesitas**: busca aquí el tema, abre el archivo y ve directo a la sección.
 
-Actualizado: 25-sep-2026, 12:35. Proyecto **Cuentas Claras**; equipo **Palabra**. Si agregas un archivo, agrégalo aquí y en `llms.txt` en el mismo commit (decisión #38).
+Actualizado: 26-sep-2026, 01:10. Proyecto **Cuentas Claras**; equipo **Palabra**. Si agregas un archivo, agrégalo aquí y en `llms.txt` en el mismo commit (decisión #38).
 
 **Estados:** *vigente* (manda), *borrador* (pendiente de aprobación de José), *bitácora* (registro de cómo se llegó aquí; puede usar nombres anteriores), *superada* (no usar), *materia prima* (notas de investigación).
 
@@ -27,7 +27,9 @@ Actualizado: 25-sep-2026, 12:35. Proyecto **Cuentas Claras**; equipo **Palabra**
 | ¿Qué se decidió y cuándo? | `docs/decisiones.md` |
 | ¿Qué falta por confirmar? | `docs/preguntas-pendientes.md` |
 | ¿Qué se dice en tres minutos? | `pitch/2026-09-25_pitch-3-minutos.md` |
-| ¿Cuál es el plan de hoy? | `docs/plan-maestro.md`, sección 4; `docs/guia-codespaces.md`, sección 3 |
+| ¿Cuál es el plan del fin de semana? | `docs/plan-maestro.md`, sección 4b (la 4 es bitácora del viernes) |
+| ¿Qué construye Claude Code el fin de semana? | `spec/2026-09-26_especificacion-frontend.md` (prompt en la sección 9) |
+| ¿Qué se pregunta a los bodegueros? | `docs/guia-entrevista-bodegueros.md` |
 
 ## Archivos
 
@@ -47,8 +49,9 @@ Actualizado: 25-sep-2026, 12:35. Proyecto **Cuentas Claras**; equipo **Palabra**
 | Archivo | Qué contiene | Etiquetas | Palabras | Cuándo leerlo | Estado |
 |---|---|---|---|---|---|
 | [`docs/problema-solucion.md`](problema-solucion.md) | El proyecto en una página: problema, solución, por qué blockchain, por qué Stellar, qué se construye hoy, implementación. | #problema #solucion | 1,136 | Antes de explicar el proyecto | vigente |
-| [`docs/plan-maestro.md`](plan-maestro.md) | Qué busca el organizador, tesis, método en fases, plan de hoy (entrega antes de las 20:00), plan posterior P0–P7, ruta con la administración (5b), presentación y métricas. | #plan #implementacion #organizador | 3,222 | Para ubicar el proyecto completo | vigente |
+| [`docs/plan-maestro.md`](plan-maestro.md) | Qué busca el organizador, tesis, método en fases, plan del viernes (bitácora), plan del fin de semana (4b), plan posterior P0–P7, ruta con la administración (5b), presentación y métricas. | #plan #implementacion #organizador | 3,222 | Para ubicar el proyecto completo | vigente |
 | [`docs/lean-canvas.md`](lean-canvas.md) | Lean Canvas en 9 bloques con IDs de hechos, supuestos más riesgosos y versión de una diapositiva. | #negocio #pitch | 758 | Mentoría y deck | borrador |
+| [`docs/guia-entrevista-bodegueros.md`](guia-entrevista-bodegueros.md) | Guía de entrevista del sábado 26: reglas de anonimato, cinco preguntas sobre hechos pasados, cómo enseñar la idea, hoja de registro y qué se publica. | #adopcion #datos-ceda #plan | 839 | Antes de entrevistar y al convertir respuestas en hechos | vigente |
 | [`docs/modelo-de-negocio.md`](modelo-de-negocio.md) | Quién paga y por qué: principios con fuente, opciones A–E, cautela por la LRSIC, qué mide el piloto, preguntas para mentores. Recomendación A + D (propuesta). | #negocio #legal | 681 | Mentoría y pregunta «¿quién paga?» | borrador |
 | [`docs/identidad-visual.md`](identidad-visual.md) | Paleta «Tinta y Sello» con estrategia, tokens, contrastes verificados, tipografía y qué evitar. | #marca #campana | 697 | Al diseñar deck, app o piezas | propuesta |
 | [`docs/nombre-y-marca.md`](nombre-y-marca.md) | Por qué el proyecto se llama Cuentas Claras y el equipo Palabra: evidencia, riesgos verificados, cómo se usa cada nombre; candidatos anteriores y sistema de nombres del producto. | #marca | 2,145 | Al escribir cualquier pieza pública | vigente |
@@ -67,6 +70,7 @@ Actualizado: 25-sep-2026, 12:35. Proyecto **Cuentas Claras**; equipo **Palabra**
 |---|---|---|---|---|---|
 | [`spec/README.md`](../spec/README.md) | Qué especificación está vigente y la convención de versiones. | #contrato | 167 | Antes de abrir una spec | vigente |
 | [`spec/2026-09-25_especificacion-tecnica-v2.md`](../spec/2026-09-25_especificacion-tecnica-v2.md) | Especificación vigente: versiones fijas, estructura, modelo en cadena, parámetros, interfaz del contrato, 11 invariantes y pruebas, eventos (`cclaras`), backend, frontend, guion de demo con plan B, criterios de aceptación y datos ficticios. Sección 3b: qué garantiza la privacidad y qué no. | #contrato #privacidad #demo #stellar | 3,720 | Antes de programar | vigente |
+| [`spec/2026-09-26_especificacion-frontend.md`](../spec/2026-09-26_especificacion-frontend.md) | App local de cuatro vistas sin dependencias: restricciones, API, semáforo honesto, microcopy, segundo emisor, criterios de aceptación y prompt para Claude Code. | #demo #contrato #privacidad | 2185 | Antes de construir o revisar la interfaz | vigente (depende de #44 y #45) |
 | [`spec/2026-09-25_especificacion-rag.md`](../spec/2026-09-25_especificacion-rag.md) | Búsqueda en el conocimiento del repo (RAG): trocear los `.md`, BM25 sin dependencias, modo vectorial opcional y criterios de aceptación. | #mapa #entorno | 382 | Después de la demo | para después |
 | [`spec/2026-09-25_especificacion-tecnica-v1.md`](../spec/2026-09-25_especificacion-tecnica-v1.md) | Versión anterior; tiene un error de privacidad corregido en la v2. | #contrato | 2,718 | Solo como bitácora | superada |
 | [`spec/2026-09-25_especificacion-tecnica-v0.md`](../spec/2026-09-25_especificacion-tecnica-v0.md) | Borrador original de la especificación. | #contrato | 2,222 | Solo como bitácora | superada |
