@@ -120,7 +120,7 @@ node backend/server.js        # abre http://127.0.0.1:8080
 
 ## Sitio público
 
-**URL:** *(pendiente: la pega José cuando Vercel publique; decisión #50)*
+**URL:** https://cuentas-claras-lemon.vercel.app (Vercel; decisión #50)
 
 Sitio estático en [`web/`](web/) con cuatro secciones: **Inicio**, **Pasillo vivo**, **La demo real, verificable** y **Cómo funciona** ([`spec/2026-09-26_especificacion-web-y-agentes.md`](spec/2026-09-26_especificacion-web-y-agentes.md); decisiones #49–#51).
 
@@ -139,7 +139,7 @@ python3 -m http.server -d web 8000   # o abre web/index.html directo en el naveg
 node --test web/pruebas/              # 35 pruebas: motor, semáforo, agentes, hashes, copia del plano, vocabulario
 ```
 
-En Vercel: [`vercel.json`](vercel.json) en la raíz ya indica que se publica `web/` sin instalar ni compilar nada (preset «Other»), así que el *Root Directory* se deja en la raíz del repo. Capturas: `demo/capturas/web-*.png`. Si cambian `demo/salida-demo.txt` o `plano/pasillo-a-b.json`: `node web/herramientas/generar-repeticion.js` (si aplica), copiar el JSON del plano a `web/datos/` y luego `node web/herramientas/generar-datos.js` (envuelve los JSON en `datos/*.js` para que el sitio abra también desde `file://`).
+En Vercel: proyecto `cuentas-claras` ligado al repo, con *Root Directory* `web`, sin framework, sin instalación ni compilación; publica cada push a `main`. La producción es pública; las vistas previas piden sesión de Vercel. Capturas: `demo/capturas/web-*.png`. Si cambian `demo/salida-demo.txt` o `plano/pasillo-a-b.json`: `node web/herramientas/generar-repeticion.js` (si aplica), copiar el JSON del plano a `web/datos/` y luego `node web/herramientas/generar-datos.js` (envuelve los JSON en `datos/*.js` para que el sitio abra también desde `file://`).
 
 ## Criterios de aceptación (spec v2 §11)
 

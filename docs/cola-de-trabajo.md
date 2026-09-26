@@ -17,7 +17,7 @@
 - [x] **5. Agentes y vista.** `agentes.js` y `vista.js`: 20 bodegas y 40 clientes, controles de tiempo, fichas, trazos, sellos, feed, tarjeta de «pensamiento» y rótulo de simulación. *Criterio:* a los 90 días simulados hay semáforos de los tres colores y el rótulo del día 60 aparece.
 - [x] **6. Pulido y accesibilidad.** `prefers-reduced-motion`, pausa, contraste y textos. *Criterio:* criterios 3, 4 y 6 de la spec web.
 - [x] **7. Cierre.** Capturas en `demo/capturas/web-*.png`, sección «Sitio público» en el README, índice y `llms.txt` al día. *Criterio:* criterios 1 a 8 de la spec web.
-  - Se detuvo el sáb 26-sep por la parada «tocar fuera de `web/`, `docs/` o `README.md`»; José dio permiso para `demo/capturas/` y `llms.txt` y se terminó. Criterio 8: falta pegar la URL de Vercel en el README.
+  - Se detuvo el sáb 26-sep por la parada «tocar fuera de `web/`, `docs/` o `README.md`»; José dio permiso para `demo/capturas/` y `llms.txt` y se terminó.
 
 ## Hechas
 
@@ -28,4 +28,4 @@
 - **4.** sáb 26-sep 13:59 · `08f4c0d` · `simulacion/motor.js` con reglas, tiempo en días y azar con semilla. 12 pruebas del motor en verde (23 en total), incluida la equivalencia con `backend/semaforo.js`. Simplificación declarada en el archivo: una nota vencida que se paga antes de la gracia cuenta como pagada tarde (en el contrato eso pasa por aclaración).
 - **5.** sáb 26-sep 14:04 · `9c01b32` · `simulacion/agentes.js` y `simulacion/vista.js`. Con la semilla fija, al día 90 hay 28 verdes, 8 amarillos, 1 rojo y 3 insuficientes; antes del día 60, todos insuficientes. El rótulo del día 60 aparece (revisado en Chromium). 30 pruebas en verde.
 - **6.** sáb 26-sep 14:07 · `10ddf53` · Criterio 3: el grep de vocabulario vetado no devuelve nada. Criterio 4: sin llaves `S…` ni `fetch`. Criterio 6: sin desplazamiento horizontal en 390 px ni en 1920 px (Chromium sin interfaz). `prefers-reduced-motion`, pausa y contraste AA verificados. 35 pruebas en verde.
-- **7.** sáb 26-sep 14:20 · `16288f9` · 8 capturas `web-*.png` (1920 y 390 px), `llms.txt`, índice, README y `vercel.json` para publicar `web/`. Criterios 1 a 7 cumplidos; el 8 espera la URL de Vercel.
+- **7.** sáb 26-sep 14:20 · `16288f9` · 8 capturas `web-*.png` (1920 y 390 px), `llms.txt`, índice y README. (`vercel.json` se agregó y luego se quitó: el proyecto de Vercel se creó con *Root Directory* `web`.) Criterios 1 a 8 cumplidos: sitio en https://cuentas-claras-lemon.vercel.app (proyecto creado el 26-sep por el conector de Vercel).
