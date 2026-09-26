@@ -100,6 +100,23 @@ en [`demo/deploy.json`](demo/deploy.json), pero las secretas viven fuera del rep
 `~/.config/stellar/identity`). Para recrearlas y desplegar un contrato propio desde cero,
 sigue «Comandos de referencia» en [`CLAUDE.md`](CLAUDE.md).
 
+## Cómo correr la app
+
+App local de cuatro vistas (Bodega A, Teléfono de Doña Mary, Bodega B y Para el jurado) sobre el
+mismo contrato de testnet que `demo.sh`. Node 20 con módulos nativos: **sin `npm install` y sin
+dependencias** (decisión #45; [`spec/2026-09-26_especificacion-frontend.md`](spec/2026-09-26_especificacion-frontend.md)).
+
+```bash
+node backend/server.js        # abre http://127.0.0.1:8080
+```
+
+- Requisitos: los mismos de `demo.sh` (`.env` con `DEMO_HMAC_KEY`, `demo/deploy.json` y las identidades del Stellar CLI).
+- **El puerto 8080 se queda privado** en Codespaces: no cambies su visibilidad. Ábrelo con «Open in Browser» desde la pestaña Ports (el servidor no se deja incrustar en marcos).
+- El servidor llama al Stellar CLI con `execFile`, una transacción a la vez; las llaves secretas no salen del CLI. Cada firma tarda unos segundos («Registrando…»).
+- Datos fuera de cadena (monto exacto y aleatoriedad del documento) en `backend/datos/notas.json`, ignorado por git.
+- Pruebas del servidor y del semáforo: `node --test backend/`.
+- `demo/sembrar.sh` agrega a Bodega B como segundo emisor (una sola vez, antes de grabar).
+
 ## Criterios de aceptación (spec v2 §11)
 
 Cumplido hoy:
