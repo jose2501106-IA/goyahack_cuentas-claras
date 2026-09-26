@@ -57,4 +57,3 @@ Las dos primeras deciden si el argumento "¿por qué blockchain?" se sostiene ta
 - **Modelo de negocio:** ¿quién paga: la bodega por su herramienta de cobranza, una cuota del Círculo, un banco lector con convenio? (evitar cobrar por consulta: se parece a lo que la LRSIC reserva)
 - **Campaña:** las 12 decisiones de la sección 14 de `docs/campana-marketing.md`.
 | ¿Hora exacta del nuevo plazo del domingo 27 (¿23:59?), dónde se anunció y cuál es el formato de la presentación final (¿pitch en vivo?, ¿cuándo es la clausura?)? | Fija la meta interna del domingo y si hace falta ensayar pitch en vivo | Alta, sábado temprano (decisión #43) |
-| ¿Aprueba José el semáforo honesto (#44) y el frontend sin dependencias (#45)? | Sin eso no se pega el prompt del frontend | Alta, sábado 08:00 |

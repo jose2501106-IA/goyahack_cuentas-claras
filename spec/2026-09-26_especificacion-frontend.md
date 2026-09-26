@@ -1,6 +1,6 @@
 # Especificación del frontend — Cuentas Claras (fin de semana)
 
-**Estado:** vigente para el sábado 26 y el domingo 27 de septiembre (decisión #43). Las secciones 1 y 4 dependen de las decisiones #44 y #45, que están en estado **propuesta**: José las aprueba antes de pegar el prompt de la sección 9. Complementa la spec v2 (§8 backend, §9 frontend) y la sustituye donde se contradicen.
+**Estado:** vigente para el sábado 26 y el domingo 27 de septiembre (decisión #43). Las secciones 1 y 4 aplican las decisiones #44 y #45, aprobadas por José el 26-sep a las 00:53. Complementa la spec v2 (§8 backend, §9 frontend) y la sustituye donde se contradicen.
 
 ## 0. Qué se construye
 
@@ -143,11 +143,13 @@ Script de una sola ejecución: Bodega B crea una nota para Doña Mary, ella la a
 8. Capturas de las cuatro vistas en `demo/capturas/` (datos ficticios).
 9. README: sección «Cómo correr la app», con un comando y el aviso de que el puerto se queda privado.
 
-## 8. Puntos de control (Claude Code avisa en 5 renglones)
+## 8. Puntos de control (Claude Code avisa en 5 renglones al cerrar cada bloque)
 
-- **10:00:** API en verde contra testnet desde `curl` y pruebas del semáforo en verde.
-- **11:30:** las cuatro vistas conectadas.
-- **13:00:** criterios 1 a 9 en verde, commit y push.
+- **Bloque 1:** API en verde contra testnet desde `curl` y pruebas del semáforo en verde. Commit.
+- **Bloque 2:** las cuatro vistas conectadas. Commit.
+- **Bloque 3:** criterios 1 a 9 en verde. Commit, push y resumen final.
+
+Si corre de noche sin supervisión, deja el resumen de cada bloque en el mensaje del commit.
 
 ## 9. Prompt para Claude Code
 
@@ -164,10 +166,10 @@ research/ ni privado/. No cambies la visibilidad de puertos ni la configuración
 Puedes usar dos agentes en paralelo: uno para backend/ (API, cola del CLI, semáforo y
 pruebas) y otro para frontend/ contra la API de la sección 3. Solo tú haces commits.
 
-Avísame en los puntos de control de la sección 8 (10:00, 11:30, 13:00) con 5 renglones:
-qué quedó, qué falta y si algo cambió respecto a la spec.
+Trabajas de noche sin supervisión. Al cerrar cada bloque de la sección 8 haz commit y push,
+y deja en el mensaje del commit 5 renglones: qué quedó, qué falta y si algo cambió.
 
-Detente y pregúntame antes de: instalar cualquier cosa, tocar el contrato o redesplegar,
+Detente, deja escrito el motivo y espera, antes de: instalar cualquier cosa, tocar el contrato o redesplegar,
 enviar transacciones fuera del flujo de la spec, o si algo falla dos veces seguidas
 (explica el error exacto y propone la corrección más pequeña).
 

@@ -82,11 +82,11 @@ Reglas: un flujo completo vale más que dos a medias; lo que no esté verde a la
 
 | Hora | Quién | Qué | Listo cuando |
 |---|---|---|---|
-| 08:00–08:30 | José | Leer el resumen en el chat. Aprobar o corregir las decisiones #44 y #45. **Entrega preliminar** en el dashboard con lo que ya hay (repo, `demo.sh`, descripción) para no depender del domingo. Confirmar ahí la hora exacta del plazo. | Entrega preliminar hecha |
-| 08:30 | José | Pegar a Claude Code el prompt de `spec/2026-09-26_especificacion-frontend.md` §9 y dejarlo en modo automático. | Plan de Claude Code aprobado |
-| 09:00–13:00 | José | **Entrevistas a 3–5 bodegueros** con `docs/guia-entrevista-bodegueros.md`. Entre una y otra, revisar los puntos de control de Claude Code desde el teléfono. | Hoja de registro con 3 a 5 entrevistas |
-| 09:00–13:00 | Claude Code | Backend sin dependencias, semáforo con pruebas y las cuatro vistas (spec frontend). Puntos de control 10:00, 11:30 y 13:00. | Flujo completo en el navegador |
-| 13:00–14:30 | José + Claude (chat) | José pasa las notas de las entrevistas; Claude las convierte en hechos H-26 en adelante (anónimos, con la etiqueta «entrevistas de José») y ajusta pitch, deck y Lean Canvas. | Hechos y pitch v2 |
+| Viernes 01:20 | José | Pegar a Claude Code el prompt de la spec del frontend (§9) en modo automático para que construya de noche (#44 y #45 aprobadas a las 00:53). | Claude Code trabajando |
+| 08:00–08:30 | José | Revisar los commits de la noche. **Entrega preliminar** en el dashboard con lo que ya hay (repo, `demo.sh`, descripción) para no depender del domingo. Confirmar ahí la hora exacta del plazo. | Entrega preliminar hecha |
+| 09:00–13:00 | José | **Solo si da tiempo** (José, 00:53): entrevistas a 3–5 bodegueros con `docs/guia-entrevista-bodegueros.md`. Entre una y otra, revisar los puntos de control de Claude Code desde el teléfono. | Hoja de registro con 3 a 5 entrevistas |
+| 09:00–13:00 | José + Claude Code | Revisar en el navegador lo construido de noche y corregir. | Flujo completo en el navegador |
+| 13:00–14:30 | José + Claude (chat) | Si hubo entrevistas, José pasa las notas; Claude las convierte en hechos H-26 en adelante (anónimos, con la etiqueta «entrevistas de José») y ajusta pitch, deck y Lean Canvas. | Hechos y pitch v2 |
 | 14:30–18:00 | José + Claude Code | Revisión de la app en el navegador; correcciones; segundo emisor en la demo (`demo/sembrar.sh`). | App lista para grabar |
 | 18:00–20:00 | José | Deck en Claude Design con el prompt actualizado. | Deck v1 |
 
@@ -102,7 +102,7 @@ Reglas: un flujo completo vale más que dos a medias; lo que no esté verde a la
 
 **Lo que se recorta primero, en este orden:** mapa de sectores en la app → sello de IA → segundo emisor. La app de tres vistas y el video no se recortan: si la app falla, se entrega el nivel 2 (`demo.sh`).
 
-**Cambios que conviene saber:** el semáforo real de la demo dirá «historial insuficiente» (decisión #44); el frontend no instala paquetes (decisión #45).
+**Cambios que conviene saber:** el semáforo real de la demo dirá «historial insuficiente» (decisión #44); el frontend no instala paquetes (decisión #45); las entrevistas son opcionales y, si no se hacen, el pitch presenta los supuestos como «por validar en el piloto», sin inventar respuestas.
 
 ## 5. Plan posterior: del testnet al piloto real, paso a paso
 
