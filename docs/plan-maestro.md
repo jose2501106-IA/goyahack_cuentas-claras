@@ -100,7 +100,9 @@ Reglas: un flujo completo vale más que dos a medias; lo que no esté verde a la
 | 18:00–20:00 | José | **Entrega final** en el dashboard: repo, video, deck, descripción, track Blockchain. | Confirmación de entrega |
 | 20:00–23:59 | — | Margen. Solo se corrigen errores de la entrega. | — |
 
-**Lo que se recorta primero, en este orden:** mapa de sectores en la app → sello de IA → segundo emisor. La app de tres vistas y el video no se recortan: si la app falla, se entrega el nivel 2 (`demo.sh`).
+**Gemelo digital del Pasillo A-B (decisión #47):** entra el sábado después de resolver el bloqueo #46 y antes del sello de IA.
+
+**Lo que se recorta primero, en este orden:** sello de IA → gemelo digital (si no está listo el domingo a las 12:00, el video usa las cuatro vistas) → segundo emisor. La app de tres vistas y el video no se recortan: si la app falla, se entrega el nivel 2 (`demo.sh`).
 
 **Cambios que conviene saber:** el semáforo real de la demo dirá «historial insuficiente» (decisión #44); el frontend no instala paquetes (decisión #45); las entrevistas son opcionales y, si no se hacen, el pitch presenta los supuestos como «por validar en el piloto», sin inventar respuestas.
 

@@ -28,7 +28,7 @@ Actualizado: 26-sep-2026, 01:10. Proyecto **Cuentas Claras**; equipo **Palabra**
 | ¿Qué falta por confirmar? | `docs/preguntas-pendientes.md` |
 | ¿Qué se dice en tres minutos? | `pitch/2026-09-25_pitch-3-minutos.md` |
 | ¿Cuál es el plan del fin de semana? | `docs/plan-maestro.md`, sección 4b (la 4 es bitácora del viernes) |
-| ¿Qué construye Claude Code el fin de semana? | `spec/2026-09-26_especificacion-frontend.md` (prompt en la sección 9) |
+| ¿Qué construye Claude Code el fin de semana? | `spec/2026-09-26_especificacion-frontend.md` (prompt en la sección 9) y `spec/2026-09-26_especificacion-gemelo-digital.md` |
 | ¿Qué se pregunta a los bodegueros? | `docs/guia-entrevista-bodegueros.md` |
 
 ## Archivos
@@ -70,6 +70,7 @@ Actualizado: 26-sep-2026, 01:10. Proyecto **Cuentas Claras**; equipo **Palabra**
 |---|---|---|---|---|---|
 | [`spec/README.md`](../spec/README.md) | Qué especificación está vigente y la convención de versiones. | #contrato | 167 | Antes de abrir una spec | vigente |
 | [`spec/2026-09-25_especificacion-tecnica-v2.md`](../spec/2026-09-25_especificacion-tecnica-v2.md) | Especificación vigente: versiones fijas, estructura, modelo en cadena, parámetros, interfaz del contrato, 11 invariantes y pruebas, eventos (`cclaras`), backend, frontend, guion de demo con plan B, criterios de aceptación y datos ficticios. Sección 3b: qué garantiza la privacidad y qué no. | #contrato #privacidad #demo #stellar | 3,720 | Antes de programar | vigente |
+| [`spec/2026-09-26_especificacion-gemelo-digital.md`](../spec/2026-09-26_especificacion-gemelo-digital.md) | Vista «Pasillo A-B»: maqueta isométrica donde cada firma real se ve moverse entre bodegas; reglas de privacidad, estética, eventos, datos, criterios y prompt. | #demo #mapa #privacidad | 977 | Antes de construir o revisar la portada de la app | vigente (geometría pendiente de autorización) |
 | [`spec/2026-09-26_especificacion-frontend.md`](../spec/2026-09-26_especificacion-frontend.md) | App local de cuatro vistas sin dependencias: restricciones, API, semáforo honesto, microcopy, segundo emisor, criterios de aceptación y prompt para Claude Code. | #demo #contrato #privacidad | 2185 | Antes de construir o revisar la interfaz | vigente |
 | [`spec/2026-09-25_especificacion-rag.md`](../spec/2026-09-25_especificacion-rag.md) | Búsqueda en el conocimiento del repo (RAG): trocear los `.md`, BM25 sin dependencias, modo vectorial opcional y criterios de aceptación. | #mapa #entorno | 382 | Después de la demo | para después |
 | [`spec/2026-09-25_especificacion-tecnica-v1.md`](../spec/2026-09-25_especificacion-tecnica-v1.md) | Versión anterior; tiene un error de privacidad corregido en la v2. | #contrato | 2,718 | Solo como bitácora | superada |

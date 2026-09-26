@@ -20,6 +20,7 @@ Cómo leer este repositorio sin gastar de más:
 - [Especificación v2](spec/2026-09-25_especificacion-tecnica-v2.md): contrato, invariantes, eventos, backend, frontend, demo y criterios de aceptación; la sección 3b explica qué garantiza la privacidad y qué no
 - [CLAUDE.md](CLAUDE.md): reglas y contexto para Claude Code
 - [Especificación del frontend](spec/2026-09-26_especificacion-frontend.md): app de cuatro vistas sin dependencias, semáforo honesto y prompt para Claude Code (fin de semana)
+- [Gemelo digital del Pasillo A-B](spec/2026-09-26_especificacion-gemelo-digital.md): portada de la app, maqueta isométrica con cada firma real
 - [Guía de Codespaces](docs/guia-codespaces.md): prompt de arranque y puntos de control del viernes
 
 ## Decisiones, datos y riesgos
