@@ -12,7 +12,7 @@
   "pasos": [
     {
       "numero": 1,
-      "accion": "Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).",
+      "accion": "Bodega A-17 registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).",
       "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "create_note",
@@ -34,7 +34,7 @@
     },
     {
       "numero": 3,
-      "accion": "Doña Mary paga y Bodega A confirma el pago.",
+      "accion": "Doña Mary paga y Bodega A-17 confirma el pago.",
       "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "confirm_paid",
@@ -45,7 +45,7 @@
     },
     {
       "numero": 4,
-      "accion": "Bodega B pide el resumen de Doña Mary SIN permiso.",
+      "accion": "Bodega B-40 pide el resumen de Doña Mary SIN permiso.",
       "firma": null,
       "cuenta_publica": null,
       "funcion": "read_stats (simulación, sin enviar)",
@@ -56,7 +56,7 @@
     },
     {
       "numero": 5,
-      "accion": "Doña Mary autoriza a Bodega B a leer su resumen por 30 días.",
+      "accion": "Doña Mary autoriza a Bodega B-40 a leer su resumen por 30 días.",
       "firma": "Doña Mary",
       "cuenta_publica": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO",
       "funcion": "grant_consent",
@@ -67,7 +67,7 @@
     },
     {
       "numero": 6,
-      "accion": "Bodega B consulta con permiso vigente y ve el resumen de cumplimiento.",
+      "accion": "Bodega B-40 consulta con permiso vigente y ve el resumen de cumplimiento.",
       "firma": "Bodega B-40",
       "cuenta_publica": "GD2TUPI6ZZE7BGCQIEBTWA2AIZHEVALYF3UTEJFF6ENP7K76ERRNY55D",
       "funcion": "read_stats",

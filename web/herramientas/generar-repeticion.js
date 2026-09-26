@@ -14,8 +14,11 @@ const SALIDA = path.join(RAIZ, 'demo', 'salida-demo.txt');
 const DEPLOY = path.join(RAIZ, 'demo', 'deploy.json');
 const DESTINO = path.join(RAIZ, 'web', 'datos', 'repeticion.json');
 
-// Quién firma cada paso de demo.sh: se lee del sujeto de la frase de la salida. Los nombres
-// llevan el número de su posición ilustrativa (decisión #54); «accion» se copia tal cual.
+// Quién firma cada paso de demo.sh: se lee del sujeto de la frase de la salida.
+// Las bodegas siempre con el número de su posición ilustrativa (decisión #54): la salida
+// real, que es registro y no se edita, las nombra con una sola letra; aquí se traducen.
+const NUMERO = { A: 'A-17', B: 'B-40', C: 'A-73' };
+const conNumero = (t) => (t == null ? t : String(t).replace(/(Bodega) ([ABC])(?![-\w])/g, (_, b, l) => `${b} ${NUMERO[l]}`));
 // Clave = cuenta de demo/deploy.json (cuentas_publicas); null = no hubo transacción.
 const QUIEN_FIRMA = {
   1: { cuenta: 'bodega_a', nombre: 'Bodega A-17', funcion: 'create_note' },
@@ -98,14 +101,14 @@ function construir() {
       const firma = QUIEN_FIRMA[p.numero];
       return {
         numero: p.numero,
-        accion: p.accion,
+        accion: conNumero(p.accion),
         firma: firma ? firma.nombre : null,
         cuenta_publica: firma ? deploy.cuentas_publicas[firma.cuenta] : null,
         funcion: firma ? firma.funcion : 'read_stats (simulación, sin enviar)',
         hash: p.hash,
         url: p.url,
         sin_transaccion: p.hash ? null : 'No se envió transacción: el contrato lo rechazó.',
-        detalle_salida: p.sin_transaccion || (p.notas.length ? p.notas.join(' ') : null),
+        detalle_salida: conNumero(p.sin_transaccion || (p.notas.length ? p.notas.join(' ') : null)),
       };
     }),
     resumen_paso_6: resumen,
@@ -118,4 +121,4 @@ if (require.main === module) {
   console.log(`Escrito ${path.relative(RAIZ, DESTINO)} con ${datos.pasos.length} pasos.`);
 }
 
-module.exports = { leerSalida, construir, QUIEN_FIRMA, RE_TX };
+module.exports = { leerSalida, construir, conNumero, QUIEN_FIRMA, RE_TX };

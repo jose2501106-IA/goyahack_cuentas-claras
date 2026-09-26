@@ -51,7 +51,7 @@
 
     const mapa = CC.Gemelo.montar(destino, forma, {
       descripcion: 'Pasillo A-B simulado: 20 bodegas y 40 clientes ficticios. Lo que pasa en el mapa se repite en texto en «Lo que pasa en el pasillo».',
-      rotulo: 'Bodegas y clientes ficticios, en posiciones ilustrativas.',
+      rotulo: 'Posiciones ilustrativas; ninguna bodega real participa. Bodegas y clientes ficticios.',
     });
     mapa.maqueta.parentElement.classList.add('marco-sim');
 

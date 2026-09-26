@@ -27,12 +27,6 @@
     return accion.replace(/rango (\d+)k–(\d+)k/, (_, a, b) => `rango $${a},000–$${b},000`);
   }
 
-  // La salida de demo.sh (registro) dice «Bodega A» y «Bodega B»; en pantalla las bodegas
-  // van siempre con su número (decisión #54).
-  function conNumero(t) {
-    return String(t).replace(/Bodega A(?![-\w])/g, 'Bodega A-17').replace(/Bodega B(?![-\w])/g, 'Bodega B-40');
-  }
-
   function hashCorto(h) { return h ? `${h.slice(0, 8)}…${h.slice(-6)}` : ''; }
 
   // Escena de la corrida sobre un gemelo: la usan la demo real y la portada.
@@ -42,7 +36,7 @@
     const mapa = CC.Gemelo.montar(contenedor, forma, {
       marcadas,
       descripcion: 'Forma del Pasillo A-B con Bodega A-17, Bodega B-40 y Doña Mary en el corredor. Cada paso de la corrida real se dibuja aquí; el texto de cada paso está al lado.',
-      rotulo: 'Posiciones ilustrativas. Bodegas y Doña Mary son ficticias.',
+      rotulo: 'Posiciones ilustrativas; ninguna bodega real participa. Bodegas y Doña Mary son ficticias.',
       centroX: 115, // entre Bodega A-17 y Doña Mary, para pantallas angostas
       ...opciones,
     });
@@ -173,7 +167,7 @@
         const p = pasos[n - 1];
         tarjeta.replaceChildren(
           el('p', { class: 'paso-num mono' }, `Paso ${p.numero}`),
-          el('p', { class: 'paso-accion' }, conNumero(rango(p.accion))),
+          el('p', { class: 'paso-accion' }, rango(p.accion)),
           el('p', { class: 'apoyo' }, TEXTO_MAPA[p.numero] || ''),
           p.firma
             ? el('p', null, 'Firma: ', el('strong', null, p.firma), ' · función ', el('code', null, p.funcion))
