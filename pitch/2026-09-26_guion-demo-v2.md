@@ -3,7 +3,7 @@
 > **Borrador v2 — pendiente de aprobación de José** · 26-sep-2026. Sustituye a `2026-09-25_guion-demo.md` (v1, bitácora).
 > **Demo principal (nivel 1):** la app local con el gemelo digital del Pasillo A-B como portada.
 > **Contrato:** [`CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW`](https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW), en Stellar testnet.
-> **Respaldos:** `demo/demo.sh` (nivel 2) y el video. Lo que depende del ensayo está marcado **[CONFIRMAR]**.
+> **Respaldos:** el sitio público https://cuentas-claras-lemon.vercel.app (repetición verificable, sin llaves), `demo/demo.sh` (nivel 2) y el video. Lo que depende del ensayo está marcado **[CONFIRMAR]**.
 
 ## 0. Qué prueba la demo
 
@@ -63,6 +63,7 @@ Nunca saltes N ni 5: son la prueba. Si vas tarde, salta el 3.
 
 ## 4. Plan B
 
+0. **Si el Codespace no está disponible** (sin llaves no hay firmas en vivo): la demo se hace en el sitio público, https://cuentas-claras-lemon.vercel.app, sección «La demo real». Es la repetición de la corrida real, con el teléfono y el mapa sincronizados y cada paso enlazado a su transacción. Di: «Esta es la corrida real en testnet, paso a paso; cada enlace abre la transacción». Funciona desde cualquier navegador y no firma nada.
 1. **La app no responde en 10 segundos** → «La red de prueba está tardando; les muestro la misma secuencia.» → `demo.sh --paso-a-paso` (mismas frases).
 2. **Sin internet** → video local, desde la marca de tiempo del paso.
 3. **El paso N no falla** (quedó un permiso) → «Aquí el contrato debe rechazar; quedó un permiso del ensayo. En el video ven el rechazo.» Sigue con el paso 5.
