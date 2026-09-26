@@ -63,7 +63,7 @@
         el('span', { class: 'sem sem-rojo' }, '■ Rojo'), ' · ',
         el('span', { class: 'sem sem-insuficiente' }, '○ Historial insuficiente')),
       el('p', null, el('strong', null, 'Bodegas: '), 'el tono de la bodega indica cuánto ha fiado ',
-        el('span', { class: 'tonos', 'aria-hidden': 'true' }, TONOS.map((t) => el('span', { style: `background:${t}` }))),
+        el('span', { class: 'tonos', 'aria-hidden': 'true' }, TONOS.map((_, i) => el('span', { class: `muestra-tono-${i}` }))),
         ' de poco a mucho. Trazo de tinta: nota firmada por los dos. Sello: cumplida. Marca gris: incumplida. Línea punteada: permiso.'));
     if (typeof matchMedia === 'function' && matchMedia('(min-width: 900px)').matches) leyenda.open = true;
     destino.append(leyenda);

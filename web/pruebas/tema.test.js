@@ -83,5 +83,8 @@ test('el interruptor es un botón con aria-pressed, en la barra superior', () =>
   assert.match(enc, /<button[^>]*class="interruptor-tema"[^>]*aria-pressed="(true|false)"[^>]*aria-label="Tema oscuro"/);
   assert.match(css, /\.interruptor-tema \{[^}]*width: (4[4-9]|[5-9]\d)px; height: (4[4-9]|[5-9]\d)px;/);
   // La elección se guarda con try/catch: si no hay almacenamiento, el sitio sigue.
-  assert.match(html, /try \{[^}]*localStorage\.getItem\('cc-tema'\)/);
+  // Ahora vive en tema-inicial.js, cargado en el <head> sin defer (CSP sin scripts en línea).
+  assert.match(html, /<head>[\s\S]*<script src="tema-inicial\.js"><\/script>[\s\S]*<\/head>/);
+  const inicial = fs.readFileSync(path.join(WEB, 'tema-inicial.js'), 'utf8');
+  assert.match(inicial, /try \{[^}]*localStorage\.getItem\('cc-tema'\)/);
 });

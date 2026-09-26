@@ -587,3 +587,10 @@ main:focus { outline: none; }
 }
 
 .hoja .pensamiento { min-height: 0; }
+
+/* Muestras de tono de la leyenda (clases, no atributos style: la CSP no permite estilos en línea). */
+.muestra-tono-0 { background: var(--tono-0); }
+.muestra-tono-1 { background: var(--tono-1); }
+.muestra-tono-2 { background: var(--tono-2); }
+.muestra-tono-3 { background: var(--tono-3); }
+.muestra-tono-4 { background: var(--tono-4); }
