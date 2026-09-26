@@ -5,6 +5,7 @@ Aquí se redactan las especificaciones que Claude Code ejecuta en GitHub Codespa
 | Archivo | Estado | Qué cubre |
 |---|---|---|
 | `2026-09-25_especificacion-tecnica-v2.md` | **Vigente** (25-sep, 11:50; nombre actualizado a las 12:30) | v1 + corrección de privacidad (sección 3b), sin función de actualización, proyecto Cuentas Claras y equipo Palabra, contrato `cuentas_claras` y tópico `cclaras`, datos de demo ficticios, primera firma en persona, Pollar opcional |
+| `2026-09-26_especificacion-contrato-v4.md` | **Vigente** (26-sep, 17:40; #55) | Contrato v4: vínculo previo del cliente (C1), cierre de C4–C9, pruebas de regresión, redespliegue y cambio de Contract ID. Solo en el Codespace con llaves |
 | `2026-09-26_especificacion-web-y-agentes.md` | **Vigente** (26-sep, 13:20; #49–#51) | Sitio público en `web/` (Vercel, estático, sin llaves), repetición verificable y «Pasillo vivo» con agentes simulados |
 | `2026-09-26_especificacion-gemelo-digital.md` | **Vigente** (26-sep, 08:30; #47 y #48; forma real del Pasillo A-B) | Vista «Pasillo A-B»: maqueta isométrica, eventos reales, posiciones ilustrativas, sin nombres ni infraestructura |
 | `2026-09-26_especificacion-frontend.md` | **Vigente para el fin de semana** (26-sep, 01:00; #44 y #45 aprobadas) | App local de cuatro vistas sin paquetes npm, API sobre el Stellar CLI, semáforo honesto, segundo emisor, criterios de aceptación y prompt |

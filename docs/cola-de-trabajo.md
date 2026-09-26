@@ -3,7 +3,7 @@
 **Cómo se usa (decisión #51):**
 - Claude Code toma la primera tarea `[ ]`, la hace, cumple su criterio, cambia `[ ]` por `[x]` con la hora y el hash del commit, hace `git pull --rebase` y push, y sigue con la siguiente **sin esperar a José**.
 - Vercel publica solo cada push a `main`, así que José puede seguir el avance desde el teléfono.
-- **Paradas obligatorias** (spec web §6): algo falla dos veces; necesita instalar algo, una llave, tocar fuera de `web/`, `docs/`, `README.md` o `demo/capturas/web-*` (capturas del sitio, permitidas desde el 26-sep 15:00), o desplegar un contrato; o ya son más de las 15:00 del domingo 27. En esos casos marca la tarea con `[!]`, escribe el motivo debajo y se detiene.
+- **Paradas obligatorias** (spec web §6): algo falla dos veces; necesita instalar algo, una llave, tocar fuera de `web/`, `docs/`, `README.md` o `demo/capturas/web-*` (capturas del sitio, permitidas desde el 26-sep 15:00; la tarea B tiene su propio permiso), o desplegar un contrato; o ya son más de las 15:00 del domingo 27. En esos casos marca la tarea con `[!]`, escribe el motivo debajo y se detiene.
 - José agrega o reordena tareas cuando quiera; Claude (chat) también, con su aprobación.
 
 **Entorno:** Claude Code en la web (claude.ai/code), conectado al repositorio. Aquí no hay llaves de testnet y no hacen falta. **Trabaja directo en `main`** (o en una rama con PR que José fusiona): Vercel publica `main`.
@@ -23,9 +23,41 @@
 - [x] **9. «La app en tu mano».** `docs/diseno-web-movil.md` §2: silueta de teléfono genérica en «La demo real», 6 pantallas del cliente escritas en HTML y sincronizadas con `repeticion.json` y con el gemelo; interruptor «Ver como: Cliente / Bodega B-40»; en menos de 900 px sin silueta y a todo el ancho; letrero de prototipo. Nunca campos de llaves, inicio de sesión ni datos reales. *Criterio:* con JavaScript desactivado se leen las 6 pantallas en orden; cada hash coincide con `repeticion.json`; el paso 4 va sin hash.
 - [x] **10. Experiencia móvil.** `docs/diseno-web-movil.md` §3: portada «Historia en seis pasos», hoja inferior en Pasillo vivo (Qué pasa / Clientes / Bodegas, con las listas plegadas y búsqueda) y «Ver como registro» en La demo real. *Criterio:* en 390 px la sección Pasillo vivo mide menos de 2 pantallas de alto con la hoja cerrada; sin desplazamiento horizontal; botones de 48 px o más; `node --test web/pruebas/` en verde.
 
+- [ ] **B. Endurecer la app local (decisión #56; auditoría B1, B2, B3, B5 y C3).** **Permiso especial para esta tarea:** puedes tocar `backend/`, `frontend/` y `web/simulacion/motor.js` **solo para estos cambios**. Sin llaves, sin CLI real (las pruebas ya simulan Stellar), sin paquetes nuevos, sin tocar el contrato ni `demo/`.
+  - **B1 · CSRF.** En `backend/server.js`, todo método distinto de `GET` y `HEAD` exige `Content-Type: application/json`; si no, 415. Si trae `Origin`, su host debe estar en la lista blanca de B2; si no, 403 con `{"error":"Origen no permitido"}`. Sin `Origin` (curl, pruebas) se permite. No agregues cabeceras CORS.
+  - **B2 · Rebinding.** Toda petición, incluidas las estáticas, exige que el `Host` sea `127.0.0.1:<puerto>`, `localhost:<puerto>` o termine en `.app.github.dev` (Codespaces). Si no, 421 con texto plano «Host no permitido».
+  - **B3 · Nunca éxito sin comprobante.** Si una acción que envía una transacción regresa sin `txHash`, responde 502 con `{"error":"No pudimos confirmar el comprobante. Revisa el explorador antes de repetir."}`. No la registres como hecha en la lista de transacciones ni cambies su estado fuera de la cadena.
+  - **B5 · Texto.** Donde diga «No se envió ninguna consulta» (o equivalente) para el rechazo sin permiso, debe decir «No se envió ninguna transacción».
+  - **C3 · Semáforo.** En `backend/semaforo.js` y en `web/simulacion/motor.js`: `sMal = defaulted + 0.5 * overdue_open + 0.5 * disputes_open`. Actualiza el comentario («las aclaraciones abiertas pesan como una vencida: abrir una aclaración no mejora el color, decisión #56»).
+  - *Criterio:*
+    - pruebas nuevas en `backend/test/` para: `POST` con `Origin` ajeno (403), `POST` sin JSON (415), `Host` ajeno (421), `Host` de Codespaces (pasa), acción sin hash (502 y sin registro) y la aclaración que no mejora el color;
+    - `node --test backend/test/*.test.js` y `node --test web/pruebas/` en verde, con la prueba de equivalencia del motor incluida;
+    - si cambian los conteos del «Pasillo vivo» al día 90 (hoy 28 verdes, 8 amarillos, 1 rojo y 3 insuficientes), anota los nuevos aquí y corrige cualquier texto del sitio que los cite.
+  - **Orden:** esta tarea va antes que el contrato v4 del Codespace (K2 toca `backend/` después). Haz push en cuanto termines.
+- [ ] **W. Cabeceras de seguridad del sitio (decisión #56; auditoría W1 y W2).**
+  - Mueve el `<script>` en línea del `<head>` de `web/index.html` a `web/tema-inicial.js`, cargado en el mismo lugar **sin** `defer` (para que no parpadee el tema).
+  - Crea `web/vercel.json` con estas cabeceras para `"/(.*)"`:
+    - `Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests`
+    - `X-Content-Type-Options: nosniff`
+    - `Referrer-Policy: strict-origin-when-cross-origin`
+    - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+    - `X-Frame-Options: DENY`
+  - Crea `web/.vercelignore` con `pruebas/` y `herramientas/`.
+  - Prueba nueva en `web/pruebas/`:
+    - `index.html` no tiene `<script>` sin `src`, atributos `style=` ni `on…=`;
+    - `vercel.json` es JSON válido con las cinco cabeceras;
+    - `.vercelignore` lista las dos carpetas.
+  - *Criterio:*
+    - sirve `web/` en local con esas mismas cabeceras (un servidor de prueba de pocas líneas en `web/herramientas/`, con módulos nativos) y ábrelo en Chromium sin interfaz;
+    - la consola no muestra ninguna violación de CSP en las cuatro secciones, en los dos temas;
+    - las fuentes cargan, el Pasillo vivo corre y el teléfono cambia de pantalla;
+    - `node --test web/pruebas/` en verde.
+  - Si algo del sitio necesita relajar la CSP, **no uses `'unsafe-inline'` ni `'unsafe-eval'`**: marca `[!]` y detente.
 - [ ] **11. El teléfono nunca vacío.** En «La demo real», el teléfono arranca mostrando la pantalla 1 (aviso de la nota de Bodega A-17 con «Acepto»), no «Toca Empezar». Tocar «Acepto» en el teléfono debe avanzar la repetición igual que «Siguiente» junto al mapa. *Criterio:* al cargar la sección, sin tocar nada, se ve la pantalla 1 en el teléfono y el paso 1 en el mapa; prueba en `web/pruebas/`.
 - [ ] **12. Primera pantalla del celular con producto.** En 390 px, antes de desplazarse debe verse algo del producto, no solo texto: bajo el titular, el mini mapa del pasillo con la nota firmada y un botón «Ver la demo real» (48 px o más). El texto largo del inicio baja. *Criterio:* captura `demo/capturas/web-inicio-390.png` regenerada donde el mini mapa y el botón aparecen en los primeros 844 px; sin desplazamiento horizontal.
 - [ ] **13. Revisión final antes de congelar.** Recorre el sitio en los dos temas, en 390 y 1920 px: vocabulario vetado, avisos de posiciones ilustrativas, hashes contra `repeticion.json`, enlaces a stellar.expert y al repositorio. Corrige solo textos y estilos. *Criterio:* `node --test web/pruebas/` en verde y capturas `web-*` regeneradas; la cola termina aquí salvo que José agregue algo.
+
+**Fuera de esta cola:** el contrato v4 (decisión #55) lo hace Claude Code en el Codespace original, que tiene las llaves, siguiendo `spec/2026-09-26_especificacion-contrato-v4.md` (K1–K3). Aquí no se toca `contracts/` ni `demo/deploy.json`.
 
 ## Hechas
 

@@ -1,6 +1,6 @@
 # Auditoría de seguridad e ingeniería — sábado 26-sep-2026
 
-**Estado:** hallazgos verificados. La corrección del contrato (decisión #55) espera la aprobación de José porque implica redesplegar.
+**Estado:** hallazgos verificados. José aprobó las dos correcciones el 26-sep a las 17:40: contrato v4 con redespliegue (decisión #55; `spec/2026-09-26_especificacion-contrato-v4.md`) y endurecimiento de la app local y del sitio (decisión #56; cola, tareas B y W).
 
 **Método:** tres revisores independientes que no participaron en la construcción, en solo lectura:
 1. **Contrato Soroban:** `cargo test` 13/13; 8 pruebas de concepto en una copia aparte reproducen los hallazgos.

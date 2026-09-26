@@ -37,6 +37,7 @@ Las identidades `plataforma`, `bodega_a`, `bodega_b`, `bodega_c` y `dona_mary` v
    - revisar la inclinación isométrica y las animaciones.
 2. **Capturas** de las cuatro vistas y la portada en `demo/capturas/`.
 3. **Video** de 2–3 minutos con el flujo real (guion de demo v2, §5).
+0. **Contrato v4 (decisión #55), solo en el Codespace original:** `spec/2026-09-26_especificacion-contrato-v4.md`, pasos K1–K3. Prompt en la sección 6.
 4. **Sitio público y «Pasillo vivo»** (#49–#51): se construyen en `web/` siguiendo `docs/cola-de-trabajo.md` y `spec/2026-09-26_especificacion-web-y-agentes.md`, desde Claude Code en la web. No necesitan llaves.
 
 ## 4. Reglas que no cambian
@@ -65,3 +66,22 @@ de la #42 a la última. Dime en 5 renglones:
 (5) qué necesitas de José.
 No cambies nada todavía.
 ```
+
+## 6. Prompt para el contrato v4 (Codespace original, con llaves)
+
+```
+Codespace original. Trabajo: contrato v4 (decisión #55).
+1. git pull --rebase origin main. Lee CLAUDE.md, docs/relevo-claude-code.md,
+   spec/2026-09-26_especificacion-contrato-v4.md completa y en docs/auditoria-2026-09-26.md
+   la sección 1.
+2. Confírmame en 3 renglones: que estás en el Codespace original, que existen las
+   identidades plataforma, bodega_a, bodega_b, bodega_c y dona_mary (solo nombres, nunca
+   llaves) y que cargo test pasa hoy.
+3. Sin esperarme, haz K1, K2 y K3 en ese orden, con un commit y push por paso
+   (git pull --rebase antes de cada push). Respeta las paradas de la sección 4 de la spec:
+   si algo falla dos veces, escribe el error exacto y detente.
+4. Al final dame: el Contract ID nuevo, cuántas pruebas pasan, los 5 hashes de la corrida
+   nueva y qué quedó pendiente.
+Solo testnet. Nada de upgrade. Ninguna llave al repo ni al chat.
+```
+

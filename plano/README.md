@@ -4,7 +4,7 @@ Regla del proyecto: el plano real y actualizado de la CEDA se usa **solo como ca
 
 Motivo (ver `docs/riesgos.md`): la extorsión en la CEDA está documentada y subregistrada; un mapa detallado de quién está dónde es información que no debe salir de aquí.
 
-Esta carpeta permanece vacía hasta que José apruebe una versión.
+Aquí solo se publica lo que José aprueba. Hoy es únicamente lo que aparece abajo.
 
 ## Publicado (decisión #48)
 
