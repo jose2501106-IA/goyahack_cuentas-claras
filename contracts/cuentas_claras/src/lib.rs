@@ -655,9 +655,8 @@ impl CuentasClaras {
         Self::params(&env)
     }
 
-    pub fn get_stats(env: Env, subject_id: BytesN<32>) -> SubjectStats {
-        Self::load_stats(&env, &subject_id)
-    }
+    // Sin `get_stats`: el agregado (`SubjectStats`) solo sale por `read_stats`, que exige
+    // permiso vigente o ser parte y deja constancia (decisión #42; spec v2, §3b e invariante 11).
 
     // -----------------------------------------------------------------------
     // Ayudantes internos

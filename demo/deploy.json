@@ -5,21 +5,24 @@
   "red": "testnet",
   "network_passphrase": "Test SDF Network ; September 2015",
   "rpc_url": "https://soroban-testnet.stellar.org",
-  "desplegado_utc": "2026-09-25T22:52:32Z",
+  "desplegado_utc": "2026-09-26T06:33:00Z",
   "toolchain": {
     "stellar_cli": "28.0.0",
     "soroban_sdk": "=28.0.0",
     "target": "wasm32v1-none"
   },
-  "contract_id": "CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH",
-  "wasm_hash": "985c9beea88dcd74a83416e256a62143c9db23787d0800131980f6dee6bd4ea5",
+  "contract_id": "CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3",
+  "wasm_hash": "f17be7343cbde3b620b86e542ea827f54735dabd6bfef195e5f931c326171f97",
   "cuentas_publicas": {
     "plataforma": "GCUHYSD6KDDZQQZPH7BBVDB3FXRNV5VRYCSEQVFF5MYCYTJK4T4QH3DD",
     "bodega_a": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
     "bodega_b": "GD2TUPI6ZZE7BGCQIEBTWA2AIZHEVALYF3UTEJFF6ENP7K76ERRNY55D",
     "dona_mary": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO"
   },
-  "emisores_registrados": ["bodega_a", "bodega_b"],
+  "emisores_registrados": [
+    "bodega_a",
+    "bodega_b"
+  ],
   "nota_cuentas": "Solo claves PÚBLICAS. Las secretas viven en ~/.config/stellar/identity (fuera del repo). plataforma paga comisiones y es admin del MVP; bodega_a y bodega_b están registradas como emisores; dona_mary es el cliente ficticio. Doña Mary firma en persona en producción; aquí su cuenta G de testnet la custodia la demo.",
   "params": {
     "accept_window": 259200,
@@ -29,11 +32,24 @@
     "unidades": "segundos (72 h / 30 d / 15 d / 30 d)"
   },
   "transacciones": {
-    "deploy": "b677695a1be83ef4b4c4b4e26295a26688cdf00efd3d30c05f19e74d31a75731",
-    "init": "e32e5e32f5e9488770b0b5c5fb92b39cf1549d25ecce88b53e7d5e56e1b0b71a"
+    "deploy": "9691284573c97406410b98f8640157acaa14f05a2af4d7a4b4ca984318ba0488",
+    "init": "dd0fdaf1a892ae5a5440492873cae1501de225a1ff338bdeacde96f89188e4c2",
+    "add_issuer_bodega_a": "b64d8d773644cc80901c760925fd30afd959568192ede9ae39c03bcb3ee64f7b",
+    "add_issuer_bodega_b": "63849c81e5da7fcc7a1b8049fbe01197e59d22efb86e334759434f051c67e5d4"
   },
   "exploradores": {
-    "contrato": "https://stellar.expert/explorer/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH",
-    "lab": "https://lab.stellar.org/r/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH"
+    "contrato": "https://stellar.expert/explorer/testnet/contract/CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3",
+    "lab": "https://lab.stellar.org/r/testnet/contract/CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3"
+  },
+  "contrato_anterior": {
+    "contract_id": "CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH",
+    "wasm_hash": "985c9beea88dcd74a83416e256a62143c9db23787d0800131980f6dee6bd4ea5",
+    "desplegado_utc": "2026-09-25T22:52:32Z",
+    "transacciones": {
+      "deploy": "b677695a1be83ef4b4c4b4e26295a26688cdf00efd3d30c05f19e74d31a75731",
+      "init": "e32e5e32f5e9488770b0b5c5fb92b39cf1549d25ecce88b53e7d5e56e1b0b71a"
+    },
+    "obsoleto_desde_utc": "2026-09-26T06:35:00Z",
+    "razon": "Exponía get_stats: función pública que entregaba el agregado (SubjectStats) sin consentimiento ni constancia, en contra de read_stats (spec v2 §3b, invariante 11). Sin upgrade a propósito: se retira y se redespliega (decisión #42). No usar."
   }
 }

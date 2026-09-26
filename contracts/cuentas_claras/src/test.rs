@@ -76,7 +76,7 @@ fn camino_feliz() {
     assert!(n.paid_ts.is_some());
 
     // Contadores actualizados solo por el contrato (invariante 7).
-    let s = client.get_stats(&subj);
+    let s = client.read_stats(&mary, &subj);
     assert_eq!(s.accepted, 1);
     assert_eq!(s.paid_on_time, 1);
     assert_eq!(s.paid_late, 0);
@@ -110,7 +110,7 @@ fn dos_emisores_issuers_count_2() {
     client.create_note(&a, &n3, &subj, &AmountBucket::B1k_5k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &n3);
 
-    let s = client.get_stats(&subj);
+    let s = client.read_stats(&mary, &subj);
     assert_eq!(s.issuers_count, 2);
     assert_eq!(s.accepted, 3);
 }
@@ -172,7 +172,7 @@ fn mark_default_antes_de_gracia_falla() {
     set_time(&env, due + 1);
     client.touch(&note);
     assert_eq!(client.get_note(&note).unwrap().status, Status::Overdue);
-    assert_eq!(client.get_stats(&subj).overdue_open, 1);
+    assert_eq!(client.read_stats(&mary, &subj).overdue_open, 1);
 
     // Antes de la gracia: TooEarly (invariante 3).
     set_time(&env, due + 10 * DAY); // gracia = 30 d
@@ -184,7 +184,7 @@ fn mark_default_antes_de_gracia_falla() {
     // Pasada la gracia: se marca Defaulted.
     set_time(&env, due + 31 * DAY);
     client.mark_default(&issuer, &note);
-    let s = client.get_stats(&subj);
+    let s = client.read_stats(&mary, &subj);
     assert_eq!(client.get_note(&note).unwrap().status, Status::Defaulted);
     assert_eq!(s.overdue_open, 0);
     assert_eq!(s.defaulted, 1);
@@ -240,7 +240,7 @@ fn disputa_y_resolucion_mutua() {
     set_time(&env, due + 31 * DAY);
     client.dispute(&mary, &note, &7u32);
     assert_eq!(client.get_note(&note).unwrap().status, Status::Disputed);
-    let s = client.get_stats(&subj);
+    let s = client.read_stats(&mary, &subj);
     assert_eq!(s.disputes_open, 1);
     assert_eq!(s.defaulted, 0); // se movió a disputa
 
@@ -250,7 +250,7 @@ fn disputa_y_resolucion_mutua() {
     client.resolve_mutual(&mary, &note, &Status::Cancelled);
 
     assert_eq!(client.get_note(&note).unwrap().status, Status::Cancelled);
-    let s = client.get_stats(&subj);
+    let s = client.read_stats(&mary, &subj);
     assert_eq!(s.disputes_open, 0);
     assert_eq!(s.disputes_resolved, 1);
 }
@@ -368,4 +368,36 @@ fn no_reinicializa_y_params_invalidos() {
         consent_ttl: 30 * DAY,
     };
     assert_eq!(c2.try_init(&admin, &bad), Err(Ok(Error::BadParams)));
+}
+
+// --- El agregado solo sale por read_stats (decisión #42, invariante 11) -----
+
+#[test]
+fn no_hay_get_stats_publico() {
+    let (env, client, admin) = setup();
+    let issuer = Address::generate(&env);
+    let mary = Address::generate(&env);
+    let tercero = Address::generate(&env);
+    client.add_issuer(&admin, &issuer);
+
+    let note = id(&env, 1);
+    let subj = id(&env, 100);
+    client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
+    client.accept_note(&mary, &note);
+
+    // `get_stats` ya no existe: invocarla por nombre falla (antes entregaba el agregado
+    // a cualquiera, sin consentimiento ni constancia).
+    let args: soroban_sdk::Vec<soroban_sdk::Val> = soroban_sdk::vec![&env, subj.to_val()];
+    let r = env.try_invoke_contract::<SubjectStats, Error>(
+        &client.address,
+        &soroban_sdk::Symbol::new(&env, "get_stats"),
+        args,
+    );
+    assert!(r.is_err());
+
+    // La única vía pública al agregado sigue exigiendo permiso a un tercero.
+    assert_eq!(
+        client.try_read_stats(&tercero, &subj),
+        Err(Ok(Error::NoConsent))
+    );
 }

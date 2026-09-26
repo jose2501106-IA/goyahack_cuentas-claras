@@ -12,7 +12,7 @@ Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de In
 
 | | |
 |---|---|
-| Contrato | [`CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH`](https://stellar.expert/explorer/testnet/contract/CB5ACPHN6FBU64SDE5IXFNZ2IBHTY72IJC7VHQ72AHYERAO6J3EZOIJH) |
+| Contrato | [`CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3`](https://stellar.expert/explorer/testnet/contract/CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3) |
 | Estado | Desplegado e inicializado el 25-sep-2026 (16:52 CDMX) · 11 pruebas en verde (`cargo test`) |
 | Toolchain | Stellar CLI 28.0.0 · soroban-sdk 28.0.0 · `wasm32v1-none` (decisión #41) |
 | Datos | Solo claves públicas y datos ficticios de demo en [`demo/deploy.json`](demo/deploy.json) |
