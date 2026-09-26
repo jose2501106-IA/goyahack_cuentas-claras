@@ -445,3 +445,51 @@ main:focus { outline: none; }
   .interruptor-tema { order: 2; margin-left: auto; }
   .navegacion { order: 3; }
 }
+
+/* ---------- «La app en tu mano» (docs/diseno-web-movil.md §2) ---------- */
+.demo-rejilla { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr); }
+.app-en-mano h3 { margin-top: 0; }
+.letrero-prototipo { font-family: var(--f-mono); font-size: 1rem; border: 2px dashed var(--texto-2); border-radius: 8px; padding: 0.5rem 0.75rem; background: var(--superficie); }
+.ver-como { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem; }
+.telefono { background: var(--superficie); border: 1px solid var(--borde); border-radius: 12px; padding: 0.8rem 1rem 1rem; }
+.tel-barra { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 1rem; color: var(--texto-2); border-bottom: 1px solid var(--borde); padding-bottom: 0.4rem; }
+.tel-red { color: var(--hash); }
+.tel-quien { font-family: var(--f-titulo); font-weight: 800; font-size: 1.2rem; color: var(--firma); margin: 0.6rem 0 0.4rem; }
+.tel-pantallas { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.8rem; }
+.tel-pantalla { border: 1px solid var(--borde); border-radius: 10px; padding: 0.8rem 0.9rem; background: var(--fondo); }
+.tel-pantalla p { margin-bottom: 0.55rem; }
+.tel-paso { font-family: var(--f-mono); font-size: 1rem; color: var(--texto-2); }
+.tel-titulo { font-weight: 700; color: var(--texto); font-size: 1.1rem; }
+.tel-aviso { font-size: 1.1rem; }
+.tel-acciones .boton { width: 100%; }
+.tel-nota { color: var(--texto-2); }
+.tel-sin-hash { font-family: var(--f-mono); font-size: 1rem; color: var(--texto-2); }
+.tel-cadena { margin-bottom: 0 !important; }
+.tel-semaforo { font-family: var(--f-titulo); font-size: 1.3rem; }
+.tel-sello {
+  display: inline-block; transform: rotate(-8deg); margin: 0.2rem 0 0.8rem !important;
+  border: 4px double var(--sello); color: var(--sello); border-radius: 8px; padding: 0.15rem 0.8rem;
+  font-family: var(--f-titulo); font-weight: 800; font-size: 1.4rem; letter-spacing: 0.08em;
+}
+.tel-inicio { display: none; }
+.tel-pie { margin-top: 0.6rem; }
+
+/* Con JavaScript: una pantalla a la vez y una sola vista. Sin JavaScript todo se lee en orden. */
+.con-js .tel-pantallas { margin-bottom: 0; }
+.con-js .tel-pantalla { display: none; }
+.con-js .tel-pantalla.actual { display: block; }
+.con-js[data-paso="0"] .tel-inicio { display: block; margin: 1rem 0; color: var(--texto-2); }
+.con-js[data-ver="cliente"] .tel-vista[data-vista="bodega"],
+.con-js[data-ver="bodega"] .tel-vista[data-vista="cliente"] { display: none; }
+.con-js .tel-pantalla.actual { animation: aparecer 400ms ease-out both; }
+
+/* Desde 900 px: silueta de teléfono genérica junto al mapa. Debajo, la app ocupa el ancho. */
+@media (min-width: 900px) {
+  .demo-rejilla { grid-template-columns: minmax(0, 1fr) 22rem; align-items: start; }
+  .app-en-mano { position: sticky; top: calc(var(--alto-encabezado) + 1rem); }
+  .telefono {
+    border: 10px solid var(--texto); border-radius: 36px; padding: 1rem 1rem 1.4rem;
+    box-shadow: 0 0 0 2px var(--borde); min-height: 30rem;
+  }
+  .con-js .telefono { max-height: 36rem; overflow-y: auto; }
+}

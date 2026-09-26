@@ -173,6 +173,7 @@
           p.numero === 6 ? resumenPaso6() : null,
         );
       }
+      sincronizarTelefono(n);
       lista.querySelectorAll('li').forEach((li, i) => {
         if (i === n - 1) li.setAttribute('aria-current', 'step');
         else li.removeAttribute('aria-current');
@@ -185,6 +186,28 @@
         p.url
           ? CC.enlaceExterno(`Verlo en la cadena · ${hashCorto(p.hash)}`, p.url, 'mono hash')
           : el('span', { class: 'apoyo' }, p.sin_transaccion)));
+    }
+
+    // «La app en tu mano» (docs/diseno-web-movil.md §2): las pantallas están en el HTML;
+    // aquí solo se muestra la del paso actual y se elige la vista (cliente o Bodega B).
+    const app = document.querySelector('.app-en-mano');
+    function sincronizarTelefono(n) {
+      if (!app) return;
+      app.dataset.paso = String(n);
+      app.querySelectorAll('.tel-pantalla').forEach((li) => {
+        const es = Number(li.dataset.paso) === n;
+        li.classList.toggle('actual', es);
+        if (es) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+      });
+    }
+    if (app) {
+      app.classList.add('con-js');
+      app.dataset.ver = 'cliente';
+      app.querySelectorAll('[data-ver]').forEach((b) => b.addEventListener('click', () => {
+        app.dataset.ver = b.dataset.ver;
+        app.querySelectorAll('[data-ver]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      }));
+      app.querySelectorAll('.tel-avanza').forEach((b) => b.addEventListener('click', () => mostrar(Number(b.dataset.a), true)));
     }
 
     anterior.addEventListener('click', () => mostrar(Math.max(0, actual - 1), false));

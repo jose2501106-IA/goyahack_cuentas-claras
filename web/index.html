@@ -97,8 +97,109 @@
       <div class="dentro dentro-ancho">
         <h2 id="t-demo" class="titulo-seccion">La demo real, verificable</h2>
         <p class="entrada-seccion">Estos seis pasos sí ocurrieron en Stellar testnet. No tienes que creernos: cada paso con transacción trae su enlace para revisarla en un explorador público.</p>
-        <div id="montaje-demo" class="montaje">
-          <p class="cargando">Cargando la corrida real…</p>
+        <div class="demo-rejilla">
+          <div id="montaje-demo" class="montaje">
+            <p class="cargando">Cargando la corrida real…</p>
+            <noscript><p class="apoyo">El mapa necesita JavaScript. Los seis pasos se leen completos en «La app en tu mano».</p></noscript>
+          </div>
+
+          <aside class="app-en-mano" aria-labelledby="t-app">
+            <h3 id="t-app">La app en tu mano</h3>
+            <p class="letrero-prototipo" role="note">Prototipo de la app. Datos ficticios. En este sitio no se firma nada: cada paso enlaza a su transacción real en Stellar testnet.</p>
+            <div class="ver-como" role="group" aria-label="Ver como">
+              <span>Ver como:</span>
+              <button type="button" class="boton boton-secundario boton-chico" data-ver="cliente" aria-pressed="true">Cliente</button>
+              <button type="button" class="boton boton-secundario boton-chico" data-ver="bodega" aria-pressed="false">Bodega B</button>
+            </div>
+            <div class="telefono">
+              <p class="tel-barra"><span>Cuentas Claras</span><span class="tel-red">testnet</span></p>
+              <p class="tel-inicio">Toca «Empezar» junto al mapa para recorrer los seis pasos.</p>
+              <div class="tel-vista" data-vista="cliente">
+              <p class="tel-quien">Doña Mary</p>
+              <ol class="tel-pantallas" aria-label="Pantallas de Doña Mary">
+              <li class="tel-pantalla" data-paso="1">
+                <p class="tel-paso">Paso 1 de 6</p>
+                <p class="tel-aviso">Bodega A te registró una nota: <strong>$5,000–$20,000</strong>, vence en 15 días. ¿Estás de acuerdo?</p>
+                <p class="tel-acciones"><button type="button" class="boton boton-primario tel-avanza" data-a="2">Acepto</button></p>
+                <p class="tel-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872" target="_blank" rel="noopener noreferrer" data-hash="cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872">Verlo en la cadena · cea99f44…25f2d872</a></p>
+              </li>
+              <li class="tel-pantalla" data-paso="2">
+                <p class="tel-paso">Paso 2 de 6</p>
+                <p class="tel-titulo">Firmada por los dos</p>
+                <p>Tu firma y la de Bodega A. Desde ahora nadie puede cambiar ni borrar esta nota, ni nosotros. En la cadena no va tu nombre ni el monto: un seudónimo y un rango.</p>
+                <p class="tel-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d" target="_blank" rel="noopener noreferrer" data-hash="a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d">Verlo en la cadena · a1e08fc4…98f4793d</a></p>
+              </li>
+              <li class="tel-pantalla" data-paso="3">
+                <p class="tel-paso">Paso 3 de 6</p>
+                <p class="tel-sello" aria-label="Sello: cumplida">CUMPLIDA</p>
+                <p class="tel-titulo">Cumpliste tu palabra: queda firmado a tu favor.</p>
+                <p>Bodega A confirmó tu pago.</p>
+                <p class="tel-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326" target="_blank" rel="noopener noreferrer" data-hash="09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326">Verlo en la cadena · 09317d80…4d7d8326</a></p>
+              </li>
+              <li class="tel-pantalla" data-paso="4">
+                <p class="tel-paso">Paso 4 de 6</p>
+                <p class="tel-titulo">Bodega B pidió tu resumen sin permiso y no se le entregó.</p>
+                <p>El contrato lo rechazó: sin tu permiso no hay consulta oficial.</p>
+                <p class="tel-sin-hash">Sin hash: no se envió transacción.</p>
+              </li>
+              <li class="tel-pantalla" data-paso="5">
+                <p class="tel-paso">Paso 5 de 6</p>
+                <p class="tel-aviso">¿Das permiso a Bodega B por 30 días para consultar tu resumen?</p>
+                <p class="tel-acciones"><button type="button" class="boton boton-primario tel-avanza" data-a="6">Dar permiso</button></p>
+                <p class="tel-nota">Verá cuántas notas cumpliste y en cuántas bodegas; no verá montos exactos ni tus datos. Puedes quitarlo cuando quieras.</p>
+                <p class="tel-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814" target="_blank" rel="noopener noreferrer" data-hash="cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814">Verlo en la cadena · cc1b5293…892a6814</a></p>
+              </li>
+              <li class="tel-pantalla" data-paso="6">
+                <p class="tel-paso">Paso 6 de 6</p>
+                <p class="tel-titulo">Bodega B consultó tu resumen. Quedó registrado.</p>
+                <p>Cada consulta deja constancia en la cadena.</p>
+                <p class="tel-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c" target="_blank" rel="noopener noreferrer" data-hash="a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c">Verlo en la cadena · a8437564…8df6183c</a></p>
+              </li>
+              </ol>
+              </div>
+              <div class="tel-vista" data-vista="bodega">
+              <p class="tel-quien">Bodega B</p>
+              <ol class="tel-pantallas" aria-label="Pantallas de Bodega B">
+              <li class="tel-pantalla" data-paso="1">
+                <p class="tel-paso">Paso 1 de 6</p>
+                <p>Todavía nada para Bodega B: la nota es entre Bodega A y Doña Mary.</p>
+              </li>
+              <li class="tel-pantalla" data-paso="2">
+                <p class="tel-paso">Paso 2 de 6</p>
+                <p>Bodega B no conoce a Doña Mary ni ve su nota.</p>
+              </li>
+              <li class="tel-pantalla" data-paso="3">
+                <p class="tel-paso">Paso 3 de 6</p>
+                <p>Doña Mary cumplió con Bodega A. Bodega B todavía no lo sabe.</p>
+              </li>
+              <li class="tel-pantalla" data-paso="4">
+                <p class="tel-paso">Paso 4 de 6</p>
+                <p class="tel-titulo">Pediste el resumen de Doña Mary sin su permiso.</p>
+                <p>El contrato no lo entregó. Pídeselo en el mostrador.</p>
+                <p class="tel-sin-hash">Sin hash: no se envió transacción.</p>
+              </li>
+              <li class="tel-pantalla" data-paso="5">
+                <p class="tel-paso">Paso 5 de 6</p>
+                <p class="tel-titulo">Doña Mary te dio permiso por 30 días.</p>
+                <p class="tel-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814" target="_blank" rel="noopener noreferrer" data-hash="cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814">Verlo en la cadena · cc1b5293…892a6814</a></p>
+              </li>
+              <li class="tel-pantalla" data-paso="6">
+                <p class="tel-paso">Paso 6 de 6</p>
+                <p class="tel-titulo">Resumen de Doña Mary</p>
+                <p class="sem sem-insuficiente tel-semaforo">○ Historial insuficiente</p>
+                <ul class="condiciones">
+                  <li>✗ <span class="lector">No se cumple: </span>3 notas cerradas (tiene 1)</li>
+                  <li>✗ <span class="lector">No se cumple: </span>2 bodegas distintas (tiene 1)</li>
+                  <li>✗ <span class="lector">No se cumple: </span>60 días de historial (su nota es del mismo día)</li>
+                </ul>
+                <p>La decisión de fiar es tuya. Tu consulta quedó registrada.</p>
+                <p class="tel-cadena"><a class="hash" href="https://stellar.expert/explorer/testnet/tx/a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c" target="_blank" rel="noopener noreferrer" data-hash="a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c">Verlo en la cadena · a8437564…8df6183c</a></p>
+              </li>
+              </ol>
+              </div>
+            </div>
+            <p class="tel-pie apoyo">En la repetición, los botones del teléfono pasan al paso siguiente; no firman nada.</p>
+          </aside>
         </div>
       </div>
     </section>
