@@ -124,7 +124,7 @@ test('flujo completo con Stellar falso', async (t) => {
   assert.equal(stellar.llamadas.filter((x) => x.send).length, antes);
 
   const tx = await pedir('GET', '/api/transacciones');
-  assert.deepEqual(tx.json.transacciones.map((x) => x.accion), ['Bodega A confirmó el pago', 'Doña Mary firmó la nota', 'Bodega A creó una nota']);
+  assert.deepEqual(tx.json.transacciones.map((x) => x.accion), ['Bodega A-17 confirmó el pago', 'Doña Mary firmó la nota', 'Bodega A-17 creó una nota']);
 
   // Revocar sin permiso: error claro y registro local limpio.
   await almacen.guardarPermiso({ exp_ts: 1 });

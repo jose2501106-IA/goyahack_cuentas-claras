@@ -21,8 +21,8 @@ const ERRORES_CONTRATO = Object.freeze({
   7: { error: 'no_es_parte', mensaje: 'Esta cuenta no es parte de la nota.', status: 403 },
   8: { error: 'muy_pronto', mensaje: 'Todavía no se puede hacer este paso.', status: 409 },
   9: { error: 'plazo_cerrado', mensaje: 'Ya pasó el plazo para hacer este paso.', status: 409 },
-  10: { error: 'sin_permiso', mensaje: 'Doña Mary no ha dado permiso a Bodega B para consultar su historial.', status: 403 },
-  11: { error: 'permiso_vencido', mensaje: 'El permiso de Doña Mary para Bodega B ya venció.', status: 403 },
+  10: { error: 'sin_permiso', mensaje: 'Doña Mary no ha dado permiso a Bodega B-40 para consultar su historial.', status: 403 },
+  11: { error: 'permiso_vencido', mensaje: 'El permiso de Doña Mary para Bodega B-40 ya venció.', status: 403 },
   12: { error: 'datos_invalidos', mensaje: 'Los datos de la nota no son válidos.', status: 400 },
 });
 

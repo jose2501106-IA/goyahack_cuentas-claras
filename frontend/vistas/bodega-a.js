@@ -1,4 +1,4 @@
-// Vista: Bodega A — crear notas de fiado y confirmar pagos.
+// Vista: Bodega A-17 — crear notas de fiado y confirmar pagos.
 
 import {
   el, api, conBoton, comprobante, rotuloDemo, cargando, aviso, sello,

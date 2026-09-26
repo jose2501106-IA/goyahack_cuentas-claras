@@ -44,7 +44,7 @@ function urlSegura(url) {
 }
 
 export function rotuloDemo() {
-  return el('p', { class: 'rotulo-demo' }, 'Demo · datos ficticios');
+  return el('p', { class: 'rotulo-demo' }, 'Demo · datos ficticios · posiciones ilustrativas; ninguna bodega real participa');
 }
 
 export function cargando(texto = 'Leyendo lo firmado…') {

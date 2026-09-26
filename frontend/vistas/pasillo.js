@@ -24,13 +24,13 @@ const TRAZO_MS = 900;
 const PAUSA_MS = 450;
 
 const TEXTOS = {
-  nota_creada: 'Bodega A registró una nota para Doña Mary. Esperando firma.',
+  nota_creada: 'Bodega A-17 registró una nota para Doña Mary. Esperando firma.',
   nota_aceptada: 'Doña Mary firmó la nota: firmada por los dos.',
-  pago_confirmado: 'Bodega A confirmó el pago: nota cumplida.',
-  permiso_dado: 'Doña Mary dio permiso a Bodega B por 30 días.',
-  permiso_quitado: 'Doña Mary quitó el permiso a Bodega B.',
-  consulta_sin_permiso: 'Bodega B pidió el resumen sin permiso: no se entregó. No hubo transacción.',
-  consulta: 'Bodega B consultó el historial de Doña Mary con permiso. La consulta quedó registrada.',
+  pago_confirmado: 'Bodega A-17 confirmó el pago: nota cumplida.',
+  permiso_dado: 'Doña Mary dio permiso a Bodega B-40 por 30 días.',
+  permiso_quitado: 'Doña Mary quitó el permiso a Bodega B-40.',
+  consulta_sin_permiso: 'Bodega B-40 pidió el resumen sin permiso: no se entregó. No hubo transacción.',
+  consulta: 'Bodega B-40 consultó el historial de Doña Mary con permiso. La consulta quedó registrada.',
 };
 
 let vistaPlana = false;
@@ -287,7 +287,7 @@ function pintarPanel(estado) {
     return;
   }
   const sem = ultima.semaforo || null;
-  const hijos = [el('p', { class: 'panel-titulo' }, 'Consulta de Bodega B, con permiso de Doña Mary')];
+  const hijos = [el('p', { class: 'panel-titulo' }, 'Consulta de Bodega B-40, con permiso de Doña Mary')];
   if (sem) {
     const color = ['verde', 'amarillo', 'rojo', 'insuficiente'].includes(sem.color) ? sem.color : 'insuficiente';
     hijos.push(el('p', { class: `semaforo-senal semaforo-${color}` },
@@ -301,7 +301,7 @@ function pintarPanel(estado) {
         String(c.texto || '')))));
     }
   } else {
-    hijos.push(el('p', { class: 'apoyo' }, 'El semáforo se ve en la vista de Bodega B.'));
+    hijos.push(el('p', { class: 'apoyo' }, 'El semáforo se ve en la vista de Bodega B-40.'));
   }
   hijos.push(el('p', { class: 'registrada' }, 'Esta consulta quedó registrada · ',
     comprobante(ultima.url, hashCorto(ultima.tx_hash)) || hashCorto(ultima.tx_hash)));
@@ -334,7 +334,7 @@ function dibujarPasillo(forma) {
   const nombre = forma.pasillo || 'A-B';
   const svg = s('svg', {
     viewBox: `0 0 ${g.ancho} ${g.alto}`, class: 'pasillo-svg', role: 'img',
-    'aria-label': `Forma del Pasillo ${nombre}: ${forma.bodegas.length} bodegas numeradas a los dos lados del corredor. Bodega A, Bodega B y Bodega C marcadas; Doña Mary en el corredor.`,
+    'aria-label': `Forma del Pasillo ${nombre}: ${forma.bodegas.length} bodegas numeradas a los dos lados del corredor. Bodega A-17, Bodega B-40 y Bodega A-73 marcadas; Doña Mary en el corredor.`,
   });
 
   // 1) Capa base: los trazos del plano en un solo path, tinta al 45 %.
@@ -462,7 +462,7 @@ function ponerPuente(m, exp, animar) {
   const a = anclas(m, 'bodega_b');
   const b = m.bodegas.bodega_b;
   const d = camino(a.fx, a.fy, a.bx, a.by, 1.5);
-  // La vigencia va debajo de la etiqueta de Bodega B: el corredor es angosto.
+  // La vigencia va debajo de la etiqueta de Bodega B-40: el corredor es angosto.
   m.capaPuente.replaceChildren(s('g', { class: `puente${animar ? ' aparecer' : ''}` },
     s('path', { d, class: 'puente-linea' }),
     s('text', { x: b.x + b.w / 2, y: b.y + b.h + CARA + b.eleva + 8.5, 'text-anchor': 'middle', class: 'puente-texto' },

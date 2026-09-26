@@ -212,7 +212,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
         tx_creacion: r.txHash,
       };
       await almacen.agregarNota(nota);
-      registrarTx('Bodega A creó una nota', r);
+      registrarTx('Bodega A-17 creó una nota', r);
       const { aleatoriedad_hex, documento: _d, ...publica } = nota;
       return { nota: { ...publica, rango_texto: V.textoDeRango(rango), estado: 'Created', etiqueta: V.etiquetaDeEstado('Created') }, tx_hash: r.txHash, url: r.url };
     },
@@ -252,7 +252,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
         '--subject', cuentas.dona_mary, '--reader', cuentas.bodega_b, '--exp_ts', exp_ts, '--nonce', t,
       ]);
       await almacen.guardarPermiso({ exp_ts });
-      registrarTx('Doña Mary dio permiso a Bodega B por 30 días', r);
+      registrarTx('Doña Mary dio permiso a Bodega B-40 por 30 días', r);
       return { tx_hash: r.txHash, url: r.url, exp_ts };
     },
 
@@ -260,12 +260,12 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
       try {
         const r = await stellar.enviar('dona_mary', 'revoke_consent', ['--subject', cuentas.dona_mary, '--reader', cuentas.bodega_b]);
         await almacen.borrarPermiso();
-        registrarTx('Doña Mary retiró el permiso a Bodega B', r);
+        registrarTx('Doña Mary retiró el permiso a Bodega B-40', r);
         return { tx_hash: r.txHash, url: r.url };
       } catch (e) {
         if (e instanceof ErrorStellar && e.codigoContrato !== null) {
           await almacen.borrarPermiso();
-          throw new ErrorHttp(409, 'sin_permiso', 'Bodega B no tenía un permiso vigente; no había nada que retirar.');
+          throw new ErrorHttp(409, 'sin_permiso', 'Bodega B-40 no tenía un permiso vigente; no había nada que retirar.');
         }
         throw e;
       }
@@ -280,7 +280,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
           if (almacen.leerPermiso()) await almacen.borrarPermiso();
           const motivo = e.codigoContrato === 10 ? 'sin_permiso' : 'permiso_vencido';
           const mensaje = motivo === 'sin_permiso'
-            ? 'Doña Mary no ha dado permiso a Bodega B. No se hizo la consulta y no se envió ninguna transacción.'
+            ? 'Doña Mary no ha dado permiso a Bodega B-40. No se hizo la consulta y no se envió ninguna transacción.'
             : 'El permiso de Doña Mary ya venció. No se hizo la consulta y no se envió ninguna transacción.';
           return { permitido: false, motivo, mensaje };
         }
@@ -291,7 +291,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
         throw new ErrorHttp(502, 'respuesta_invalida', 'La red respondió, pero no pudimos leer el resumen.');
       }
       if (!almacen.leerPermiso()) await almacen.guardarPermiso({ exp_ts: null });
-      registrarTx('Bodega B consultó el historial de Doña Mary', r);
+      registrarTx('Bodega B-40 consultó el historial de Doña Mary', r);
       return { permitido: true, stats: r.valor, semaforo: semaforo(r.valor, ahora()), tx_hash: r.txHash, url: r.url };
     },
 
@@ -313,9 +313,9 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
       registrarTx('Doña Mary firmó la nota', r);
       return { tx_hash: r.txHash, url: r.url, estado: 'Accepted', etiqueta: V.etiquetaDeEstado('Accepted') };
     }
-    // Pago: la misma secuencia que el paso 3 de demo.sh (solo confirm_paid de Bodega A).
+    // Pago: la misma secuencia que el paso 3 de demo.sh (solo confirm_paid de Bodega A-17).
     const r = await stellar.enviar('bodega_a', 'confirm_paid', ['--issuer', cuentas.bodega_a, '--note_id', id]);
-    registrarTx('Bodega A confirmó el pago', r);
+    registrarTx('Bodega A-17 confirmó el pago', r);
     return { tx_hash: r.txHash, url: r.url, estado: 'Paid', etiqueta: V.etiquetaDeEstado('Paid') };
   }
 

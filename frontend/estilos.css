@@ -171,7 +171,7 @@ input[type="number"] { font-family: var(--f-mono); }
 .tel-permiso p { margin: 0; }
 .tel-privacidad { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--kraft); color: var(--carbon); }
 
-/* ---------- Bodega B: consulta y semáforo ---------- */
+/* ---------- Bodega B-40: consulta y semáforo ---------- */
 .sin-permiso-texto { font-weight: 700; color: var(--carbon); }
 .consulta { display: grid; gap: 1rem; }
 .consulta p { margin: 0; }

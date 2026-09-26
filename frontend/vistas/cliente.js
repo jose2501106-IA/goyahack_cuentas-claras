@@ -68,7 +68,7 @@ async function cargarNota(ctx) {
     });
     zona.replaceChildren(el('div', { class: 'tarjeta tel-tarjeta' },
       el('p', null,
-        `Bodega A te registró una nota: ${pendiente.rango_texto || '—'}, vence el ${fecha(pendiente.due_ts)}. ¿Estás de acuerdo?`),
+        `Bodega A-17 te registró una nota: ${pendiente.rango_texto || '—'}, vence el ${fecha(pendiente.due_ts)}. ¿Estás de acuerdo?`),
       boton,
     ));
     return;
@@ -84,7 +84,7 @@ async function cargarNota(ctx) {
 
   if (reciente) {
     zona.replaceChildren(el('div', { class: 'tarjeta tel-tarjeta' },
-      el('p', null, `Tu nota más reciente con Bodega A: ${reciente.rango_texto || '—'}, vence el ${fecha(reciente.due_ts)}.`),
+      el('p', null, `Tu nota más reciente con Bodega A-17: ${reciente.rango_texto || '—'}, vence el ${fecha(reciente.due_ts)}.`),
       el('p', { class: 'nota-estado' }, el('span', { class: 'etiqueta-estado' }, etiquetaEstado(reciente))),
     ));
     return;
@@ -109,7 +109,7 @@ async function cargarPermiso(ctx) {
     boton.addEventListener('click', async () => {
       try {
         const r = await conBoton(boton, () => api('/api/permisos', { metodo: 'DELETE' }));
-        ultimo = { texto: 'Quitaste el permiso a Bodega B.', url: r.url };
+        ultimo = { texto: 'Quitaste el permiso a Bodega B-40.', url: r.url };
         mostrar(ctx.zonaResultado, ultimo);
         cargarPermiso(ctx);
       } catch (e) {
@@ -118,18 +118,18 @@ async function cargarPermiso(ctx) {
     });
     zona.replaceChildren(
       el('p', null, p.exp_ts
-        ? `Bodega B puede pedir tu resumen hasta el ${fecha(p.exp_ts)}`
-        : 'Bodega B puede pedir tu resumen.'),
+        ? `Bodega B-40 puede pedir tu resumen hasta el ${fecha(p.exp_ts)}`
+        : 'Bodega B-40 puede pedir tu resumen.'),
       boton,
     );
     return;
   }
 
-  const boton = el('button', { type: 'button', class: 'boton boton-primario boton-ancho' }, 'Dar permiso a Bodega B por 30 días');
+  const boton = el('button', { type: 'button', class: 'boton boton-primario boton-ancho' }, 'Dar permiso a Bodega B-40 por 30 días');
   boton.addEventListener('click', async () => {
     try {
       const r = await conBoton(boton, () => api('/api/permisos', { metodo: 'POST', cuerpo: { dias: 30 } }));
-      ultimo = { texto: `Diste permiso a Bodega B hasta el ${fecha(r.exp_ts)}.`, url: r.url };
+      ultimo = { texto: `Diste permiso a Bodega B-40 hasta el ${fecha(r.exp_ts)}.`, url: r.url };
       mostrar(ctx.zonaResultado, ultimo);
       cargarPermiso(ctx);
     } catch (e) {
@@ -137,7 +137,7 @@ async function cargarPermiso(ctx) {
     }
   });
   zona.replaceChildren(
-    el('p', null, 'Bodega B no tiene permiso de pedir tu resumen.'),
+    el('p', null, 'Bodega B-40 no tiene permiso de pedir tu resumen.'),
     boton,
   );
 }

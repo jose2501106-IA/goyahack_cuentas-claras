@@ -4,14 +4,14 @@
 # ya desplegado en Stellar testnet. Plan B del pitch (spec v2, §10).
 #
 # Qué muestra, paso a paso:
-#   1) Bodega A crea una nota de fiado para Doña Mary (15 días, rango 5k–20k).
+#   1) Bodega A-17 crea una nota de fiado para Doña Mary (15 días, rango 5k–20k).
 #   2) Doña Mary la acepta (co-firma): la deuda no existe sin su firma.
-#   3) Bodega A confirma el pago.
-#   4) Bodega B pide el resumen SIN permiso -> el contrato lo rechaza (NoConsent).
-#   5) Doña Mary autoriza a Bodega B por 30 días.
-#   6) Bodega B consulta con permiso y ve el resumen.
+#   3) Bodega A-17 confirma el pago.
+#   4) Bodega B-40 pide el resumen SIN permiso -> el contrato lo rechaza (NoConsent).
+#   5) Doña Mary autoriza a Bodega B-40 por 30 días.
+#   6) Bodega B-40 consulta con permiso y ve el resumen.
 #
-# Idempotente: cada corrida usa un note_id nuevo y revoca el permiso de Bodega B
+# Idempotente: cada corrida usa un note_id nuevo y revoca el permiso de Bodega B-40
 # antes del paso 4, así el paso negativo siempre falla como se espera. El
 # subject_id (seudónimo) es determinista: HMAC-SHA256 del teléfono con
 # DEMO_HMAC_KEY, de modo que el historial de Doña Mary se acumula bajo un mismo id.
@@ -123,9 +123,9 @@ echo "   Nota de esta corrida (note_id):      ${NOTE_ID:0:16}…"
 echo "════════════════════════════════════════════════════════════════════"
 echo
 
-# --- 1) Bodega A crea la nota ------------------------------------------------
+# --- 1) Bodega A-17 crea la nota ------------------------------------------------
 
-paso 1 "Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k)."
+paso 1 "Bodega A-17 registra una nota de fiado para Doña Mary (15 días, rango 5k–20k)."
 call bodega_a create_note \
   --issuer "$BODEGA_A" --note_id "$NOTE_ID" --subject_id "$SUBJECT_ID" \
   --amount_bucket B5k_20k --due_ts "$DUE_TS"
@@ -137,19 +137,19 @@ paso 2 "Doña Mary acepta la nota: sin su firma la deuda no existe."
 call dona_mary accept_note --subject "$DONA_MARY" --note_id "$NOTE_ID"
 echo
 
-# --- 3) Bodega A confirma el pago --------------------------------------------
+# --- 3) Bodega A-17 confirma el pago --------------------------------------------
 
-paso 3 "Doña Mary paga y Bodega A confirma el pago."
+paso 3 "Doña Mary paga y Bodega A-17 confirma el pago."
 call bodega_a confirm_paid --issuer "$BODEGA_A" --note_id "$NOTE_ID"
 echo
 
-# --- 4) Bodega B consulta SIN permiso (debe fallar) --------------------------
+# --- 4) Bodega B-40 consulta SIN permiso (debe fallar) --------------------------
 
-# Idempotencia: garantizar que Bodega B no tenga un permiso de una corrida previa.
+# Idempotencia: garantizar que Bodega B-40 no tenga un permiso de una corrida previa.
 stellar contract invoke --id "$CONTRACT_ID" --source dona_mary --network "$NET" --send=yes -- \
   revoke_consent --subject "$DONA_MARY" --reader "$BODEGA_B" >/dev/null 2>&1 || true
 
-paso 4 "Bodega B pide el resumen de Doña Mary SIN permiso."
+paso 4 "Bodega B-40 pide el resumen de Doña Mary SIN permiso."
 errf="$(mktemp)"
 if stellar contract invoke --id "$CONTRACT_ID" --source bodega_b --network "$NET" --send=yes -- \
      read_stats --reader "$BODEGA_B" --subject_id "$SUBJECT_ID" >/dev/null 2>"$errf"; then
@@ -163,16 +163,16 @@ fi
 rm -f "$errf"
 echo
 
-# --- 5) Doña Mary autoriza a Bodega B ----------------------------------------
+# --- 5) Doña Mary autoriza a Bodega B-40 ----------------------------------------
 
-paso 5 "Doña Mary autoriza a Bodega B a leer su resumen por 30 días."
+paso 5 "Doña Mary autoriza a Bodega B-40 a leer su resumen por 30 días."
 call dona_mary grant_consent \
   --subject "$DONA_MARY" --reader "$BODEGA_B" --exp_ts "$EXP_TS" --nonce "$NOW"
 echo
 
-# --- 6) Bodega B consulta con permiso ----------------------------------------
+# --- 6) Bodega B-40 consulta con permiso ----------------------------------------
 
-paso 6 "Bodega B consulta con permiso vigente y ve el resumen de cumplimiento."
+paso 6 "Bodega B-40 consulta con permiso vigente y ve el resumen de cumplimiento."
 call bodega_b read_stats --reader "$BODEGA_B" --subject_id "$SUBJECT_ID"
 echo "   Esta consulta queda registrada (evento aggregate_read)."
 STATS_JSON="$RET"

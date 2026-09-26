@@ -1,4 +1,4 @@
-// Vista: Bodega B — consultar el historial de Doña Mary (con su permiso).
+// Vista: Bodega B-40 — consultar el historial de Doña Mary (con su permiso).
 // El semáforo siempre lleva forma y palabra; nunca se muestra un número calculado.
 
 import {

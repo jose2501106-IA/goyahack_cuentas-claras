@@ -7,12 +7,12 @@ import { api } from './app.js';
 
 // Texto de acción del servidor → tipo de evento del mapa (spec gemelo, §3).
 const TIPOS = {
-  'Bodega A creó una nota': { tipo: 'nota_creada', emisor: 'bodega_a' },
+  'Bodega A-17 creó una nota': { tipo: 'nota_creada', emisor: 'bodega_a' },
   'Doña Mary firmó la nota': { tipo: 'nota_aceptada', emisor: 'bodega_a' },
-  'Bodega A confirmó el pago': { tipo: 'pago_confirmado', emisor: 'bodega_a' },
-  'Doña Mary dio permiso a Bodega B por 30 días': { tipo: 'permiso_dado' },
-  'Doña Mary retiró el permiso a Bodega B': { tipo: 'permiso_quitado' },
-  'Bodega B consultó el historial de Doña Mary': { tipo: 'consulta' },
+  'Bodega A-17 confirmó el pago': { tipo: 'pago_confirmado', emisor: 'bodega_a' },
+  'Doña Mary dio permiso a Bodega B-40 por 30 días': { tipo: 'permiso_dado' },
+  'Doña Mary retiró el permiso a Bodega B-40': { tipo: 'permiso_quitado' },
+  'Bodega B-40 consultó el historial de Doña Mary': { tipo: 'consulta' },
 };
 
 const eventos = [];            // en orden cronológico de llegada
