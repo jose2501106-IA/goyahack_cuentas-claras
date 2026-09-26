@@ -37,7 +37,7 @@ Las identidades `plataforma`, `bodega_a`, `bodega_b`, `bodega_c` y `dona_mary` v
    - revisar la inclinación isométrica y las animaciones.
 2. **Capturas** de las cuatro vistas y la portada en `demo/capturas/`.
 3. **Video** de 2–3 minutos con el flujo real (guion de demo v2, §5).
-4. **Lo que decida José** sobre la simulación con agentes y la publicación en Vercel (propuesta en el chat del 26-sep, 13:15; se registrará como decisión antes de construir).
+4. **Sitio público y «Pasillo vivo»** (#49–#51): se construyen en `web/` siguiendo `docs/cola-de-trabajo.md` y `spec/2026-09-26_especificacion-web-y-agentes.md`, desde Claude Code en la web. No necesitan llaves.
 
 ## 4. Reglas que no cambian
 
