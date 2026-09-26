@@ -102,8 +102,8 @@ sigue «Comandos de referencia» en [`CLAUDE.md`](CLAUDE.md).
 
 ## Cómo correr la app
 
-App local de cuatro vistas (Bodega A, Teléfono de Doña Mary, Bodega B y Para el jurado) sobre el
-mismo contrato de testnet que `demo.sh`. Node 20 con módulos nativos: **sin `npm install` y sin
+App local con portada «Pasillo A-B» (gemelo digital del pasillo; decisión #47) y cuatro vistas
+(Bodega A, Teléfono de Doña Mary, Bodega B y Para el jurado) sobre el mismo contrato de testnet que `demo.sh`. Node 20 con módulos nativos: **sin `npm install` y sin
 dependencias** (decisión #45; [`spec/2026-09-26_especificacion-frontend.md`](spec/2026-09-26_especificacion-frontend.md)).
 
 ```bash
@@ -115,6 +115,7 @@ node backend/server.js        # abre http://127.0.0.1:8080
 - El servidor llama al Stellar CLI con `execFile`, una transacción a la vez; las llaves secretas no salen del CLI. Cada firma tarda unos segundos («Registrando…»).
 - Datos fuera de cadena (monto exacto y aleatoriedad del documento) en `backend/datos/notas.json`, ignorado por git.
 - Pruebas del servidor y del semáforo: `node --test backend/`.
+- Pasillo A-B: esquema genérico generado en código (`frontend/datos/pasillo.js`), sin datos del plano; cada trazo aparece solo después de que la API devolvió el `tx_hash`. Los eventos salen de `GET /api/transacciones` y de la respuesta de `POST /api/consultas` (`frontend/bitacora.js`); la API no cambió. Captura: `demo/capturas/pasillo-a-b-plana.png`.
 - `demo/sembrar.sh` agrega a Bodega C como segundo emisor (una sola vez, antes de grabar). Bodega B nunca emite notas a Doña Mary: es la que consulta y debe necesitar permiso (decisión #46).
 
 ## Criterios de aceptación (spec v2 §11)

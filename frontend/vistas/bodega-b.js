@@ -4,6 +4,7 @@
 import {
   el, api, conBoton, comprobante, rotuloDemo, cargando, aviso, textoRango,
 } from '../app.js';
+import { registrar } from '../bitacora.js';
 
 let ultimaConsulta = null;
 
@@ -17,6 +18,9 @@ export function render(raiz) {
       const r = await conBoton(boton, () => api('/api/consultas', { metodo: 'POST' }));
       ultimaConsulta = r;
       pintarConsulta(zonaConsulta, r);
+      // Para el mapa del pasillo: solo lo que la API ya respondió.
+      if (r.permitido) registrar({ tipo: 'consulta', tx_hash: r.tx_hash, url: r.url, semaforo: r.semaforo });
+      else registrar({ tipo: 'consulta_sin_permiso', motivo: r.motivo });
     } catch (e) {
       zonaConsulta.replaceChildren(aviso(e.message));
     }

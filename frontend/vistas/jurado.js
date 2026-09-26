@@ -4,10 +4,12 @@
 import {
   el, api, enlaceExterno, comprobante, rotuloDemo, cargando, aviso, fechaHora, hashCorto,
 } from '../app.js';
+import { montarMapa } from './pasillo.js';
 
 export function render(raiz) {
   const zonaContrato = el('div', { class: 'jurado-contrato' });
   const zonaTx = el('div', { class: 'jurado-tx' });
+  const zonaMapa = el('div', { class: 'jurado-mapa' });
 
   raiz.append(
     rotuloDemo(),
@@ -15,6 +17,9 @@ export function render(raiz) {
     el('p', { class: 'apoyo' },
       'Bitácora de fiado co-firmada de la Central de Abasto, sobre un contrato inteligente en blockchain (Stellar testnet).'),
     zonaContrato,
+    el('h2', null, 'Gemelo digital del Pasillo A-B'),
+    el('p', { class: 'apoyo' }, 'Cada trazo aparece solo después de que la transacción quedó en blockchain. La ubicación de las bodegas no va a la cadena: vive en el frontend.'),
+    zonaMapa,
     el('h2', null, 'Transacciones de esta sesión'),
     zonaTx,
     el('h2', null, 'En la cadena / Fuera de la cadena'),
@@ -23,6 +28,7 @@ export function render(raiz) {
     el('p', { class: 'frase-dinero' }, 'No mueve dinero ni emite token.'),
   );
 
+  montarMapa(zonaMapa, { compacto: true });
   cargarContrato(zonaContrato);
   cargarTransacciones(zonaTx);
 }

@@ -5,6 +5,8 @@ import * as bodegaA from './vistas/bodega-a.js';
 import * as cliente from './vistas/cliente.js';
 import * as bodegaB from './vistas/bodega-b.js';
 import * as jurado from './vistas/jurado.js';
+import * as pasillo from './vistas/pasillo.js';
+import { sincronizar } from './bitacora.js';
 
 // ---------- Utilidades de DOM ----------
 
@@ -171,6 +173,7 @@ export function textoRango(bucket) {
 // ---------- Navegación ----------
 
 const VISTAS = {
+  pasillo,
   'bodega-a': bodegaA,
   cliente,
   'bodega-b': bodegaB,
@@ -179,7 +182,7 @@ const VISTAS = {
 
 function rutaActual() {
   const h = location.hash.replace(/^#/, '');
-  return Object.hasOwn(VISTAS, h) ? h : 'bodega-a';
+  return Object.hasOwn(VISTAS, h) ? h : 'pasillo';
 }
 
 function navegar() {
@@ -203,4 +206,5 @@ function navegar() {
 }
 
 window.addEventListener('hashchange', navegar);
-navegar();
+// Lo que ya estaba registrado al abrir la app es historia: el mapa no lo anima.
+sincronizar().catch(() => {}).finally(navegar);
