@@ -2,14 +2,17 @@
 #
 # Cuentas Claras — segundo emisor para la demo (spec 2026-09-26, §6).
 #
-# Una sola ejecución, antes de grabar: Bodega B crea una nota para Doña Mary,
-# ella la acepta y Bodega B confirma el pago. Resultado: issuers_count = 2 y la
+# Una sola ejecución, antes de grabar: Bodega C crea una nota para Doña Mary,
+# ella la acepta y Bodega C confirma el pago. Resultado: issuers_count = 2 y la
 # condición «2 bodegas» del semáforo en ✓. Si Doña Mary ya tiene 2 o más
 # bodegas en su historial, no envía nada.
 #
 # Usa la misma configuración y la misma forma de llamar al contrato que
 # demo/demo.sh (deploy.json, .env con DEMO_HMAC_KEY, identidades locales del
 # stellar CLI). No modifica demo.sh.
+#
+# El segundo emisor es Bodega C, nunca Bodega B: Bodega B es la que consulta en
+# la demo y no debe tener notas de Doña Mary (decisión #46).
 #
 # Uso: ./demo/sembrar.sh
 
@@ -32,7 +35,7 @@ import json, sys
 d = json.load(open(sys.argv[1]))
 c = d["cuentas_publicas"]
 print(f'CONTRACT_ID={d["contract_id"]}')
-print(f'BODEGA_B={c["bodega_b"]}')
+print(f'BODEGA_C={c["bodega_c"]}')
 print(f'DONA_MARY={c["dona_mary"]}')
 PY
 )"
@@ -72,7 +75,7 @@ _link() {  # imprime "   ↳ <url>" a partir del stderr de la CLI
   [ -n "$url" ] && echo "   ↳ $url"
 }
 
-# Cuántas bodegas distintas tiene hoy Doña Mary. Lectura de la propia parte,
+# Cuántas bodegas distintas tiene hoy Doña Mary. Lectura del propio sujeto,
 # simulada (--send=no): no envía transacción.
 issuers_count() {
   stellar contract invoke --id "$CONTRACT_ID" --source dona_mary --network "$NET" --send=no -- \
@@ -87,7 +90,7 @@ print(v)'
 
 # --- Sembrar -----------------------------------------------------------------
 
-echo "Cuentas Claras — segundo emisor (Bodega B) · contrato $CONTRACT_ID"
+echo "Cuentas Claras — segundo emisor (Bodega C) · contrato $CONTRACT_ID"
 ANTES="$(issuers_count)"
 if [ "$ANTES" -ge 2 ]; then
   echo "✅ Doña Mary ya tiene $ANTES bodegas distintas en su historial. No se envía nada."
@@ -95,16 +98,16 @@ if [ "$ANTES" -ge 2 ]; then
 fi
 echo
 
-echo "1) Bodega B registra una nota de fiado para Doña Mary (7 días, rango 1k–5k)."
-call bodega_b create_note \
-  --issuer "$BODEGA_B" --note_id "$NOTE_ID" --subject_id "$SUBJECT_ID" \
+echo "1) Bodega C registra una nota de fiado para Doña Mary (7 días, rango 1k–5k)."
+call bodega_c create_note \
+  --issuer "$BODEGA_C" --note_id "$NOTE_ID" --subject_id "$SUBJECT_ID" \
   --amount_bucket B1k_5k --due_ts "$DUE_TS"
 
 echo "2) Doña Mary acepta la nota."
 call dona_mary accept_note --subject "$DONA_MARY" --note_id "$NOTE_ID"
 
-echo "3) Bodega B confirma el pago."
-call bodega_b confirm_paid --issuer "$BODEGA_B" --note_id "$NOTE_ID"
+echo "3) Bodega C confirma el pago."
+call bodega_c confirm_paid --issuer "$BODEGA_C" --note_id "$NOTE_ID"
 
 echo
 echo "✅ Listo. Bodegas distintas en el historial de Doña Mary: $(issuers_count) (antes: $ANTES)."

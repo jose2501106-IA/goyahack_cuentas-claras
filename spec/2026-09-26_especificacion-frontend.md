@@ -121,7 +121,7 @@ En las notas firmadas aparece el botón «Confirmar pago». Texto de apoyo: «El
 
 ## 6. Segundo emisor (`demo/sembrar.sh`)
 
-Script de una sola ejecución: Bodega B crea una nota para Doña Mary, ella la acepta y Bodega B confirma el pago. Resultado: `issuers_count = 2` y la condición «2 bodegas» en ✓. Reutiliza las utilidades de `demo.sh`, imprime los enlaces y no altera `demo.sh`. Se corre una vez, antes de grabar.
+Script de una sola ejecución: Bodega C crea una nota para Doña Mary, ella la acepta y Bodega C confirma el pago (decisión #46: el segundo emisor nunca es Bodega B, que es la que consulta). Resultado: `issuers_count = 2` y la condición «2 bodegas» en ✓. Reutiliza las utilidades de `demo.sh`, imprime los enlaces y no altera `demo.sh`. Se corre una vez, antes de grabar.
 
 ## 7. Criterios de aceptación
 

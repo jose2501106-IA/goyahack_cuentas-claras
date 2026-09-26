@@ -1,32 +1,32 @@
 ════════════════════════════════════════════════════════════════════
  Cuentas Claras — demo en Stellar testnet
-   Contrato:   CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3
-   Explorer:   https://stellar.expert/explorer/testnet/contract/CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3
+   Contrato:   CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW
+   Explorer:   https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW
    Seudónimo de Doña Mary (subject_id): fe1b5cfb1b99ba1b…
-   Nota de esta corrida (note_id):      fa7bdb4981840ef7…
+   Nota de esta corrida (note_id):      18216b523aaca302…
 ════════════════════════════════════════════════════════════════════
 
 1) Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).
-   ↳ https://stellar.expert/explorer/testnet/tx/1fb515e667770db1df34e6e766d4140d6dfa38babf87faa257d40447ffa3e652
+   ↳ https://stellar.expert/explorer/testnet/tx/cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872
 
 2) Doña Mary acepta la nota: sin su firma la deuda no existe.
-   ↳ https://stellar.expert/explorer/testnet/tx/59cc40436ec7bebab057fc556fe5986aeee641509bc21e09fb092764297f1541
+   ↳ https://stellar.expert/explorer/testnet/tx/a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d
 
 3) Doña Mary paga y Bodega A confirma el pago.
-   ↳ https://stellar.expert/explorer/testnet/tx/d72123920ee6c6a2aa7f18a3e60afa607c97ba53d0063e8ad5ba32f441d88978
+   ↳ https://stellar.expert/explorer/testnet/tx/09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326
 
 4) Bodega B pide el resumen de Doña Mary SIN permiso.
    ✅ esperado: NoConsent — el contrato no entrega el resumen sin permiso (no se envía transacción)
 
 5) Doña Mary autoriza a Bodega B a leer su resumen por 30 días.
-   ↳ https://stellar.expert/explorer/testnet/tx/76a6db94884167fa1b2c6ae7cf545ef8564c0123ed8a7612d89a668bdb3c1acb
+   ↳ https://stellar.expert/explorer/testnet/tx/cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814
 
 6) Bodega B consulta con permiso vigente y ve el resumen de cumplimiento.
-   ↳ https://stellar.expert/explorer/testnet/tx/cfba09fe854c4584e70e6635c5af56cd99fc92a0ae39778ea280c9c8c181ea0b
+   ↳ https://stellar.expert/explorer/testnet/tx/a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c
    Esta consulta queda registrada (evento aggregate_read).
    ── Resumen de Doña Mary ──────────────────────────────
-   Notas aceptadas:      2
-   Pagadas a tiempo:     2
+   Notas aceptadas:      1
+   Pagadas a tiempo:     1
    Pagadas tarde:        0
    Vencidas abiertas:    0
    Incumplidas:          0

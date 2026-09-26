@@ -184,7 +184,7 @@ fn grant_consent(env, subject: Address, reader: Address, exp_ts: u64, nonce: u64
 fn revoke_consent(env, subject: Address, reader: Address)
 fn read_stats(env, reader: Address, subject_id: BytesN<32>) -> Result<SubjectStats, Error>
     // require_auth(reader); Consent vigente para (subject_id, reader); emite aggregate_read
-    // La propia parte (issuer con notas del sujeto, o el sujeto) puede leer sin consentimiento.
+    // Solo el propio sujeto lee sin consentimiento; el emisor también necesita permiso y ve sus notas con get_note (decisión #46, opción c).
 
 // Consultas sin firma (para el explorador / demo)
 fn get_note(env, note_id) -> Option<Note>

@@ -12,7 +12,7 @@ Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de In
 
 | | |
 |---|---|
-| Contrato | [`CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3`](https://stellar.expert/explorer/testnet/contract/CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3) |
+| Contrato | [`CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW`](https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW) |
 | Estado | Desplegado e inicializado el 25-sep-2026 (16:52 CDMX) · 11 pruebas en verde (`cargo test`) |
 | Toolchain | Stellar CLI 28.0.0 · soroban-sdk 28.0.0 · `wasm32v1-none` (decisión #41) |
 | Datos | Solo claves públicas y datos ficticios de demo en [`demo/deploy.json`](demo/deploy.json) |
@@ -115,7 +115,7 @@ node backend/server.js        # abre http://127.0.0.1:8080
 - El servidor llama al Stellar CLI con `execFile`, una transacción a la vez; las llaves secretas no salen del CLI. Cada firma tarda unos segundos («Registrando…»).
 - Datos fuera de cadena (monto exacto y aleatoriedad del documento) en `backend/datos/notas.json`, ignorado por git.
 - Pruebas del servidor y del semáforo: `node --test backend/`.
-- `demo/sembrar.sh` agrega a Bodega B como segundo emisor (una sola vez, antes de grabar).
+- `demo/sembrar.sh` agrega a Bodega C como segundo emisor (una sola vez, antes de grabar). Bodega B nunca emite notas a Doña Mary: es la que consulta y debe necesitar permiso (decisión #46).
 
 ## Criterios de aceptación (spec v2 §11)
 

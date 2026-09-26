@@ -256,7 +256,7 @@ fn disputa_y_resolucion_mutua() {
 }
 
 // --- Lectura sin consentimiento falla; con consentimiento funciona;
-//     la propia parte lee sin consentimiento (invariantes 6, 11) ------------
+//     solo el propio sujeto lee sin consentimiento (invariantes 6, 11) -----
 
 #[test]
 fn lectura_sin_consentimiento_falla() {
@@ -277,16 +277,38 @@ fn lectura_sin_consentimiento_falla() {
         Err(Ok(Error::NoConsent))
     );
 
-    // La propia parte (emisor con notas del sujeto) lee sin consentimiento.
+    // El propio sujeto lee su agregado sin consentimiento.
     let evs_antes = env.events().all().events().len();
-    let s = client.read_stats(&issuer, &subj);
+    let s = client.read_stats(&mary, &subj);
     assert_eq!(s.accepted, 1);
     // read_stats deja constancia: emite evento en cada éxito (invariante 6).
     assert!(env.events().all().events().len() > evs_antes);
+}
 
-    // El propio sujeto también lee su agregado.
-    let s2 = client.read_stats(&mary, &subj);
-    assert_eq!(s2.accepted, 1);
+#[test]
+fn emisor_con_notas_necesita_permiso() {
+    // Decisión #46 (c): tener notas aceptadas del sujeto no abre su agregado.
+    let (env, client, admin) = setup();
+    let issuer = Address::generate(&env);
+    let mary = Address::generate(&env);
+    client.add_issuer(&admin, &issuer);
+
+    let note = id(&env, 1);
+    let subj = id(&env, 100);
+    client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
+    client.accept_note(&mary, &note);
+
+    // Sin permiso: NoConsent, aunque sea emisor de una nota aceptada.
+    assert_eq!(
+        client.try_read_stats(&issuer, &subj),
+        Err(Ok(Error::NoConsent))
+    );
+    // Su propia nota sí la ve con get_note.
+    assert_eq!(client.get_note(&note).unwrap().status, Status::Accepted);
+
+    // Con permiso del sujeto, lee.
+    client.grant_consent(&mary, &issuer, &(T0 + 10 * DAY), &1u64);
+    assert_eq!(client.read_stats(&issuer, &subj).accepted, 1);
 }
 
 #[test]

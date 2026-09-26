@@ -596,8 +596,9 @@ impl CuentasClaras {
         Ok(())
     }
 
-    /// Consulta oficial del agregado. Falla sin consentimiento vigente (invariantes 6 y 11); la
-    /// propia parte (el sujeto, o un emisor con notas aceptadas del sujeto) lee sin consentimiento.
+    /// Consulta oficial del agregado. Falla sin consentimiento vigente (invariantes 6 y 11); solo el
+    /// propio sujeto lee sin consentimiento. Un emisor con notas del sujeto también necesita permiso:
+    /// sus propias notas las ve con `get_note` (decisión #46, opción c).
     /// Emite `aggregate_read` en cada éxito: deja constancia (spec v2, §3b).
     pub fn read_stats(
         env: Env,
@@ -612,12 +613,8 @@ impl CuentasClaras {
             .get::<DataKey, BytesN<32>>(&DataKey::AddrSubject(reader.clone()))
             .map(|s| s == subject_id)
             .unwrap_or(false);
-        let is_related_issuer = env
-            .storage()
-            .persistent()
-            .has(&DataKey::SubjectIssuer(subject_id.clone(), reader.clone()));
 
-        if !is_self && !is_related_issuer {
+        if !is_self {
             // Tercero: exige consentimiento vigente.
             let key = DataKey::Consent(subject_id.clone(), reader.clone());
             let consent: Consent = env
