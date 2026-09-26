@@ -10,14 +10,25 @@
 
 ## Cola
 
-- [ ] **1. Base del sitio.** `web/` con `index.html`, `estilos.css` y `app.js`, navegación de las cuatro secciones, identidad «Tinta y Sello» y las secciones Inicio y Cómo funciona con su texto. *Criterio:* abre sin instalar nada y se ve bien en 390 px y 1920 px.
-- [ ] **2. Gemelo en `web/`.** `gemelo.js` dibuja la copia idéntica de `plano/pasillo-a-b.json` (trazos + 96 bodegas), en isométrico y en vista plana. *Criterio:* prueba de copia idéntica en verde; se ve igual que la portada de la app local.
-- [ ] **3. La demo real, verificable.** `repeticion.json` sacado de `demo/salida-demo.txt` y `demo/deploy.json`, más la pantalla de pasos con «Verlo en la cadena». *Criterio:* la prueba de hashes está en verde y ningún hash es inventado.
-- [ ] **4. Motor de la simulación.** `simulacion/motor.js` con las reglas y el semáforo. *Criterio:* pruebas del motor en verde, incluida la equivalencia con `backend/semaforo.js`.
-- [ ] **5. Agentes y vista.** `agentes.js` y `vista.js`: 20 bodegas y 40 clientes, controles de tiempo, fichas, trazos, sellos, feed, tarjeta de «pensamiento» y rótulo de simulación. *Criterio:* a los 90 días simulados hay semáforos de los tres colores y el rótulo del día 60 aparece.
-- [ ] **6. Pulido y accesibilidad.** `prefers-reduced-motion`, pausa, contraste y textos. *Criterio:* criterios 3, 4 y 6 de la spec web.
-- [ ] **7. Cierre.** Capturas en `demo/capturas/web-*.png`, sección «Sitio público» en el README, índice y `llms.txt` al día. *Criterio:* criterios 1 a 8 de la spec web.
+- [x] **1. Base del sitio.** `web/` con `index.html`, `estilos.css` y `app.js`, navegación de las cuatro secciones, identidad «Tinta y Sello» y las secciones Inicio y Cómo funciona con su texto. *Criterio:* abre sin instalar nada y se ve bien en 390 px y 1920 px.
+- [x] **2. Gemelo en `web/`.** `gemelo.js` dibuja la copia idéntica de `plano/pasillo-a-b.json` (trazos + 96 bodegas), en isométrico y en vista plana. *Criterio:* prueba de copia idéntica en verde; se ve igual que la portada de la app local.
+- [x] **3. La demo real, verificable.** `repeticion.json` sacado de `demo/salida-demo.txt` y `demo/deploy.json`, más la pantalla de pasos con «Verlo en la cadena». *Criterio:* la prueba de hashes está en verde y ningún hash es inventado.
+- [x] **4. Motor de la simulación.** `simulacion/motor.js` con las reglas y el semáforo. *Criterio:* pruebas del motor en verde, incluida la equivalencia con `backend/semaforo.js`.
+- [x] **5. Agentes y vista.** `agentes.js` y `vista.js`: 20 bodegas y 40 clientes, controles de tiempo, fichas, trazos, sellos, feed, tarjeta de «pensamiento» y rótulo de simulación. *Criterio:* a los 90 días simulados hay semáforos de los tres colores y el rótulo del día 60 aparece.
+- [x] **6. Pulido y accesibilidad.** `prefers-reduced-motion`, pausa, contraste y textos. *Criterio:* criterios 3, 4 y 6 de la spec web.
+- [!] **7. Cierre.** Capturas en `demo/capturas/web-*.png`, sección «Sitio público» en el README, índice y `llms.txt` al día. *Criterio:* criterios 1 a 8 de la spec web.
+  - **[!] Parada obligatoria (sáb 26-sep): tocar fuera de `web/`, `docs/` o `README.md`.** Lo que falta de esta tarea vive fuera de lo permitido:
+    - las capturas van en `demo/capturas/web-*.png` (carpeta `demo/`; además el criterio 5 pide no tocar `demo/`);
+    - `llms.txt`, en la raíz del repo, debe mencionar el sitio (regla de `CLAUDE.md`: índice y `llms.txt` al día).
+  - **Sí quedó hecho:** sección «Sitio público» en el README (con la URL de Vercel pendiente para que la pegue José) y la fila de `web/` en `docs/indice.md`. Criterios de la spec web: 2, 3, 4, 5 y 6 verificados; 1 verificado con `file://` y con `python3 -m http.server`; 7 y 8 (URL) pendientes.
+  - **Qué necesita José:** (1) autorizar que Claude Code escriba en `demo/capturas/` y `llms.txt`, o hacerlo en el Codespace; las capturas se sacan con Chromium sin interfaz en 390 px y 1920 px (Inicio, Pasillo vivo en el día 90, demo real en el paso 6, Cómo funciona). (2) Este trabajo está en la rama `claude/hopeful-bell-9ib4fo`, no en `main`: Vercel publica `main`, así que hay que fusionarla (o abrir un PR) para verlo en línea. (3) Pegar la URL de Vercel en el README.
 
 ## Hechas
 
 *(Claude Code mueve aquí cada tarea terminada, con hora y commit.)*
+- **1.** sáb 26-sep 13:52 · `f57538c` · Base del sitio en `web/`: cuatro secciones, Inicio y Cómo funciona con texto; scripts clásicos para que abra también desde `file://`. Revisado en 390 px y 1920 px (Chromium sin interfaz).
+- **2.** sáb 26-sep 13:54 · `434e4f7` · `gemelo.js` y `datos/pasillo-a-b.json` (copia byte por byte) más `datos/pasillo-a-b.js` para `file://`. Isométrico y plano revisados en 1920 px. 6 pruebas en verde con `node --test web/pruebas/`.
+- **3.** sáb 26-sep 13:57 · `647082a` · `datos/repeticion.json` generado con `web/herramientas/generar-repeticion.js` (solo salida y deploy) y pantalla de 6 pasos con «Verlo en la cadena». Prueba de hashes en verde: 5 de 5 coinciden con la salida, el paso 4 va sin enlace. 11 pruebas en verde.
+- **4.** sáb 26-sep 13:59 · `08f4c0d` · `simulacion/motor.js` con reglas, tiempo en días y azar con semilla. 12 pruebas del motor en verde (23 en total), incluida la equivalencia con `backend/semaforo.js`. Simplificación declarada en el archivo: una nota vencida que se paga antes de la gracia cuenta como pagada tarde (en el contrato eso pasa por aclaración).
+- **5.** sáb 26-sep 14:04 · `9c01b32` · `simulacion/agentes.js` y `simulacion/vista.js`. Con la semilla fija, al día 90 hay 28 verdes, 8 amarillos, 1 rojo y 3 insuficientes; antes del día 60, todos insuficientes. El rótulo del día 60 aparece (revisado en Chromium). 30 pruebas en verde.
+- **6.** sáb 26-sep 14:07 · `10ddf53` · Criterio 3: el grep de vocabulario vetado no devuelve nada. Criterio 4: sin llaves `S…` ni `fetch`. Criterio 6: sin desplazamiento horizontal en 390 px ni en 1920 px (Chromium sin interfaz). `prefers-reduced-motion`, pausa y contraste AA verificados. 35 pruebas en verde.

@@ -118,6 +118,29 @@ node backend/server.js        # abre http://127.0.0.1:8080
 - Pasillo A-B: forma real de `plano/pasillo-a-b.json` (decisión #48; el servidor sirve solo ese archivo del plano, en `/plano/pasillo-a-b.json`), con las 96 bodegas en su posición y los trazos sin rótulos. Cada trazo aparece solo después de que la API devolvió el `tx_hash`. Los eventos salen de `GET /api/transacciones` y de la respuesta de `POST /api/consultas` (`frontend/bitacora.js`); la API no cambió. Captura: `demo/capturas/pasillo-a-b-plana.png`.
 - `demo/sembrar.sh` agrega a Bodega C como segundo emisor (una sola vez, antes de grabar). Bodega B nunca emite notas a Doña Mary: es la que consulta y debe necesitar permiso (decisión #46).
 
+## Sitio público
+
+**URL:** *(pendiente: la pega José cuando Vercel publique; decisión #50)*
+
+Sitio estático en [`web/`](web/) con cuatro secciones: **Inicio**, **Pasillo vivo**, **La demo real, verificable** y **Cómo funciona** ([`spec/2026-09-26_especificacion-web-y-agentes.md`](spec/2026-09-26_especificacion-web-y-agentes.md); decisiones #49–#51).
+
+Qué hace:
+- **Pasillo vivo:** simulación con 20 bodegas y 40 clientes **ficticios** sobre el gemelo del Pasillo A-B, con las reglas del contrato y el mismo semáforo que `backend/semaforo.js` (una prueba compara los dos). Rotulada siempre: «Simulación con personajes ficticios. No es la cadena». Frases de plantilla; no usa ningún modelo de lenguaje.
+- **La demo real, verificable:** repetición paso a paso de la corrida de `demo/demo.sh` en Stellar testnet. Cada paso con transacción enlaza a stellar.expert; los hashes salen solo de `demo/salida-demo.txt` y `demo/deploy.json` (`web/herramientas/generar-repeticion.js`), y una prueba verifica que ninguno es inventado.
+- **Cómo funciona:** qué va en la cadena y qué no, por qué blockchain, los dos huecos cerrados (#42, #46) y el semáforo.
+
+Qué **no** hace:
+- No tiene llaves, servidor, API ni variables de entorno. **No firma ni envía transacciones**; no hace `fetch` a ningún servicio. La demo que firma en vivo es la app local.
+- No usa paquetes ni paso de compilación: HTML, CSS y JavaScript con `<script>` clásicos.
+- Del plano solo usa `web/datos/pasillo-a-b.json`, copia byte por byte de `plano/pasillo-a-b.json`.
+
+```bash
+python3 -m http.server -d web 8000   # o abre web/index.html directo en el navegador
+node --test web/pruebas/              # 35 pruebas: motor, semáforo, agentes, hashes, copia del plano, vocabulario
+```
+
+En Vercel: preset «Other», sin comando de build y con `web/` como directorio raíz. Si cambian `demo/salida-demo.txt` o `plano/pasillo-a-b.json`: `node web/herramientas/generar-repeticion.js` (si aplica), copiar el JSON del plano a `web/datos/` y luego `node web/herramientas/generar-datos.js` (envuelve los JSON en `datos/*.js` para que el sitio abra también desde `file://`).
+
 ## Criterios de aceptación (spec v2 §11)
 
 Cumplido hoy:
