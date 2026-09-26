@@ -25,6 +25,7 @@ __pycache__/
 # datos locales de la demo
 backend/*.db
 backend/*.sqlite
+backend/datos/
 
 # sistema
 .DS_Store
