@@ -43,7 +43,11 @@ async function levantar(t, opts) {
   fs.mkdirSync(front);
   fs.writeFileSync(path.join(front, 'index.html'), '<h1>hola</h1>');
   fs.writeFileSync(path.join(dir, 'secreto.txt'), 'no');
-  const srv = http.createServer(crearApp({ config, stellar, almacen, frontendDir: front, log: silencio }));
+  const plano = path.join(dir, 'plano');
+  fs.mkdirSync(plano);
+  fs.writeFileSync(path.join(plano, 'pasillo-a-b.json'), '{"pasillo":"A-B"}');
+  fs.writeFileSync(path.join(plano, 'README.md'), 'no');
+  const srv = http.createServer(crearApp({ config, stellar, almacen, frontendDir: front, planoDir: plano, log: silencio }));
   await new Promise((r) => srv.listen(0, '127.0.0.1', r));
   t.after(() => { srv.close(); fs.rmSync(dir, { recursive: true, force: true }); });
   const base = `http://127.0.0.1:${srv.address().port}`;
@@ -162,5 +166,15 @@ test('config, ejemplo y estáticos seguros', async (t) => {
   for (const ruta of ['/..%2fsecreto.txt', '/%2e%2e/secreto.txt', '/..%5csecreto.txt']) {
     const r = await fetch(base + ruta);
     assert.equal(r.status, 404, ruta);
+  }
+});
+
+test('del plano solo se sirve pasillo-a-b.json', async (t) => {
+  const { pedir } = await levantar(t);
+  const ok = await pedir('GET', '/plano/pasillo-a-b.json');
+  assert.equal(ok.status, 200);
+  assert.deepEqual(ok.json, { pasillo: 'A-B' });
+  for (const ruta of ['/plano/README.md', '/plano/', '/plano/../secreto.txt', '/plano/pasillo-a-b.json/x']) {
+    assert.equal((await pedir('GET', ruta)).status, 404, ruta);
   }
 });

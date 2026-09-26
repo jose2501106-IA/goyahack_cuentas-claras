@@ -108,9 +108,9 @@ Actualizado: 26-sep-2026, 01:10. Proyecto **Cuentas Claras**; equipo **Palabra**
 |---|---|---|---|---|---|
 | [`demo/README.md`](../demo/README.md) | Qué contendrá `demo/`: `demo.sh`, `deploy.json` y capturas del explorador. | #demo | 84 | Al preparar la demo | en construcción |
 | [`demo/sembrar.sh`](../demo/sembrar.sh) | Segundo emisor para la demo (spec del frontend §6): Bodega C crea, Doña Mary acepta y Bodega C confirma; una sola vez. Bodega B nunca emite (es la que consulta). Ver decisión #46. | #demo | — | Antes de grabar | vigente |
-| [`demo/capturas/`](../demo/capturas/) | Capturas de la app con datos ficticios. `pasillo-a-b-plana.png`: el mapa del pasillo con el estado real de testnet (SVG de la vista exportado sin navegador). | #demo | — | Para el deck o el README | vigente |
+| [`demo/capturas/`](../demo/capturas/) | Capturas de la app con datos ficticios. `pasillo-a-b-plana.png`: el mapa del Pasillo A-B (forma de `plano/pasillo-a-b.json`) con el estado real de testnet (SVG de la vista exportado sin navegador, vista plana). | #demo | — | Para el deck o el README | vigente |
 | [`backend/`](../backend/) | Servidor Node sin dependencias: API de la spec del frontend §3 sobre el Stellar CLI (execFile, cola de transacciones), semáforo §4 y pruebas `node --test backend/`. | #demo #contrato | — | Al tocar la app | vigente |
-| [`frontend/`](../frontend/) | Portada «Pasillo A-B» (gemelo digital: `vistas/pasillo.js`, esquema genérico en `datos/pasillo.js`, eventos en `bitacora.js`) y cuatro vistas en HTML, CSS y JS sin framework: Bodega A, Teléfono de Doña Mary, Bodega B y Para el jurado (que también muestra el mapa). | #demo | — | Al tocar la app | vigente |
+| [`frontend/`](../frontend/) | Portada «Pasillo A-B» (gemelo digital: `vistas/pasillo.js` dibuja la forma real de `plano/pasillo-a-b.json`; `datos/pasillo.js` la carga y trae el esquema genérico de respaldo; eventos en `bitacora.js`) y cuatro vistas en HTML, CSS y JS sin framework: Bodega A, Teléfono de Doña Mary, Bodega B y Para el jurado (que también muestra el mapa). | #demo | — | Al tocar la app | vigente |
 | [`plano/README.md`](../plano/README.md) | Regla del plano de la CEDA: solo como capa visual y solo en la versión que José apruebe. | #datos-ceda | 96 | Antes de mostrar el plano | vigente |
 
 ### research/notas/ — materia prima (no leer salvo que la tarea lo pida)

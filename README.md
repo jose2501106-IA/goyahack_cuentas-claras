@@ -115,7 +115,7 @@ node backend/server.js        # abre http://127.0.0.1:8080
 - El servidor llama al Stellar CLI con `execFile`, una transacción a la vez; las llaves secretas no salen del CLI. Cada firma tarda unos segundos («Registrando…»).
 - Datos fuera de cadena (monto exacto y aleatoriedad del documento) en `backend/datos/notas.json`, ignorado por git.
 - Pruebas del servidor y del semáforo: `node --test backend/`.
-- Pasillo A-B: esquema genérico generado en código (`frontend/datos/pasillo.js`), sin datos del plano; cada trazo aparece solo después de que la API devolvió el `tx_hash`. Los eventos salen de `GET /api/transacciones` y de la respuesta de `POST /api/consultas` (`frontend/bitacora.js`); la API no cambió. Captura: `demo/capturas/pasillo-a-b-plana.png`.
+- Pasillo A-B: forma real de `plano/pasillo-a-b.json` (decisión #48; el servidor sirve solo ese archivo del plano, en `/plano/pasillo-a-b.json`), con las 96 bodegas en su posición y los trazos sin rótulos. Cada trazo aparece solo después de que la API devolvió el `tx_hash`. Los eventos salen de `GET /api/transacciones` y de la respuesta de `POST /api/consultas` (`frontend/bitacora.js`); la API no cambió. Captura: `demo/capturas/pasillo-a-b-plana.png`.
 - `demo/sembrar.sh` agrega a Bodega C como segundo emisor (una sola vez, antes de grabar). Bodega B nunca emite notas a Doña Mary: es la que consulta y debe necesitar permiso (decisión #46).
 
 ## Criterios de aceptación (spec v2 §11)

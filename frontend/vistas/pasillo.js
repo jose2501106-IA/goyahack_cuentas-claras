@@ -4,28 +4,21 @@
 // La lista de eventos repite en texto todo lo que pasa en el mapa.
 
 import {
-  el, api, comprobante, rotuloDemo, aviso, fechaCorta, fechaHora, hashCorto,
+  el, api, comprobante, rotuloDemo, aviso, cargando, fechaCorta, fechaHora, hashCorto,
 } from '../app.js';
 import * as bitacora from '../bitacora.js';
 import {
-  generarPasillo, POSICIONES_DEMO, NOMBRES_DEMO, PASILLOS, PASILLOS_ACTIVOS,
+  cargarPasillo, POSICIONES_DEMO, NOMBRES_DEMO, PASILLOS, PASILLOS_ACTIVOS,
 } from '../datos/pasillo.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
 
-// Medidas del esquema (unidades del viewBox; no son medidas del plano).
-const CELDA = 24;
-const ANCHO = 22;
-const ALTO = 30;
-const CARA = 5;
-const MARGEN = 20;
-const Y_SUP = 44;
-const Y_CORR = 92;
-const ALTO_CORR = 60;
-const Y_INF = Y_CORR + ALTO_CORR + 12;
-const ELEVA = 6;
-const ALTO_TOTAL = Y_INF + ALTO + CARA + 34;
-const INDICE_FICHA = 26;          // dónde se para la ficha de Doña Mary en el corredor
+// Medidas del dibujo, en unidades del plano (las de plano/pasillo-a-b.json).
+const MARGEN = 4;
+const CARA = 1.3;        // cara lateral de cada bodega (volumen)
+const ELEVA = 1.6;       // cuánto se elevan las bodegas de la demo
+const R_FICHA = 3;       // radio de la ficha de Doña Mary
+const X_FICHA = 178;     // dónde se para Doña Mary en el corredor (ilustrativo)
 
 const TRAZO_MS = 900;
 const PAUSA_MS = 450;
@@ -88,17 +81,15 @@ function pestanasPasillos() {
 // ---------- Mapa (también lo usa la vista del jurado) ----------
 
 export function montarMapa(raiz, { compacto = false } = {}) {
-  const pasillo = generarPasillo({ nombre: 'A-B', porFila: 48 });
-  const mapa = dibujarPasillo(pasillo);
-
   const botonPlana = el('button', { type: 'button', class: 'boton boton-secundario boton-plana', 'aria-pressed': String(vistaPlana) },
     'Vista plana');
-  const maqueta = el('div', { class: `maqueta${vistaPlana ? ' plana' : ''}` }, mapa.svg);
+  const maqueta = el('div', { class: `maqueta${vistaPlana ? ' plana' : ''}` }, cargando('Dibujando el pasillo…'));
   botonPlana.addEventListener('click', () => {
     vistaPlana = !vistaPlana;
     maqueta.classList.toggle('plana', vistaPlana);
     botonPlana.setAttribute('aria-pressed', String(vistaPlana));
   });
+  const rotuloForma = el('span', null, 'Forma del Pasillo A-B; no a escala. Posiciones de la demo ilustrativas.');
 
   const contador = el('p', { class: 'contador-notas' }, 'Notas firmadas en este pasillo: …');
   const anuncio = el('p', { class: 'lector', role: 'status', 'aria-live': 'polite' });
@@ -110,7 +101,7 @@ export function montarMapa(raiz, { compacto = false } = {}) {
     el('div', { class: 'gemelo-barra' }, contador, botonPlana),
     el('div', { class: 'maqueta-marco' }, maqueta),
     el('p', { class: 'rotulos-mapa' },
-      el('span', null, 'Esquema ilustrativo, no a escala.'),
+      rotuloForma,
       el('span', null, 'Posiciones ilustrativas. Ninguna bodega real participa en esta demo.')),
     anuncio,
     zonaError,
@@ -119,7 +110,7 @@ export function montarMapa(raiz, { compacto = false } = {}) {
     listaEventos,
   ));
 
-  const estado = { mapa, contador, anuncio, panel, listaEventos, trabajando: false, vivo: true };
+  const estado = { mapa: null, contador, anuncio, panel, listaEventos, trabajando: false, vivo: true };
 
   function pintarLista() {
     const vistos = bitacora.listar().filter((e) => e.visto).reverse();
@@ -139,7 +130,7 @@ export function montarMapa(raiz, { compacto = false } = {}) {
 
   // Procesa, uno por uno y en orden, los eventos que este navegador no ha visto.
   async function procesar() {
-    if (estado.trabajando || !estado.vivo) return;
+    if (estado.trabajando || !estado.vivo || !estado.mapa) return;
     estado.trabajando = true;
     try {
       let pendiente;
@@ -157,6 +148,7 @@ export function montarMapa(raiz, { compacto = false } = {}) {
 
   const quitar = bitacora.suscribir(() => {
     if (!raiz.isConnected) { detener(); return; }
+    if (!estado.mapa) return;
     pintarPanel(estado);
     procesar();
   });
@@ -172,6 +164,11 @@ export function montarMapa(raiz, { compacto = false } = {}) {
 
   // Estado inicial desde la API; luego se animan los eventos pendientes.
   (async () => {
+    const forma = await cargarPasillo('A-B');
+    if (!estado.vivo) return;
+    estado.mapa = dibujarPasillo(forma);
+    maqueta.replaceChildren(estado.mapa.svg);
+    if (forma.generico) rotuloForma.textContent = 'Esquema ilustrativo, no a escala. Posiciones de la demo ilustrativas.';
     try {
       await bitacora.sincronizar();
     } catch (e) {
@@ -313,44 +310,79 @@ function pintarPanel(estado) {
 
 // ---------- Dibujo ----------
 
-function xDe(indice) { return MARGEN + indice * CELDA; }
+// El plano usa y hacia arriba (origen en la base de la fila B); el SVG, y hacia abajo.
+function geometria(forma) {
+  const xs = [];
+  const ys = [];
+  for (const t of forma.trazos) { xs.push(t[0], t[2]); ys.push(t[1], t[3]); }
+  for (const b of forma.bodegas) xs.push(b.x, b.x + b.w);
+  for (const f of Object.values(forma.filas)) ys.push(f.y, f.y + f.alto);
+  const minX = Math.min(...xs) - MARGEN;
+  const maxX = Math.max(...xs) + MARGEN;
+  const minY = Math.min(...ys) - MARGEN - 8;   // lugar para las etiquetas de la fila inferior
+  const maxY = Math.max(...ys) + MARGEN;
+  return {
+    X: (x) => +(x - minX).toFixed(2),
+    Y: (y) => +(maxY - y).toFixed(2),
+    ancho: +(maxX - minX).toFixed(2),
+    alto: +(maxY - minY).toFixed(2),
+  };
+}
 
-function dibujarPasillo(pasillo) {
-  const anchoTotal = MARGEN * 2 + pasillo.porFila * CELDA;
+function dibujarPasillo(forma) {
+  const g = geometria(forma);
+  const nombre = forma.pasillo || 'A-B';
   const svg = s('svg', {
-    viewBox: `0 0 ${anchoTotal} ${ALTO_TOTAL}`, class: 'pasillo-svg', role: 'img',
-    'aria-label': `Esquema del Pasillo ${pasillo.nombre}: ${pasillo.porFila * 2} bodegas numeradas a los dos lados del corredor. Bodega A, Bodega B y Bodega C marcadas; Doña Mary en el corredor.`,
+    viewBox: `0 0 ${g.ancho} ${g.alto}`, class: 'pasillo-svg', role: 'img',
+    'aria-label': `Forma del Pasillo ${nombre}: ${forma.bodegas.length} bodegas numeradas a los dos lados del corredor. Bodega A, Bodega B y Bodega C marcadas; Doña Mary en el corredor.`,
   });
 
+  // 1) Capa base: los trazos del plano en un solo path, tinta al 45 %.
+  if (forma.trazos.length) {
+    let d = '';
+    for (const [x1, y1, x2, y2] of forma.trazos) d += `M${g.X(x1)} ${g.Y(y1)}L${g.X(x2)} ${g.Y(y2)}`;
+    svg.append(s('path', { d, class: 'plano-trazos' }));
+  }
+
+  // Corredor, a lo largo de las bodegas.
+  const xIni = Math.min(...forma.bodegas.map((b) => b.x));
+  const xFin = Math.max(...forma.bodegas.map((b) => b.x + b.w));
+  const c = forma.corredor;
+  svg.append(
+    s('rect', { x: g.X(xIni), y: g.Y(c.y + c.alto), width: +(xFin - xIni).toFixed(2), height: c.alto, class: 'corredor' }),
+    s('text', { x: g.X(xFin) - 1.5, y: g.Y(c.y) - 1.8, class: 'corredor-rotulo', 'text-anchor': 'end' }, c.rotulo || `Pasillo ${nombre}`),
+  );
+
+  // 2) Bodegas en su x y w reales; las de la demo se elevan.
   const demoPorId = {};
   for (const [cuenta, id] of Object.entries(POSICIONES_DEMO)) demoPorId[id] = cuenta;
-
-  // Corredor.
-  svg.append(
-    s('rect', { x: MARGEN - 8, y: Y_CORR, width: anchoTotal - 2 * MARGEN + 16, height: ALTO_CORR, class: 'corredor' }),
-    s('text', { x: anchoTotal - MARGEN, y: Y_CORR + ALTO_CORR - 8, class: 'corredor-rotulo', 'text-anchor': 'end' }, `Pasillo ${pasillo.nombre}`),
-  );
+  const lados = Object.keys(forma.filas);
+  const ladoSup = lados.reduce((a, b) => (forma.filas[a].y >= forma.filas[b].y ? a : b));
 
   const bodegas = {};
   const capaBodegas = s('g', { class: 'capa-bodegas' });
   const capaDemo = s('g', { class: 'capa-demo' });
-  for (const b of [...pasillo.superior, ...pasillo.inferior]) {
+  for (const b of forma.bodegas) {
     const cuenta = demoPorId[b.id];
-    const x = xDe(b.indice);
-    const y = b.fila === 'superior' ? Y_SUP : Y_INF;
-    const g = bodega(b, x, y, cuenta);
-    (cuenta ? capaDemo : capaBodegas).append(g);
-    if (cuenta) bodegas[cuenta] = { x, y: y - ELEVA, fila: b.fila, g };
+    const fila = forma.filas[b.lado];
+    const eleva = cuenta ? ELEVA : 0;
+    const caja = {
+      x: g.X(b.x), y: g.Y(fila.y + fila.alto) - eleva, w: b.w, h: fila.alto,
+      superior: b.lado === ladoSup,
+    };
+    const nodo = bodega(b, caja, cuenta, eleva);
+    (cuenta ? capaDemo : capaBodegas).append(nodo);
+    if (cuenta) bodegas[cuenta] = { ...caja, g: nodo, eleva };
   }
   svg.append(capaBodegas);
 
   // Doña Mary: ficha redonda con iniciales, en el corredor.
-  const fx = xDe(INDICE_FICHA) + ANCHO / 2;
-  const fy = Y_CORR + ALTO_CORR / 2 - 4;
+  const fx = g.X(X_FICHA);
+  const fy = g.Y(c.y + c.alto / 2);
   const ficha = s('g', { class: 'ficha-mary' },
-    s('circle', { cx: fx, cy: fy, r: 13 }),
-    s('text', { x: fx, y: fy + 4, 'text-anchor': 'middle' }, 'DM'),
-    s('text', { x: fx - 19, y: fy + 4, 'text-anchor': 'end', class: 'ficha-nombre' }, 'Doña Mary'));
+    s('circle', { cx: fx, cy: fy, r: R_FICHA }),
+    s('text', { x: fx, y: fy + 1, 'text-anchor': 'middle' }, 'DM'),
+    s('text', { x: fx - R_FICHA - 1.2, y: fy + 1, 'text-anchor': 'end', class: 'ficha-nombre' }, 'Doña Mary'));
 
   const capaPuente = s('g', { class: 'capa-puente' });
   const capaTrazos = s('g', { class: 'capa-trazos' });
@@ -359,33 +391,33 @@ function dibujarPasillo(pasillo) {
   const capaSello = s('g', { class: 'capa-sello' });
   svg.append(capaPuente, capaTrazos, capaPulso, capaDemo, ficha, capaNotas, capaSello);
 
-  return { svg, bodegas, ficha: { x: fx, y: fy, r: 13 }, capaPuente, capaTrazos, capaPulso, capaNotas, capaSello };
+  return { svg, bodegas, ficha: { x: fx, y: fy, r: R_FICHA }, capaPuente, capaTrazos, capaPulso, capaNotas, capaSello };
 }
 
-function bodega(b, x, y, cuenta) {
-  const yy = cuenta ? y - ELEVA : y;
-  const g = s('g', { class: `bodega${cuenta ? ' bodega-demo' : ''}`, 'data-id': b.id });
-  // Cara lateral (un tono más oscuro) para dar volumen, luego la tapa.
-  g.append(
-    s('rect', { x: x + 2, y: yy + ALTO, width: ANCHO, height: CARA + (cuenta ? ELEVA : 0), class: 'bodega-cara' }),
-    s('rect', { x: x + ANCHO, y: yy + 2, width: 2, height: ALTO + CARA - 2 + (cuenta ? ELEVA : 0), class: 'bodega-cara' }),
-    s('rect', { x, y: yy, width: ANCHO, height: ALTO, class: 'bodega-tapa' }),
-    s('text', { x: x + ANCHO / 2, y: yy + ALTO / 2 + 3, 'text-anchor': 'middle', class: 'bodega-num' }, String(b.numero)),
+function bodega(b, c, cuenta, eleva) {
+  const n = s('g', { class: `bodega${cuenta ? ' bodega-demo' : ''}`, 'data-id': b.id });
+  const lado = Math.min(0.5, c.w * 0.1);
+  // Caras laterales (un tono más oscuro) para dar volumen, luego la tapa.
+  n.append(
+    s('rect', { x: c.x + lado, y: c.y + c.h, width: c.w, height: CARA + eleva, class: 'bodega-cara' }),
+    s('rect', { x: c.x + c.w, y: c.y + lado, width: lado, height: c.h + CARA + eleva - lado, class: 'bodega-cara' }),
+    s('rect', { x: c.x, y: c.y, width: c.w, height: c.h, class: 'bodega-tapa' }),
+    s('text', { x: c.x + c.w / 2, y: c.superior ? c.y + c.h - 2.2 : c.y + c.h / 2 + 1, 'text-anchor': 'middle', class: 'bodega-num' }, String(b.numero)),
   );
   if (cuenta) {
-    const ly = b.fila === 'superior' ? yy - 8 : yy + ALTO + CARA + ELEVA + 16;
-    g.append(s('text', { x: x + ANCHO / 2, y: ly, 'text-anchor': 'middle', class: 'bodega-etiqueta' }, NOMBRES_DEMO[cuenta] || cuenta));
+    const ly = c.superior ? c.y - 2 : c.y + c.h + CARA + eleva + 4.5;
+    n.append(s('text', { x: c.x + c.w / 2, y: ly, 'text-anchor': 'middle', class: 'bodega-etiqueta' }, NOMBRES_DEMO[cuenta] || cuenta));
   }
-  return g;
+  return n;
 }
 
 // Puntos de anclaje: borde de la bodega que mira al corredor y borde de la ficha.
 function anclas(m, cuenta) {
   const b = m.bodegas[cuenta];
-  const bx = b.x + ANCHO / 2;
-  const by = b.fila === 'superior' ? b.y + ALTO + CARA + ELEVA : b.y;
+  const bx = b.x + b.w / 2;
+  const by = b.superior ? b.y + b.h + CARA + b.eleva : b.y;
   const f = m.ficha;
-  const fy = b.fila === 'superior' ? f.y - f.r : f.y + f.r;
+  const fy = b.superior ? f.y - f.r : f.y + f.r;
   return { bx, by, fx: f.x, fy };
 }
 
@@ -398,42 +430,43 @@ function camino(x1, y1, x2, y2, curva) {
 function trazo(m, cuenta, sentido, animar) {
   const a = anclas(m, cuenta);
   const d = sentido === 'ida'
-    ? camino(a.bx, a.by, a.fx, a.fy, 14)
-    : camino(a.fx, a.fy, a.bx, a.by, 14);
+    ? camino(a.bx, a.by, a.fx, a.fy, 2.5)
+    : camino(a.fx, a.fy, a.bx, a.by, 2.5);
   m.capaTrazos.append(s('path', { d, pathLength: 1, class: `trazo trazo-${sentido}${animar ? ' dibujar' : ''}` }));
 }
 
 function ponerPapelito(m, texto, animar) {
   const f = m.ficha;
-  const x = f.x + 20;
-  const y = f.y - 12;
+  const x = f.x + f.r + 1.5;
+  const y = f.y - 2.6;
   m.capaNotas.replaceChildren(s('g', { class: `papelito${animar ? ' aparecer' : ''}` },
-    s('rect', { x, y, width: 132, height: 22 }),
-    s('text', { x: x + 8, y: y + 15 }, texto)));
+    s('rect', { x, y, width: 30, height: 5.2 }),
+    s('text', { x: x + 1.6, y: y + 3.7 }, texto)));
 }
 
 function ponerSello(m, cuenta, ts, animar) {
   const b = m.bodegas[cuenta];
-  const cx = b.x + ANCHO / 2;
-  const cy = b.y + ALTO / 2;
+  const cx = b.x + b.w / 2;
+  const cy = b.y + b.h / 2;
   // Una sola vez por pantalla: el sello nuevo reemplaza al anterior.
   m.capaSello.replaceChildren(s('g', { transform: `translate(${cx} ${cy})` },
     s('g', { class: `sello-mapa${animar ? ' caer' : ''}` },
-      s('rect', { x: -44, y: -14, width: 88, height: ts ? 30 : 22, rx: 3 }),
-      s('text', { x: 0, y: 3, 'text-anchor': 'middle', class: 'sello-mapa-palabra' }, 'CUMPLIDA'),
-      ts ? s('text', { x: 0, y: 13, 'text-anchor': 'middle', class: 'sello-mapa-fecha' }, fechaCorta(ts)) : null)));
+      s('rect', { x: -11, y: -4, width: 22, height: ts ? 8 : 6, rx: 0.8 }),
+      s('text', { x: 0, y: 0.8, 'text-anchor': 'middle', class: 'sello-mapa-palabra' }, 'CUMPLIDA'),
+      ts ? s('text', { x: 0, y: 3.3, 'text-anchor': 'middle', class: 'sello-mapa-fecha' }, fechaCorta(ts)) : null)));
 }
 
 function quitarSello(m) { m.capaSello.replaceChildren(); }
 
 function ponerPuente(m, exp, animar) {
   const a = anclas(m, 'bodega_b');
-  const d = camino(a.fx, a.fy, a.bx, a.by, -10);
-  const mx = (a.fx + a.bx) / 2;
-  const my = (a.fy + a.by) / 2;
+  const b = m.bodegas.bodega_b;
+  const d = camino(a.fx, a.fy, a.bx, a.by, 1.5);
+  // La vigencia va debajo de la etiqueta de Bodega B: el corredor es angosto.
   m.capaPuente.replaceChildren(s('g', { class: `puente${animar ? ' aparecer' : ''}` },
     s('path', { d, class: 'puente-linea' }),
-    s('text', { x: mx - 20, y: my + 14, class: 'puente-texto' }, exp ? `Permiso hasta ${fechaCorta(exp)}` : 'Permiso vigente')));
+    s('text', { x: b.x + b.w / 2, y: b.y + b.h + CARA + b.eleva + 8.5, 'text-anchor': 'middle', class: 'puente-texto' },
+      exp ? `Permiso hasta ${fechaCorta(exp)}` : 'Permiso vigente')));
 }
 
 function quitarPuente(m) { m.capaPuente.replaceChildren(); }
@@ -446,7 +479,7 @@ function ponerSinPermiso(m, animar) {
   b.g.classList.add('sin-permiso');
   if (animar) b.g.classList.add('parpadeo');
   m.capaNotas.append(s('text', {
-    x: b.x + ANCHO / 2, y: b.y - 8, 'text-anchor': 'middle', class: 'texto-sin-permiso',
+    x: b.x + b.w / 2, y: b.y - 1.6, 'text-anchor': 'middle', class: 'texto-sin-permiso',
   }, 'Sin permiso: no se entrega el resumen'));
 }
 
@@ -459,8 +492,8 @@ function quitarSinPermiso(m) {
 function pulso(m, animar) {
   const a = anclas(m, 'bodega_b');
   m.capaPulso.replaceChildren(
-    s('path', { d: camino(a.bx, a.by, a.fx, a.fy, 10), pathLength: 1, class: `pulso${animar ? ' dibujar' : ''}` }),
-    s('path', { d: camino(a.fx, a.fy, a.bx, a.by, 10), pathLength: 1, class: `pulso pulso-vuelta${animar ? ' dibujar dibujar-despues' : ''}` }),
+    s('path', { d: camino(a.bx, a.by, a.fx, a.fy, 2), pathLength: 1, class: `pulso${animar ? ' dibujar' : ''}` }),
+    s('path', { d: camino(a.fx, a.fy, a.bx, a.by, 2), pathLength: 1, class: `pulso pulso-vuelta${animar ? ' dibujar dibujar-despues' : ''}` }),
   );
   if (animar) setTimeout(() => m.capaPulso.replaceChildren(), 2 * TRAZO_MS + 1500);
 }

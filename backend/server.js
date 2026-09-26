@@ -162,7 +162,7 @@ function servirEstatico(req, res, pathname, frontendDir) {
 
 // --- Aplicación -----------------------------------------------------------------
 
-function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'frontend'), ahora = () => Math.floor(Date.now() / 1000), log = console }) {
+function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'frontend'), planoDir = path.join(RAIZ, 'plano'), ahora = () => Math.floor(Date.now() / 1000), log = console }) {
   const { contractId, cuentas, subjectId } = config;
   const transacciones = [];
   const urlTx = (h) => `${EXPLORADOR}/tx/${h}`;
@@ -323,6 +323,8 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
     let url;
     try { url = new URL(req.url, 'http://localhost'); } catch (_) { return responderJson(res, 400, { error: 'url_invalida', mensaje: 'Dirección no válida.' }); }
     const pathname = url.pathname;
+    // Del plano solo se sirve la forma autorizada del Pasillo A-B (decisión #48); nada más de plano/.
+    if (pathname === '/plano/pasillo-a-b.json') return servirEstatico(req, res, '/pasillo-a-b.json', planoDir);
     if (pathname !== '/api' && !pathname.startsWith('/api/')) return servirEstatico(req, res, pathname, frontendDir);
     try {
       let resultado;
