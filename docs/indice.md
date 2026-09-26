@@ -29,6 +29,7 @@ Actualizado: 26-sep-2026, 01:10. Proyecto **Cuentas Claras**; equipo **Palabra**
 | ¿Qué se dice en tres minutos? | `pitch/2026-09-25_pitch-3-minutos.md` |
 | ¿Cuál es el plan del fin de semana? | `docs/plan-maestro.md`, sección 4b (la 4 es bitácora del viernes) |
 | ¿Qué construye Claude Code el fin de semana? | `spec/2026-09-26_especificacion-frontend.md` (prompt en la sección 9) y `spec/2026-09-26_especificacion-gemelo-digital.md` |
+| ¿Cómo retoma Claude Code en una sesión nueva? | `docs/relevo-claude-code.md` |
 | ¿Qué se pregunta a los bodegueros? | `docs/guia-entrevista-bodegueros.md` |
 
 ## Archivos
@@ -52,6 +53,7 @@ Actualizado: 26-sep-2026, 01:10. Proyecto **Cuentas Claras**; equipo **Palabra**
 | [`docs/plan-maestro.md`](plan-maestro.md) | Qué busca el organizador, tesis, método en fases, plan del viernes (bitácora), plan del fin de semana (4b), plan posterior P0–P7, ruta con la administración (5b), presentación y métricas. | #plan #implementacion #organizador | 3,222 | Para ubicar el proyecto completo | vigente |
 | [`docs/lean-canvas.md`](lean-canvas.md) | Lean Canvas en 9 bloques con IDs de hechos, supuestos más riesgosos y versión de una diapositiva. | #negocio #pitch | 758 | Mentoría y deck | borrador |
 | [`docs/guia-entrevista-bodegueros.md`](guia-entrevista-bodegueros.md) | Guía de entrevista del sábado 26: reglas de anonimato, cinco preguntas sobre hechos pasados, cómo enseñar la idea, hoja de registro y qué se publica. | #adopcion #datos-ceda #plan | 839 | Antes de entrevistar y al convertir respuestas en hechos | vigente |
+| [`docs/relevo-claude-code.md`](relevo-claude-code.md) | Relevo para una sesión nueva de Claude Code: estado, llaves de testnet, pendientes, reglas y prompt de arranque. | #entorno #plan | 609 | Al abrir cualquier sesión nueva de Claude Code | vigente |
 | [`docs/modelo-de-negocio.md`](modelo-de-negocio.md) | Quién paga y por qué: principios con fuente, opciones A–E, cautela por la LRSIC, qué mide el piloto, preguntas para mentores. Recomendación A + D (propuesta). | #negocio #legal | 681 | Mentoría y pregunta «¿quién paga?» | borrador |
 | [`docs/identidad-visual.md`](identidad-visual.md) | Paleta «Tinta y Sello» con estrategia, tokens, contrastes verificados, tipografía y qué evitar. | #marca #campana | 697 | Al diseñar deck, app o piezas | propuesta |
 | [`docs/nombre-y-marca.md`](nombre-y-marca.md) | Por qué el proyecto se llama Cuentas Claras y el equipo Palabra: evidencia, riesgos verificados, cómo se usa cada nombre; candidatos anteriores y sistema de nombres del producto. | #marca | 2,145 | Al escribir cualquier pieza pública | vigente |

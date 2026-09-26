@@ -8,6 +8,8 @@ La bitácora de fiado co-firmada de la Central de Abasto de la CDMX: cada nota d
 
 ## Cómo leer este repo sin gastar de más
 
+0. **Si es una sesión nueva, empieza por `docs/relevo-claude-code.md`**: estado, llaves de testnet y pendientes.
+
 1. Ubícate con `llms.txt` (mapa corto) o `docs/indice.md` (qué contiene cada archivo, etiquetas y cuándo leerlo).
 2. Busca antes de leer: `grep -rn "H-07" docs/` encuentra un hecho por su ID; `grep -rn "| 36 |" docs/decisiones.md`, una decisión; `grep -rln "privacidad" docs spec` encuentra el tema.
 3. Lee solo la sección que necesitas (por ejemplo, `sed -n '/^## 7\./,/^## 8\./p' spec/2026-09-25_especificacion-tecnica-v2.md`), no el documento completo.
