@@ -1,0 +1,226 @@
+/* Cuentas Claras — paleta «Tinta y Sello» (docs/identidad-visual.md) */
+:root {
+  --papel: #F5F0E6;
+  --tinta: #1E3A8A;
+  --carbon: #262626;
+  --sello: #B3261E;
+  --kraft: #D8C3A0;
+  --niebla: #E8EEF9;
+  --gris: #5F5F5F;
+  /* Solo para el semáforo */
+  --sem-verde: #236B2A;
+  --sem-ambar: #8A5A00;
+  --sem-rojo: #B71C1C;
+
+  --f-titulo: 'Archivo', 'Helvetica Neue', Arial, system-ui, sans-serif;
+  --f-texto: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 100%; }
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--carbon);
+  font-family: var(--f-texto);
+  font-size: 1.0625rem; /* 17 px */
+  line-height: 1.5;
+}
+
+h1, h2 { font-family: var(--f-titulo); color: var(--tinta); line-height: 1.15; }
+h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; margin: 0.25rem 0 1.25rem; }
+h2 { font-size: 1.3rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+p { margin: 0 0 0.75rem; }
+a { color: var(--tinta); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--tinta);
+  outline-offset: 2px;
+}
+.mono { font-family: var(--f-mono); }
+.lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Encabezado y pestañas ---------- */
+.encabezado {
+  padding: 1rem clamp(1rem, 4vw, 2.5rem) 0;
+  border-bottom: 1px solid var(--kraft);
+}
+.marca { display: inline-flex; flex-direction: column; margin-bottom: 0.75rem; }
+.logotipo { font-family: var(--f-titulo); font-weight: 800; font-size: 1.6rem; color: var(--tinta); }
+.trazos {
+  display: block; height: 8px; margin-top: 2px;
+  background:
+    linear-gradient(var(--tinta), var(--tinta)) left 0 top 1px / 70% 2px no-repeat,
+    linear-gradient(var(--tinta), var(--tinta)) left 12% top 5px / 80% 2px no-repeat;
+  border-radius: 2px;
+}
+.pestanas { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.pestanas a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  padding: 0.5rem 0.9rem;
+  color: var(--carbon); text-decoration: none; font-weight: 700;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 3px solid transparent;
+}
+.pestanas a:hover { background: var(--niebla); }
+.pestanas a[aria-current="page"] { color: var(--tinta); border-bottom-color: var(--tinta); background: var(--niebla); }
+
+/* ---------- Vista ---------- */
+.vista { padding: 1.25rem clamp(1rem, 4vw, 2.5rem) 3rem; max-width: 56rem; margin: 0 auto; }
+.vista:focus { outline: none; }
+.rotulo-demo {
+  display: inline-block; margin-bottom: 0.75rem;
+  font-family: var(--f-mono); font-size: 1rem; color: var(--gris);
+  border: 1px solid var(--kraft); border-radius: 999px; padding: 0.1rem 0.7rem;
+}
+.apoyo { color: var(--gris); }
+.vacio, .cargando { color: var(--gris); font-style: italic; }
+
+.tarjeta {
+  background: #FFFCF6;
+  border: 1px solid var(--kraft);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+
+/* ---------- Botones y campos ---------- */
+.boton {
+  min-height: 44px; padding: 0.6rem 1.2rem;
+  font: 700 1.0625rem/1.2 var(--f-texto);
+  border-radius: 8px; cursor: pointer;
+  border: 2px solid var(--tinta);
+}
+.boton-primario { background: var(--tinta); color: var(--papel); }
+.boton-primario:hover:not(:disabled) { background: #16306F; }
+.boton-secundario { background: transparent; color: var(--tinta); }
+.boton-secundario:hover:not(:disabled) { background: var(--niebla); }
+.boton:disabled { opacity: 0.7; cursor: progress; }
+.boton-ancho { width: 100%; }
+
+.formulario { display: grid; gap: 1rem; max-width: 30rem; }
+.campo { display: grid; gap: 0.3rem; }
+.campo-etiqueta { font-weight: 700; }
+.campo-fijo { margin: 0; padding: 0.55rem 0.75rem; background: var(--niebla); border-radius: 8px; color: var(--tinta); font-weight: 700; }
+input, select {
+  min-height: 44px; font: 1.0625rem var(--f-texto); color: var(--carbon);
+  padding: 0.45rem 0.7rem; background: #fff;
+  border: 1px solid var(--gris); border-radius: 8px; width: 100%;
+}
+input[type="number"] { font-family: var(--f-mono); }
+.formulario .apoyo { margin: 0; }
+
+/* ---------- Avisos ---------- */
+.resultado, .resultado-consulta { margin-top: 1rem; }
+.aviso { padding: 0.65rem 0.85rem; border-radius: 8px; margin: 0; }
+.aviso-ok { background: var(--niebla); color: var(--tinta); }
+.aviso-error { background: #fff; border: 1px solid var(--carbon); color: var(--carbon); }
+.aviso-error::before { content: "Aviso: "; font-weight: 700; }
+.comprobante { font-weight: 700; white-space: nowrap; }
+.comprobante::after { content: " ↗"; }
+
+/* ---------- Notas ---------- */
+.notas { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+.nota { display: flex; gap: 1rem; align-items: center; justify-content: space-between; }
+.nota-cuerpo p { margin: 0 0 0.25rem; }
+.nota-monto { font-family: var(--f-mono); font-weight: 600; font-size: 1.25rem; color: var(--carbon); }
+.nota-fechas { color: var(--gris); }
+.etiqueta-estado {
+  display: inline-block; padding: 0.1rem 0.6rem; border-radius: 999px;
+  background: var(--niebla); color: var(--tinta); font-weight: 700;
+}
+.estado-paid .etiqueta-estado { background: var(--kraft); color: var(--carbon); }
+.estado-cancelled .etiqueta-estado { background: transparent; border: 1px solid var(--gris); color: var(--gris); }
+.nota-acciones { margin-top: 0.5rem; }
+.nota-acciones:empty { display: none; }
+
+/* ---------- Sello CUMPLIDA (un solo uso por pantalla) ---------- */
+.sello {
+  flex: none;
+  width: 140px; height: 140px; border-radius: 50%;
+  border: 4px double var(--sello); color: var(--sello);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transform: rotate(-12deg);
+  font-family: var(--f-titulo); font-weight: 800; letter-spacing: 0.06em;
+  opacity: 0.92;
+}
+.sello-palabra { font-size: 1.25rem; }
+.sello-fecha { font-family: var(--f-mono); font-size: 1rem; font-weight: 400; letter-spacing: 0; margin-top: 2px; }
+
+/* ---------- Teléfono de Doña Mary ---------- */
+.telefono {
+  width: 390px; max-width: 100%;
+  margin: 0 auto;
+  background: var(--carbon);
+  border-radius: 40px; padding: 14px;
+  box-shadow: 0 10px 30px rgba(38, 38, 38, 0.18);
+}
+.telefono-barra { width: 110px; height: 22px; background: #111; border-radius: 0 0 14px 14px; margin: 0 auto -10px; position: relative; z-index: 1; }
+.telefono-pantalla {
+  background: var(--papel); border-radius: 28px;
+  padding: 1.75rem 1.1rem 1.25rem; min-height: 640px;
+}
+.tel-encabezado { font-family: var(--f-titulo); font-weight: 800; font-size: 1.6rem; color: var(--tinta); margin-bottom: 1rem; }
+.tel-subtitulo { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+.tel-tarjeta { display: grid; gap: 0.75rem; }
+.tel-tarjeta p { margin: 0; }
+.tel-cumplida { justify-items: center; text-align: center; padding-block: 1.5rem; }
+.tel-cumpliste { font-weight: 700; color: var(--tinta); font-size: 1.15rem; }
+.tel-permiso { display: grid; gap: 0.6rem; }
+.tel-permiso p { margin: 0; }
+.tel-privacidad { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--kraft); color: var(--carbon); }
+
+/* ---------- Bodega B: consulta y semáforo ---------- */
+.sin-permiso-texto { font-weight: 700; color: var(--carbon); }
+.consulta { display: grid; gap: 1rem; }
+.consulta p { margin: 0; }
+.semaforo { border-left: 6px solid currentColor; padding: 0.5rem 0 0.5rem 1rem; }
+.semaforo-senal { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.5rem; font-family: var(--f-titulo); font-weight: 800; font-size: 1.5rem; }
+.semaforo-forma { font-size: 1.8rem; line-height: 1; }
+.semaforo-verde { color: var(--sem-verde); }
+.semaforo-amarillo { color: var(--sem-ambar); }
+.semaforo-rojo { color: var(--sem-rojo); }
+.semaforo-insuficiente { color: var(--gris); }
+.condiciones { list-style: none; padding: 0; margin: 0; color: var(--carbon); display: grid; gap: 0.3rem; }
+.condiciones li { display: flex; gap: 0.5rem; align-items: baseline; }
+.marca-condicion { font-weight: 700; width: 1.2em; flex: none; }
+.condiciones .cumple .marca-condicion { color: var(--tinta); }
+.condiciones .falta .marca-condicion { color: var(--gris); }
+.aclaraciones { margin: 0.5rem 0 0; color: var(--carbon); font-weight: 700; }
+
+.contadores { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: 0.5rem; margin: 0; }
+.contador { background: var(--niebla); border-radius: 8px; padding: 0.5rem 0.7rem; }
+.contador dt { color: var(--gris); font-size: 1rem; }
+.contador dd { margin: 0; font-weight: 600; color: var(--tinta); font-size: 1.15rem; }
+.registrada { font-weight: 700; }
+
+.zona-ejemplo { margin-top: 2.5rem; }
+.ejemplo { border: 2px dashed var(--gris); background: transparent; display: grid; gap: 0.75rem; }
+.ejemplo p { margin: 0; }
+.ejemplo-rotulo { font-family: var(--f-mono); color: var(--gris); }
+
+/* ---------- Para el jurado ---------- */
+.ficha { display: grid; gap: 0.6rem; margin: 0; }
+.ficha dt { color: var(--gris); }
+.ficha dd { margin: 0; font-weight: 700; }
+.id-contrato { word-break: break-all; font-weight: 600; }
+.transacciones { padding-left: 1.4rem; margin: 0; display: grid; gap: 0.4rem; }
+.transaccion { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; align-items: baseline; }
+.tx-accion { font-weight: 700; }
+.tx-fecha { color: var(--gris); }
+.tabla-scroll { overflow-x: auto; }
+.tabla-cadena { border-collapse: collapse; width: 100%; min-width: 18rem; background: #FFFCF6; }
+.tabla-cadena th, .tabla-cadena td { text-align: left; padding: 0.55rem 0.8rem; border: 1px solid var(--kraft); vertical-align: top; }
+.tabla-cadena th { font-family: var(--f-titulo); color: var(--tinta); background: var(--niebla); }
+.frase-3b { margin-top: 1.5rem; font-size: 1.2rem; font-weight: 700; color: var(--tinta); }
+.frase-dinero { font-weight: 700; }
+
+/* ---------- Pantallas chicas ---------- */
+@media (max-width: 480px) {
+  .pestanas a { padding: 0.5rem 0.6rem; }
+  .nota { flex-direction: column; align-items: flex-start; }
+  .telefono { border-radius: 0; padding: 0; background: transparent; box-shadow: none; }
+  .telefono-barra { display: none; }
+  .telefono-pantalla { border-radius: 12px; border: 1px solid var(--kraft); min-height: 0; }
+}
