@@ -51,7 +51,7 @@ stellar keys generate --global plataforma --network testnet --fund
 stellar contract init contracts/cuentas_claras
 cd contracts/cuentas_claras && cargo test && stellar contract build
 stellar contract deploy --wasm target/wasm32v1-none/release/cuentas_claras.wasm --source plataforma --network testnet
-stellar contract bindings typescript --contract-id <ID> --output-dir ../../frontend/src/bindings --network testnet
+# (bindings TS: no se usan en el MVP; decisión #45)
 ```
 
 Friendbot tiene límite de tasa: fondea todas las cuentas de demo al inicio y guarda sus claves públicas en `demo/deploy.json`. Próximo reset de testnet: 16-dic-2026.
@@ -60,8 +60,8 @@ Friendbot tiene límite de tasa: fondea todas las cuentas de demo al inicio y gu
 
 ```
 contracts/cuentas_claras/   contrato Soroban
-backend/                API mínima + SQLite (subject_id por HMAC, datos fuera de cadena, semáforo)
-frontend/               Vite + bindings TS; un solo flujo
+backend/                servidor Node sin dependencias sobre el Stellar CLI (subject_id por HMAC, datos fuera de cadena en JSON local, semáforo); decisión #45
+frontend/               HTML, CSS y JS sin framework ni paquetes; cuatro vistas (spec 2026-09-26)
 demo/                   demo.sh (plan B), deploy.json, capturas
 docs/                   problema-solución, decisiones, riesgos, hoja de hechos, preguntas pendientes, plan de tiempo
 research/               investigación con fuentes (no editar)
