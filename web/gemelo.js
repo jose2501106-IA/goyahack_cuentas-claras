@@ -58,7 +58,7 @@
   }
 
   // opciones.centroX (unidades del plano): dónde centrar el marco en pantallas angostas.
-  // Dibuja el pasillo. marcadas: { 'A-17': 'Bodega A', … } se elevan y llevan etiqueta.
+  // Dibuja el pasillo. marcadas: { 'A-17': 'Bodega A-17', … } se elevan y llevan etiqueta.
   function dibujar(forma, { marcadas = {}, descripcion } = {}) {
     const g = geometria(forma);
     const nombre = forma.pasillo || 'A-B';

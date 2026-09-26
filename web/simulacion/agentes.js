@@ -78,7 +78,7 @@
 
     const posiciones = forma ? elegirPosiciones(forma, azar) : Array.from({ length: N_BODEGAS }, (_, i) => ({ id: `X-${i}` }));
     const bodegas = posiciones.map((p, i) => ({
-      id: `b${i + 1}`, nombre: `Bodega ${i + 1}`, lugar: p.id,
+      id: `b${i + 1}`, nombre: `Bodega ${p.id}`, lugar: p.id, // con el número de su posición (#54)
       fiado: 0, notas: 0, ultima: null,
     }));
 

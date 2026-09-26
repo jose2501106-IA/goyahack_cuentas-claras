@@ -10,21 +10,27 @@
 
   // Posiciones ilustrativas de la demo, las mismas que la app local
   // (frontend/datos/pasillo.js, POSICIONES_DEMO). Solo viven aquí, nunca en la cadena.
-  const POSICIONES = { 'Bodega A': 'A-17', 'Bodega B': 'B-40' };
+  const POSICIONES = { 'Bodega A-17': 'A-17', 'Bodega B-40': 'B-40' };
   const X_FICHA = 178; // dónde se para Doña Mary en el corredor (ilustrativo, igual que la app local)
   const TRAZO_MS = 900;
 
   const TEXTO_MAPA = {
-    1: 'Bodega A registró una nota para Doña Mary. Esperando su firma.',
+    1: 'Bodega A-17 registró una nota para Doña Mary. Esperando su firma.',
     2: 'Doña Mary firmó la nota: firmada por los dos.',
-    3: 'Bodega A confirmó el pago: nota cumplida.',
-    4: 'Bodega B pidió el resumen sin permiso: el contrato no lo entregó. No hubo transacción.',
-    5: 'Doña Mary dio permiso a Bodega B por 30 días.',
-    6: 'Bodega B consultó el resumen con permiso. La consulta quedó registrada.',
+    3: 'Bodega A-17 confirmó el pago: nota cumplida.',
+    4: 'Bodega B-40 pidió el resumen sin permiso: el contrato no lo entregó. No hubo transacción.',
+    5: 'Doña Mary dio permiso a Bodega B-40 por 30 días.',
+    6: 'Bodega B-40 consultó el resumen con permiso. La consulta quedó registrada.',
   };
 
   function rango(accion) {
     return accion.replace(/rango (\d+)k–(\d+)k/, (_, a, b) => `rango $${a},000–$${b},000`);
+  }
+
+  // La salida de demo.sh (registro) dice «Bodega A» y «Bodega B»; en pantalla las bodegas
+  // van siempre con su número (decisión #54).
+  function conNumero(t) {
+    return String(t).replace(/Bodega A(?![-\w])/g, 'Bodega A-17').replace(/Bodega B(?![-\w])/g, 'Bodega B-40');
   }
 
   function hashCorto(h) { return h ? `${h.slice(0, 8)}…${h.slice(-6)}` : ''; }
@@ -53,9 +59,9 @@
     const mapa = CC.Gemelo.montar(destino, forma, {
       marcadas,
       barra: contador,
-      descripcion: 'Forma del Pasillo A-B con Bodega A, Bodega B y Doña Mary en el corredor. Cada paso de la corrida real se dibuja aquí; el texto de cada paso está debajo.',
+      descripcion: 'Forma del Pasillo A-B con Bodega A-17, Bodega B-40 y Doña Mary en el corredor. Cada paso de la corrida real se dibuja aquí; el texto de cada paso está debajo.',
       rotulo: 'Posiciones ilustrativas. Bodegas y Doña Mary son ficticias.',
-      centroX: 115, // entre Bodega A y Doña Mary, para pantallas angostas
+      centroX: 115, // entre Bodega A-17 y Doña Mary, para pantallas angostas
     });
     const fx = mapa.xDePlano(X_FICHA);
     const fy = mapa.corredor.centro;
@@ -74,8 +80,8 @@
       lista,
     );
 
-    const idA = POSICIONES['Bodega A'];
-    const idB = POSICIONES['Bodega B'];
+    const idA = POSICIONES['Bodega A-17'];
+    const idB = POSICIONES['Bodega B-40'];
     // Punto de la ficha que mira a cada bodega.
     const bordeFicha = (id) => ({ x: ficha.x, y: mapa.bodegas[id].superior ? ficha.y - ficha.r : ficha.y + ficha.r });
 
@@ -159,7 +165,7 @@
         const p = pasos[n - 1];
         tarjeta.replaceChildren(
           el('p', { class: 'paso-num mono' }, `Paso ${p.numero}`),
-          el('p', { class: 'paso-accion' }, rango(p.accion)),
+          el('p', { class: 'paso-accion' }, conNumero(rango(p.accion))),
           el('p', { class: 'apoyo' }, TEXTO_MAPA[p.numero] || ''),
           p.firma
             ? el('p', null, 'Firma: ', el('strong', null, p.firma), ' · función ', el('code', null, p.funcion))
@@ -182,14 +188,14 @@
 
     for (const p of pasos) {
       lista.append(el('li', null,
-        el('span', null, rango(p.accion)), ' ',
+        el('span', null, conNumero(rango(p.accion))), ' ',
         p.url
           ? CC.enlaceExterno(`Verlo en la cadena · ${hashCorto(p.hash)}`, p.url, 'mono hash')
           : el('span', { class: 'apoyo' }, p.sin_transaccion)));
     }
 
     // «La app en tu mano» (docs/diseno-web-movil.md §2): las pantallas están en el HTML;
-    // aquí solo se muestra la del paso actual y se elige la vista (cliente o Bodega B).
+    // aquí solo se muestra la del paso actual y se elige la vista (cliente o Bodega B-40).
     const app = document.querySelector('.app-en-mano');
     function sincronizarTelefono(n) {
       if (!app) return;

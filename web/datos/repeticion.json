@@ -10,7 +10,7 @@
     {
       "numero": 1,
       "accion": "Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).",
-      "firma": "Bodega A",
+      "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "create_note",
       "hash": "cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872",
@@ -32,7 +32,7 @@
     {
       "numero": 3,
       "accion": "Doña Mary paga y Bodega A confirma el pago.",
-      "firma": "Bodega A",
+      "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "confirm_paid",
       "hash": "09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326",
@@ -65,7 +65,7 @@
     {
       "numero": 6,
       "accion": "Bodega B consulta con permiso vigente y ve el resumen de cumplimiento.",
-      "firma": "Bodega B",
+      "firma": "Bodega B-40",
       "cuenta_publica": "GD2TUPI6ZZE7BGCQIEBTWA2AIZHEVALYF3UTEJFF6ENP7K76ERRNY55D",
       "funcion": "read_stats",
       "hash": "a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c",

@@ -14,15 +14,16 @@ const SALIDA = path.join(RAIZ, 'demo', 'salida-demo.txt');
 const DEPLOY = path.join(RAIZ, 'demo', 'deploy.json');
 const DESTINO = path.join(RAIZ, 'web', 'datos', 'repeticion.json');
 
-// Quién firma cada paso de demo.sh: se lee del sujeto de la frase de la salida.
+// Quién firma cada paso de demo.sh: se lee del sujeto de la frase de la salida. Los nombres
+// llevan el número de su posición ilustrativa (decisión #54); «accion» se copia tal cual.
 // Clave = cuenta de demo/deploy.json (cuentas_publicas); null = no hubo transacción.
 const QUIEN_FIRMA = {
-  1: { cuenta: 'bodega_a', nombre: 'Bodega A', funcion: 'create_note' },
+  1: { cuenta: 'bodega_a', nombre: 'Bodega A-17', funcion: 'create_note' },
   2: { cuenta: 'dona_mary', nombre: 'Doña Mary', funcion: 'accept_note' },
-  3: { cuenta: 'bodega_a', nombre: 'Bodega A', funcion: 'confirm_paid' },
+  3: { cuenta: 'bodega_a', nombre: 'Bodega A-17', funcion: 'confirm_paid' },
   4: null,
   5: { cuenta: 'dona_mary', nombre: 'Doña Mary', funcion: 'grant_consent' },
-  6: { cuenta: 'bodega_b', nombre: 'Bodega B', funcion: 'read_stats' },
+  6: { cuenta: 'bodega_b', nombre: 'Bodega B-40', funcion: 'read_stats' },
 };
 
 const RE_TX = /^https:\/\/stellar\.expert\/explorer\/testnet\/tx\/([0-9a-f]{64})$/;
