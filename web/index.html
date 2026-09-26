@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cuentas Claras · fiado de palabra, firmado por los dos</title>
+  <meta name="description" content="Cuentas Claras: la bitácora de fiado co-firmada de la Central de Abasto, en Stellar testnet. Proyecto del Equipo Palabra para GOYA HACK 2026.">
+  <meta name="theme-color" content="#1E3A8A">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="encabezado">
+    <div class="encabezado-dentro">
+      <a class="marca" href="#inicio" aria-label="Cuentas Claras, inicio">
+        <span class="logotipo">Cuentas Claras</span>
+        <span class="trazos" aria-hidden="true"></span>
+      </a>
+      <nav class="navegacion" aria-label="Secciones">
+        <a href="#inicio" data-seccion="inicio">Inicio</a>
+        <a href="#pasillo-vivo" data-seccion="pasillo-vivo">Pasillo vivo</a>
+        <a href="#demo-real" data-seccion="demo-real">La demo real</a>
+        <a href="#como-funciona" data-seccion="como-funciona">Cómo funciona</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+
+    <!-- 1. Inicio -->
+    <section id="inicio" class="seccion seccion-inicio" aria-labelledby="t-inicio">
+      <div class="dentro">
+        <p class="refran"><span class="refran-uno">Cuentas claras,</span> <span class="refran-dos">amistades largas.</span></p>
+        <h1 id="t-inicio">La bitácora de fiado co-firmada de la Central de Abasto</h1>
+        <p class="entrada">En la Central de Abasto el fiado se da de palabra. La palabra se cumple, pero no viaja: fuera de la bodega, nadie la conoce. <strong>Cuentas Claras</strong> hace que cada nota de fiado quede firmada por la bodega y por el cliente, que nadie pueda cambiarla ni borrarla, y que el historial de cumplimiento sea del cliente.</p>
+
+        <h2>Tres reglas que hace cumplir un contrato, no nuestra buena fe</h2>
+        <ol class="reglas">
+          <li class="regla">
+            <span class="regla-num" aria-hidden="true">1</span>
+            <div>
+              <p class="regla-titulo">Ninguna bodega escribe sola una deuda.</p>
+              <p>La nota la crea la bodega y solo existe cuando el cliente la acepta. Dos firmas, en dos pasos.</p>
+            </div>
+          </li>
+          <li class="regla">
+            <span class="regla-num" aria-hidden="true">2</span>
+            <div>
+              <p class="regla-titulo">Nadie borra ni maquilla el historial, ni nosotros.</p>
+              <p>Cada cambio es un registro nuevo. «Incumplida» solo existe después del plazo más 30 días de gracia.</p>
+            </div>
+          </li>
+          <li class="regla">
+            <span class="regla-num" aria-hidden="true">3</span>
+            <div>
+              <p class="regla-titulo">Tu historial es tuyo.</p>
+              <p>Otra bodega solo pide tu resumen con tu permiso, y cada consulta queda registrada.</p>
+            </div>
+          </li>
+        </ol>
+
+        <p class="no-es">No mueve dinero, no emite monedas y no decide por nadie: la decisión de fiar siempre es de la bodega.</p>
+
+        <div class="llamadas">
+          <a class="boton boton-primario" href="#pasillo-vivo">Ver el Pasillo vivo</a>
+          <a class="boton boton-secundario" href="#demo-real">Ver la demo real, paso a paso</a>
+        </div>
+        <p class="pie-inicio">Proyecto del <strong>Equipo Palabra</strong> para GOYA HACK · Hackathon UNAM 2026 (CriptoUNAM × Facultad de Ingeniería), track Blockchain. Corre en Stellar testnet. Todos los datos de este sitio son ficticios.</p>
+      </div>
+    </section>
+
+    <!-- 2. Pasillo vivo -->
+    <section id="pasillo-vivo" class="seccion" aria-labelledby="t-pasillo">
+      <div class="dentro dentro-ancho">
+        <h2 id="t-pasillo" class="titulo-seccion">Pasillo vivo</h2>
+        <p class="rotulo-simulacion" role="note">Simulación con personajes ficticios. No es la cadena. Los parámetros son inventados para ilustrar las reglas; no son datos de la Central.</p>
+        <div id="montaje-pasillo" class="montaje">
+          <p class="cargando">Preparando el pasillo…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. La demo real, verificable -->
+    <section id="demo-real" class="seccion seccion-alterna" aria-labelledby="t-demo">
+      <div class="dentro dentro-ancho">
+        <h2 id="t-demo" class="titulo-seccion">La demo real, verificable</h2>
+        <div id="montaje-demo" class="montaje">
+          <p class="cargando">Cargando la corrida real…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Cómo funciona -->
+    <section id="como-funciona" class="seccion" aria-labelledby="t-como">
+      <div class="dentro">
+        <h2 id="t-como" class="titulo-seccion">Cómo funciona</h2>
+
+        <h3>La vida de una nota</h3>
+        <ol class="ciclo">
+          <li><strong>La bodega la registra.</strong> Plazo de 7, 15 o 30 días y un rango de monto. Todavía no es deuda.</li>
+          <li><strong>El cliente la acepta.</strong> Con la segunda firma la nota existe. Si nadie la acepta en 72 horas, se cancela sola.</li>
+          <li><strong>El cliente paga y la bodega lo confirma.</strong> Queda cumplida, a tiempo o tarde.</li>
+          <li><strong>Si pasa el plazo, queda vencida.</strong> Vencida no es incumplida: hay 30 días de gracia y se puede abrir una aclaración.</li>
+          <li><strong>Solo después de la gracia puede marcarse incumplida.</strong> Nadie puede adelantarlo.</li>
+        </ol>
+
+        <h3>Qué va en la cadena y qué no</h3>
+        <div class="tabla-marco">
+          <table class="tabla">
+            <caption class="lector">Qué datos se guardan en la cadena y cuáles se quedan fuera</caption>
+            <thead>
+              <tr><th scope="col">En la cadena</th><th scope="col">Fuera de la cadena</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Un seudónimo del cliente (una huella HMAC, no su nombre)</td><td>Nombre y teléfono</td></tr>
+              <tr><td>El rango del monto (por ejemplo, de $5,000 a $20,000)</td><td>El monto exacto y los productos</td></tr>
+              <tr><td>Fechas, plazo y estado de cada nota</td><td>RFC, documentos y datos del banco</td></tr>
+              <tr><td>Qué bodega emitió la nota y los permisos del cliente</td><td>Dinero: el pago se hace como siempre, fuera de la app</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="honesto"><strong>Dicho con honestidad:</strong> la cadena es pública y cualquiera puede leer lo que está en ella. El permiso del cliente controla la <em>consulta oficial</em> de su resumen, la que usa una bodega para decidir, y deja constancia de cada consulta. No vuelve secreto lo que ya está en la cadena; por eso ahí no va su nombre, su teléfono ni el monto exacto.</p>
+
+        <h3>¿Por qué blockchain y no una base de datos?</h3>
+        <p>Una base de datos compartida necesitaría un custodio en quien confíen bodegas que compiten entre sí, y hoy no existe. En un contrato en Stellar las reglas las hace cumplir el código, a la vista de cualquiera: ni la bodega, ni el cliente, ni nosotros podemos cambiar una nota firmada. Y el contrato no tiene función de actualización: si hay que cambiar una regla, se despliega un contrato nuevo, y eso también queda a la vista.</p>
+
+        <h3>Dos huecos que encontramos y cerramos</h3>
+        <ol class="huecos">
+          <li>
+            <p class="hueco-titulo">El resumen salía sin permiso.</p>
+            <p>El primer contrato tenía una función pública que entregaba el resumen de cualquier cliente sin su permiso y sin dejar constancia. La quitamos y desplegamos un contrato nuevo (decisión #42).</p>
+          </li>
+          <li>
+            <p class="hueco-titulo">La bodega que ya te había fiado leía tu resumen sin pedirte permiso.</p>
+            <p>Parecía razonable, pero con eso esa bodega veía también lo que hiciste en otras. Ahora solo el propio cliente lee su resumen sin permiso; cualquier bodega, incluso la que le fió, necesita su permiso vigente (decisión #46).</p>
+          </li>
+        </ol>
+        <p>Los dos contratos anteriores siguen en la cadena, marcados como obsoletos. No se pueden «arreglar en silencio», y así debe ser.</p>
+
+        <h3>El semáforo, y por qué a veces dice «historial insuficiente»</h3>
+        <p>Con permiso, la bodega ve un semáforo con palabra y forma: <span class="sem sem-verde">● Verde</span>, <span class="sem sem-amarillo">▲ Amarillo</span> o <span class="sem sem-rojo">■ Rojo</span>. Antes de juzgar pide al menos <strong>3 notas cerradas, en 2 bodegas distintas y con 60 días de historial</strong>. Si falta algo, dice <span class="sem sem-insuficiente">○ Historial insuficiente</span>, a propósito: con poca historia no se juzga a nadie. La decisión de fiar sigue siendo de la bodega.</p>
+
+        <h3>Enlaces</h3>
+        <ul class="enlaces">
+          <li><a href="https://github.com/jose2501106-IA/goyahack_cuentas-claras" target="_blank" rel="noopener noreferrer">Repositorio en GitHub</a>: contrato, pruebas, decisiones y documentos.</li>
+          <li><a href="https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW" target="_blank" rel="noopener noreferrer">El contrato en stellar.expert</a> (Stellar testnet): <code class="id-contrato">CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW</code></li>
+          <li><a href="https://lab.stellar.org/r/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW" target="_blank" rel="noopener noreferrer">El mismo contrato en Stellar Lab</a>.</li>
+        </ul>
+        <p class="apoyo">Este sitio es estático: no tiene llaves, no firma y no envía transacciones. La demo que firma en vivo corre en la app local del equipo.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="dentro">
+      <p><strong>Cuentas Claras</strong> · Equipo Palabra · GOYA HACK 2026. Solo Stellar testnet. Datos, bodegas y personas de este sitio: ficticios.</p>
+      <p>Forma del Pasillo A-B publicada con autorización (decisión #48); no a escala. Ninguna bodega real participa en la demo.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
