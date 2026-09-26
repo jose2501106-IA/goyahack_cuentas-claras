@@ -28,7 +28,7 @@ Base: `spec/2026-09-25_especificacion-tecnica-v2.md` (§7 eventos, §9 frontend,
 | 2 | App Cuentas Claras: vista **Bodega A** (Bodega A) | *[CONFIRMAR URL]* |
 | 3 | App Cuentas Claras: vista **Cliente** (Doña Mary). Mejor en un teléfono real si el frontend está publicado; si no, simulada en la laptop | *[CONFIRMAR]* |
 | 4 | App Cuentas Claras: vista **Bodega B** (Bodega B) | *[CONFIRMAR]* |
-| 5 | Explorador de testnet abierto en la página del contrato (el que usen los enlaces de `demo.sh`, por ejemplo stellar.expert) | `CBNBVF…CCD3` en stellar.expert |
+| 5 | Explorador de testnet abierto en la página del contrato (el que usen los enlaces de `demo.sh`, por ejemplo stellar.expert) | `CDPFZN…GBDTW` en stellar.expert |
 | 6 | Terminal con `demo/demo.sh` listo (plan B), letra de 20 pt o más, tema claro | *[CONFIRMAR]* |
 | 7 | Video de respaldo, copia local en MP4 | Tras grabarlo |
 
