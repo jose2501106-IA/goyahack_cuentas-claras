@@ -1,92 +1,95 @@
-# Diseño del sitio público para celular — propuestas y paleta
+# Diseño del sitio público para celular — tema dual y «La app en tu mano»
 
-**Estado:** propuesta del 26-sep-2026, 14:30, pendiente de que José elija (decisión #52). Aplica **solo al sitio público** (`web/`, Vercel), que se dirige a académicos, gente cripto y especialistas en Web3. La app local que firma y los materiales para la Central conservan «Tinta y Sello» (`docs/identidad-visual.md`).
+**Estado:** aprobado por José el 26-sep-2026 a las 14:50 (decisiones #52 y #53). Aplica **solo al sitio público** (`web/`, Vercel), que se dirige a académicos, gente cripto y especialistas en Web3. La app local que firma y los materiales para la Central conservan «Tinta y Sello» (`docs/identidad-visual.md`).
 
-## 1. Por qué cambia la paleta en el sitio público
+**Punto de partida (26-sep, 14:50):**
+- `web/` ya existe, con cuatro secciones (Inicio, Pasillo vivo, La demo real, Cómo funciona), la simulación de agentes y la repetición verificable. Tiene 35 pruebas en verde.
+- Hoy usa «Tinta y Sello» en claro.
+- **Detectado en 390 px:** el mapa se ve pequeño, y la lista de 40 clientes y 20 bodegas alarga mucho la página.
+- Capturas en `demo/capturas/web-*.png`.
 
-El sitio lo verán jurados y gente de Web3, no bodegueros. Tiene que decir en el primer vistazo, sin texto, tres cosas:
-1. **Es un libro abierto:** fondo oscuro con retícula de registro y hashes en tipografía monoespaciada. Es el código visual que un público cripto reconoce al instante.
-2. **Lo firman personas:** la tipografía y el color «papel» del texto, más el sello, conservan lo humano del mostrador.
-3. **Es de la Central y es serio:** nada de neón, degradados morado-cian ni monedas. Futurista, pero pragmático.
+## 1. Tema dual con interruptor
 
-Todas las combinaciones de abajo se verificaron con la fórmula de contraste de WCAG 2.x y superan 4.5:1 (nivel AA). La maqueta está en `demo/capturas/2026-09-26_paletas-movil.png`.
+Dos temas, elegidos por José. Un **interruptor en la barra superior**, a la derecha y siempre visible, cambia entre ellos:
 
-## 2. Tres paletas
+| Token | ☀ Claro · «Papel y cadena» | ☾ Oscuro · «Cempasúchil» |
+|---|---|---|
+| Fondo | `#F5F0E6` | `#15101F` |
+| Superficie | `#FFFFFF` | `#1F1830` |
+| Borde / retícula | `#D9D2C3` | `#3A2F52` |
+| Texto | `#1B2233` (14.0:1) | `#F7F1E8` (16.6:1) |
+| Texto secundario | `#555E6E` (5.8:1) | `#B8AFC6` (8.9:1) |
+| **Firma** (primario, acciones, trazos de firma) | `#1E3A8A` (9.1:1) | `#FF9A3C` (8.8:1) |
+| **Hash** (todo lo que está en la cadena) | `#0F6E61` (5.4:1) | `#45D6D2` (10.5:1) |
+| **Sello** (cumplida; un uso por pantalla) | `#B3261E` (5.8:1) | `#F0508F` (5.6:1) |
+| Bodega en el mapa | `#E6DAC3`, borde `#D9D2C3` | `#2A2140`, borde `#3A2F52` |
+| Semáforo (solo en el semáforo, con palabra y forma) | `#236B2A` · `#8A5A00` · `#B71C1C` | `#3FD08A` · `#F2C14E` · `#FF6B6B` |
 
-| Token | 1 · Libro abierto (oscuro, **recomendada**) | 2 · Papel y cadena (claro) | 3 · Cempasúchil (oscuro, más mexicano) |
-|---|---|---|---|
-| Fondo | `#0B1220` | `#F5F0E6` | `#15101F` |
-| Superficie | `#131C2E` | `#FFFFFF` | `#1F1830` |
-| Borde / retícula | `#26324A` | `#D9D2C3` | `#3A2F52` |
-| Texto | `#F2EDE3` (16.0:1) | `#1B2233` (14.0:1) | `#F7F1E8` (16.6:1) |
-| Texto secundario | `#A9B3C4` (8.9:1) | `#555E6E` (5.8:1) | `#B8AFC6` (8.9:1) |
-| **Firma** (primario, acciones) | `#7AA7FF` (7.8:1) | `#1E3A8A` (9.1:1) | `#FF9A3C` (8.8:1) |
-| **Hash** (todo lo que está en la cadena) | `#6FE3C1` (12.0:1) | `#0F6E61` (5.4:1) | `#45D6D2` (10.5:1) |
-| **Sello** (cumplida, un uso por pantalla) | `#FF6F61` (6.9:1) | `#B3261E` (5.8:1) | `#F0508F` (5.6:1) |
-| Semáforo (solo en el semáforo, con palabra y forma) | `#3FD08A` · `#F2C14E` · `#FF6B6B` | `#236B2A` · `#8A5A00` · `#B71C1C` | `#3FD08A` · `#F2C14E` · `#FF6B6B` |
+Contrastes medidos sobre el fondo con la fórmula de WCAG 2.x. Todos superan 4.5:1.
 
-Contrastes medidos sobre el fondo.
+**Cómo funciona el interruptor:**
+- Por defecto sigue al sistema (`prefers-color-scheme`).
+- Al tocarlo, cambia `data-tema` en `<html>` y la elección se recuerda en el navegador. Si el almacenamiento no está disponible, el sitio igual funciona.
+- Es un `<button>` con `aria-pressed` y la etiqueta «Tema oscuro» o «Tema claro». Mide 44 × 44 px o más.
+- Solo cambian los tokens de CSS, nunca el HTML.
 
-- **1 · Libro abierto (recomendada).** Es la tinta azul de «Tinta y Sello» llevada a la noche. El verde menta de los hashes marca lo que vive en la cadena y el texto color papel marca lo humano. Un público Web3 lo reconoce sin explicación y no se parece a la estética cripto genérica. Además es continuidad de marca, no una marca nueva.
-- **2 · Papel y cadena.** Es la identidad actual con una capa de «cadena» (hashes en verde azulado). Es la más legible en un proyector con mucha luz y en papel. Conviene como **modo claro** de la 1, con los mismos tokens.
-- **3 · Cempasúchil.** Es la más memorable y la más mexicana. El riesgo: el fondo violeta y el rosa se acercan a la estética cripto de moda y compiten con el semáforo.
+**El sentido de cada color, sin explicación:**
+- **Texto:** lo humano, el papel.
+- **Firma:** lo que hacen las personas.
+- **Hash:** lo que vive en la cadena.
+- **Sello:** la palabra cumplida.
 
-**Recomendación:** la 1 como tema por defecto y la 2 como modo claro automático (`prefers-color-scheme`). Solo cambian los tokens de CSS, no el HTML.
+## 2. «La app en tu mano»: el teléfono dentro de la página (decisión #53)
 
-## 3. Tres propuestas de experiencia en el celular
+**Qué es:** en la sección «La demo real», junto al gemelo del pasillo, la **silueta de un teléfono** muestra la app como la vería el cliente. El jurado ve el producto que una persona tendría en la mano, no solo la infraestructura. Las dos pantallas cuentan una sola historia: lo que pasa en el teléfono se ve al mismo tiempo en el pasillo.
 
-| | A · «Historia en seis pasos» (**recomendada** para la portada) | B · «Mapa primero» | C · «Libro abierto» |
-|---|---|---|---|
-| Idea | Se lee bajando la pantalla: cada bloque es un paso de la demo real, y el mapa del pasillo, fijo arriba, se anima al llegar a cada paso | El pasillo ocupa la pantalla; una hoja inferior deslizable trae Demo real, Pasillo vivo y Cómo funciona | Un registro vertical, como un explorador de bloques pero humano: cada renglón es un evento con seudónimo, rango, hash y sello |
-| Para quién | El juez que abre el enlace en el teléfono por primera vez | Quien ya entendió y quiere explorar | El público técnico que quiere ver «la cadena» |
-| Fuerte en | Cuenta la historia sola, sin presentador | Se ve espectacular | Es el más «Web3» |
-| Riesgo | Más texto que editar | En pantallas chicas el mapa se ve pequeño | Frío si es lo primero que se ve |
-| JavaScript | Mínimo: un observador de desplazamiento | Medio | Mínimo |
+**Pantallas del cliente**, sincronizadas con los 6 pasos reales de `repeticion.json`:
 
-**Recomendación: A en la portada, B en «Pasillo vivo» y C en «La demo real»** como vista alternativa («ver como registro»). Así cada público encuentra su puerta.
+| Paso | Pantalla en el teléfono | En el mapa |
+|---|---|---|
+| 1 | Aviso: «Bodega A te registró una nota: $5,000–$20,000, vence el [fecha]. ¿Estás de acuerdo?» y botón «Acepto» | Trazo de A-17 a Doña Mary |
+| 2 | «Firmada por los dos», con el hash y «Verlo en la cadena» | Segunda firma |
+| 3 | Sello CUMPLIDA: «Cumpliste tu palabra: queda firmado a tu favor.» | Sello sobre A-17 |
+| 4 | «Bodega B pidió tu resumen sin permiso y no se le entregó.» (sin hash: no se envió transacción) | B-40 parpadea en gris |
+| 5 | «¿Das permiso a Bodega B por 30 días?», con «Dar permiso» | Puente punteado |
+| 6 | «Bodega B consultó tu resumen. Quedó registrado.» y el hash | Pulso y semáforo |
 
-**Reglas de celular:**
-- diseño para 390 px de ancho primero;
-- botones de 48 px de alto o más, alcanzables con el pulgar en la mitad inferior;
-- mapa en vista plana en el celular e isométrica desde 900 px;
-- nada de desplazamiento horizontal;
-- respeta `prefers-reduced-motion`.
+- **Interruptor «Ver como: Cliente / Bodega B»:** del lado de la bodega, las pantallas muestran el rechazo sin permiso y el semáforo con «historial insuficiente» y su lista de condiciones.
+- **La silueta:** dibujada con CSS o SVG, genérica (bordes redondeados, sin muesca ni botones de una marca real), con la barra de estado que dice «testnet».
+- **En un celular de verdad** (menos de 900 px), la silueta desaparece y las pantallas ocupan el ancho: el teléfono del jurado se vuelve la app.
+- **Letrero fijo:** «Prototipo de la app. Datos ficticios. En este sitio no se firma nada: cada paso enlaza a su transacción real en Stellar testnet.»
+- **Lo que nunca aparece:** campos para llaves o frases semilla, pantallas de inicio de sesión, números de teléfono ni nombres reales. No debe parecer una billetera ni pedir datos.
 
-## 4. HTML primero: qué sí protege y qué no
+## 3. Experiencia en el celular
 
-**Lo que hay que saber:** todo lo que llega al navegador se puede leer, sea HTML, CSS o JavaScript. Cualquiera lo ve con «ver código fuente». Escribir en HTML en lugar de JavaScript **no** esconde nada. Además, el repositorio es público. La protección real ya está en el diseño:
-- el sitio no tiene llaves ni servidor;
-- en la cadena solo hay seudónimo y rangos;
-- los datos personales nunca salen del backend privado.
+- **Portada «Historia en seis pasos»:** texto corto por bloque. El pasillo va fijo arriba y se anima al llegar a cada bloque. Al final, dos botones: «Ver la demo real» y «Entrar al Pasillo vivo».
+- **«Pasillo vivo»:**
+  - el mapa ocupa el ancho;
+  - los controles de tiempo, fijos abajo al alcance del pulgar;
+  - una **hoja inferior** con tres pestañas: Qué pasa (feed), Clientes y Bodegas.
+  
+  Las listas de 40 clientes y 20 bodegas **no se despliegan en la página**: van dentro de la hoja, con búsqueda por nombre y las 10 primeras visibles.
+- **«La demo real»:** el teléfono de la sección 2, más el botón «Ver como registro», que muestra los 6 pasos como renglones de un libro (seudónimo, rango, hash y sello).
+- **Reglas:**
+  - diseño para 390 px primero;
+  - botones de 48 px o más;
+  - sin desplazamiento horizontal;
+  - mapa plano en el celular e isométrico desde 900 px;
+  - respeta `prefers-reduced-motion`.
 
-**Por qué sí conviene «HTML primero»:**
-- **Robusto:** si falla el JavaScript, el sitio se sigue leyendo completo.
-- **Accesible y rápido.**
-- **Fácil de revisar:** el contenido está a la vista en un solo lugar.
+## 4. HTML primero
 
-**Regla para Claude Code:**
-- Todo el texto y la estructura van en HTML semántico, y la página se entiende con JavaScript desactivado.
-- JavaScript solo para lo que no se puede hacer de otra forma:
-  - la simulación de agentes;
-  - las animaciones del mapa;
-  - el cambio de pasos.
-- Sin frameworks ni paquetes.
-- Nada de datos ni textos importantes generados solo por JavaScript. En `repeticion.json` los pasos también quedan escritos en el HTML.
+Todo lo que llega al navegador se puede leer, sea HTML, CSS o JavaScript, y además el repositorio es público. **Esconder no depende del lenguaje.** Lo que protege es que el sitio no tiene llaves ni servidor, y que en la cadena solo hay seudónimo y rangos.
 
-## 5. Prompt para Claude Code (pegar **después** de que José elija)
+«HTML primero» se elige por robustez, accesibilidad y facilidad de revisión:
+- todo el texto va en HTML semántico, **incluidas las 6 pantallas del teléfono**;
+- la página se entiende con JavaScript desactivado;
+- JavaScript solo para la simulación, las animaciones, el cambio de pasos y el interruptor de tema;
+- sin frameworks ni paquetes.
 
-Agrega a `docs/cola-de-trabajo.md`, antes de la tarea 6, estas dos tareas, y sigue la cola:
+## 5. Tareas para Claude Code (ya están en `docs/cola-de-trabajo.md`, 8 a 10)
 
-```
-6a. Paleta del sitio: aplica en web/estilos.css la paleta elegida por José en la decisión
-    #52 (docs/diseno-web-movil.md §2) como tokens de CSS; la segunda paleta como modo claro
-    con prefers-color-scheme. Hashes siempre en monoespaciada y en el token «hash»; el sello,
-    un uso por pantalla; el semáforo solo en el semáforo, con palabra y forma.
-    Criterio: contraste AA verificado con un script en web/pruebas/.
-6b. Experiencia móvil: portada como «Historia en seis pasos» (propuesta A), «Pasillo vivo»
-    con mapa y hoja inferior (B) y, en «La demo real», el botón «ver como registro» (C).
-    HTML primero (§4): todo el texto en HTML semántico, legible sin JavaScript; JavaScript solo
-    para simulación, animaciones y cambio de pasos.
-    Criterio: se entiende completo con JavaScript desactivado; en 390 px no hay desplazamiento
-    horizontal y los botones miden 48 px o más; capturas en demo/capturas/web-movil-*.png.
-```
+Ver la cola. Resumen:
+- **8.** Tema dual con interruptor.
+- **9.** «La app en tu mano».
+- **10.** Experiencia móvil (portada en seis pasos y hoja inferior en Pasillo vivo).

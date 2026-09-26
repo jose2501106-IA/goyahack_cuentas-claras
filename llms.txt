@@ -4,7 +4,7 @@
 
 Cómo leer este repositorio sin gastar de más:
 
-- Todo dato sobre la Central lleva fuente o la etiqueta «experiencia de José»; los hechos citables tienen ID (H-01 a H-25) en docs/hoja-de-hechos.md y las decisiones, número (#1 a #52) en docs/decisiones.md.
+- Todo dato sobre la Central lleva fuente o la etiqueta «experiencia de José»; los hechos citables tienen ID (H-01 a H-25) en docs/hoja-de-hechos.md y las decisiones, número (#1 a #53) en docs/decisiones.md.
 - docs/indice.md dice qué contiene cada archivo, sus etiquetas, cuántas palabras tiene y cuándo leerlo. Busca ahí antes de abrir documentos largos.
 - Los documentos marcados «bitácora» usan los nombres anteriores del proyecto (CREDI-CEDA, Palabra); los «vigentes» mandan.
 - Nombres: proyecto «Cuentas Claras»; equipo «Palabra»; contrato, crate y carpeta `cuentas_claras`; repositorio `goyahack_cuentas-claras`.
@@ -35,7 +35,8 @@ Cómo leer este repositorio sin gastar de más:
 - [Lean Canvas](docs/lean-canvas.md): el modelo en nueve bloques (borrador)
 - [Nombre y marca](docs/nombre-y-marca.md): por qué Cuentas Claras y Palabra
 - [Identidad visual](docs/identidad-visual.md): paleta «Tinta y Sello», tipografía y reglas
-- [Diseño del sitio en el celular](docs/diseno-web-movil.md): paletas para público Web3, experiencia móvil y «HTML primero» (propuesta)
+- [Sitio público](web/index.html): Inicio, Pasillo vivo (agentes simulados), la demo real verificable y Cómo funciona; estático, sin llaves (Vercel)
+- [Diseño del sitio en el celular](docs/diseno-web-movil.md): tema dual con interruptor, «La app en tu mano» y experiencia móvil
 - [Plan maestro](docs/plan-maestro.md): método, plan del fin de semana (§4b), plan posterior y ruta con la administración
 - [Guía de entrevista](docs/guia-entrevista-bodegueros.md): cinco preguntas para bodegueros, anónimas, y qué se publica
 - [Preguntas pendientes](docs/preguntas-pendientes.md): lo que falta confirmar
@@ -45,6 +46,7 @@ Cómo leer este repositorio sin gastar de más:
 - [Pitch de 3 minutos v2](pitch/2026-09-26_pitch-3-minutos-v2.md): refrán, demo en el gemelo digital y los dos huecos cerrados
 - [Deck](pitch/2026-09-25_deck.md): diez diapositivas con notas y fuentes
 - [Prompt para Claude Design](pitch/2026-09-25_prompt-claude-design.md): presentación minimalista lista para generar
+- [Prompt para Claude Design · app móvil](pitch/2026-09-26_prompt-claude-design-app-movil.md): pantallas del cliente y la bodega en tema dual
 - [Guion de demo v2](pitch/2026-09-26_guion-demo-v2.md): pasos en el gemelo digital, checklist y plan B
 - [Preguntas del jurado](pitch/2026-09-25_preguntas-jurado.md): respuestas preparadas con fuente
 

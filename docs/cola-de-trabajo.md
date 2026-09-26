@@ -3,10 +3,10 @@
 **Cómo se usa (decisión #51):**
 - Claude Code toma la primera tarea `[ ]`, la hace, cumple su criterio, cambia `[ ]` por `[x]` con la hora y el hash del commit, hace `git pull --rebase` y push, y sigue con la siguiente **sin esperar a José**.
 - Vercel publica solo cada push a `main`, así que José puede seguir el avance desde el teléfono.
-- **Paradas obligatorias** (spec web §6): algo falla dos veces; necesita instalar algo, una llave, tocar fuera de `web/`, `docs/` o `README.md`, o desplegar un contrato; o ya son más de las 15:00 del domingo 27. En esos casos marca la tarea con `[!]`, escribe el motivo debajo y se detiene.
+- **Paradas obligatorias** (spec web §6): algo falla dos veces; necesita instalar algo, una llave, tocar fuera de `web/`, `docs/`, `README.md` o `demo/capturas/web-*` (capturas del sitio, permitidas desde el 26-sep 15:00), o desplegar un contrato; o ya son más de las 15:00 del domingo 27. En esos casos marca la tarea con `[!]`, escribe el motivo debajo y se detiene.
 - José agrega o reordena tareas cuando quiera; Claude (chat) también, con su aprobación.
 
-**Entorno:** Claude Code en la web (claude.ai/code), conectado al repositorio. Aquí no hay llaves de testnet y no hacen falta.
+**Entorno:** Claude Code en la web (claude.ai/code), conectado al repositorio. Aquí no hay llaves de testnet y no hacen falta. **Trabaja directo en `main`** (o en una rama con PR que José fusiona): Vercel publica `main`.
 
 ## Cola
 
@@ -16,12 +16,10 @@
 - [x] **4. Motor de la simulación.** `simulacion/motor.js` con las reglas y el semáforo. *Criterio:* pruebas del motor en verde, incluida la equivalencia con `backend/semaforo.js`.
 - [x] **5. Agentes y vista.** `agentes.js` y `vista.js`: 20 bodegas y 40 clientes, controles de tiempo, fichas, trazos, sellos, feed, tarjeta de «pensamiento» y rótulo de simulación. *Criterio:* a los 90 días simulados hay semáforos de los tres colores y el rótulo del día 60 aparece.
 - [x] **6. Pulido y accesibilidad.** `prefers-reduced-motion`, pausa, contraste y textos. *Criterio:* criterios 3, 4 y 6 de la spec web.
-- [!] **7. Cierre.** Capturas en `demo/capturas/web-*.png`, sección «Sitio público» en el README, índice y `llms.txt` al día. *Criterio:* criterios 1 a 8 de la spec web.
-  - **[!] Parada obligatoria (sáb 26-sep): tocar fuera de `web/`, `docs/` o `README.md`.** Lo que falta de esta tarea vive fuera de lo permitido:
-    - las capturas van en `demo/capturas/web-*.png` (carpeta `demo/`; además el criterio 5 pide no tocar `demo/`);
-    - `llms.txt`, en la raíz del repo, debe mencionar el sitio (regla de `CLAUDE.md`: índice y `llms.txt` al día).
-  - **Sí quedó hecho:** sección «Sitio público» en el README (con la URL de Vercel pendiente para que la pegue José) y la fila de `web/` en `docs/indice.md`. Criterios de la spec web: 2, 3, 4, 5 y 6 verificados; 1 verificado con `file://` y con `python3 -m http.server`; 7 y 8 (URL) pendientes.
-  - **Qué necesita José:** (1) autorizar que Claude Code escriba en `demo/capturas/` y `llms.txt`, o hacerlo en el Codespace; las capturas se sacan con Chromium sin interfaz en 390 px y 1920 px (Inicio, Pasillo vivo en el día 90, demo real en el paso 6, Cómo funciona). (2) Este trabajo está en la rama `claude/hopeful-bell-9ib4fo`, no en `main`: Vercel publica `main`, así que hay que fusionarla (o abrir un PR) para verlo en línea. (3) Pegar la URL de Vercel en el README.
+- [x] **7. Cierre.** Terminada por Claude (chat) el 26-sep a las 15:00: capturas `demo/capturas/web-*.png` (390 y 1920 px; Inicio, Pasillo vivo, La demo real y Cómo funciona) y `llms.txt` al día. Falta solo pegar la URL de Vercel en el README (José).
+- [ ] **8. Tema dual con interruptor.** Aplica `docs/diseno-web-movil.md` §1: tokens de «Papel y cadena» (claro) y «Cempasúchil» (oscuro) en `web/estilos.css` bajo `html[data-tema]`, interruptor en la barra superior (`<button aria-pressed>`, 44 px o más), por defecto `prefers-color-scheme`, elección recordada con try/catch. Hashes siempre en monoespaciada y en el token «hash»; el semáforo solo en el semáforo. *Criterio:* prueba en `web/pruebas/` que calcula el contraste de cada par de tokens de los dos temas (4.5:1 o más); el sitio se ve bien en ambos temas en 390 y 1920 px.
+- [ ] **9. «La app en tu mano».** `docs/diseno-web-movil.md` §2: silueta de teléfono genérica en «La demo real», 6 pantallas del cliente escritas en HTML y sincronizadas con `repeticion.json` y con el gemelo; interruptor «Ver como: Cliente / Bodega B»; en menos de 900 px sin silueta y a todo el ancho; letrero de prototipo. Nunca campos de llaves, inicio de sesión ni datos reales. *Criterio:* con JavaScript desactivado se leen las 6 pantallas en orden; cada hash coincide con `repeticion.json`; el paso 4 va sin hash.
+- [ ] **10. Experiencia móvil.** `docs/diseno-web-movil.md` §3: portada «Historia en seis pasos», hoja inferior en Pasillo vivo (Qué pasa / Clientes / Bodegas, con las listas plegadas y búsqueda) y «Ver como registro» en La demo real. *Criterio:* en 390 px la sección Pasillo vivo mide menos de 2 pantallas de alto con la hoja cerrada; sin desplazamiento horizontal; botones de 48 px o más; `node --test web/pruebas/` en verde.
 
 ## Hechas
 
