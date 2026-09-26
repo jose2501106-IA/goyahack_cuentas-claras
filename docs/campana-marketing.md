@@ -203,7 +203,7 @@ Las fases siguen el plan maestro: P0 (entrega), P1 (piloto interno), P2 (dictame
 | **Audiencia** | Jurado, mentores, CriptoUNAM, Stellar y BAF, comunidad universitaria |
 | **Mensaje** | «Fiado de palabra, firmado por los dos.» y «La palabra se cumple, pero no viaja.» |
 | **Canales** | Pitch en vivo; stand físico y evaluación en vivo, que según [Luma](https://luma.com/0oogs8ym) solo hay en el campus; dashboard de entrega; mentoría en el CIA o en Discord; repositorio en GitHub; video público; X, LinkedIn e Instagram |
-| **Tácticas** | 1) **El pitch como primera pieza de campaña**: apertura de 10 segundos (8.8), tres mensajes, demo y cierre con «Tu palabra vale. Ahora también viaja.». 2) **Stand «Firma tu primera cuenta clara»**: una tarjeta con QR abre la vista de cliente con una cuenta de demo; el juez toca «Aceptar» desde su teléfono; el evento aparece en el explorador, en la laptop; le sellamos su tarjeta con «Palabra cumplida» y se la lleva. Versión completa, si alcanza: la Bodega B intenta consultar sin permiso y falla; el juez da permiso y la consulta pasa. **Opcional**: solo si el frontend está desplegado con URL pública y hay un grupo de cuentas de cliente ya fondeadas (una por tarjeta numerada). Si no, el juez toca el botón en nuestra laptop. Nunca se piden datos personales al juez. No entra en la ruta crítica: primero la demo grabada. 3) **Video** de 2–3 minutos, corte jurado. 4) **README como manifiesto** (texto en 8.9). 5) **Publicaciones con la plantilla oficial** (Canva) que dio el organizador, etiquetando @Cripto_UNAM y #GoyaHack (correo de aceptación del 21-sep). 6) **Construimos en público**: cada publicación enlaza una decisión de `docs/decisiones.md` o la bitácora de commits. 7) **La mentoría como validación**: llevar tres preguntas (la paradoja de la portabilidad, los incentivos sin token y el primer lector bancario) y registrar las respuestas en `docs/decisiones.md`. 8) *Opcional*: asistir a «BAF × Stellar» (viernes 14:00–15:00, escenario principal) si no choca con la mentoría, para conseguir un contacto de continuidad |
+| **Tácticas** | 1) **El pitch como primera pieza de campaña**: apertura de 10 segundos (8.8), tres mensajes, demo y cierre con «Tu palabra vale. Ahora también viaja.». 2) **Stand «Firma tu primera cuenta clara»**: una tarjeta con QR abre la vista de cliente con una cuenta de demo; el juez toca «Aceptar» desde su teléfono; el evento aparece en el explorador, en la laptop; le sellamos su tarjeta con «Palabra cumplida» y se la lleva. Versión completa, si alcanza: la Bodega B-40 intenta consultar sin permiso y falla; el juez da permiso y la consulta pasa. **Opcional**: solo si el frontend está desplegado con URL pública y hay un grupo de cuentas de cliente ya fondeadas (una por tarjeta numerada). Si no, el juez toca el botón en nuestra laptop. Nunca se piden datos personales al juez. No entra en la ruta crítica: primero la demo grabada. 3) **Video** de 2–3 minutos, corte jurado. 4) **README como manifiesto** (texto en 8.9). 5) **Publicaciones con la plantilla oficial** (Canva) que dio el organizador, etiquetando @Cripto_UNAM y #GoyaHack (correo de aceptación del 21-sep). 6) **Construimos en público**: cada publicación enlaza una decisión de `docs/decisiones.md` o la bitácora de commits. 7) **La mentoría como validación**: llevar tres preguntas (la paradoja de la portabilidad, los incentivos sin token y el primer lector bancario) y registrar las respuestas en `docs/decisiones.md`. 8) *Opcional*: asistir a «BAF × Stellar» (viernes 14:00–15:00, escenario principal) si no choca con la mentoría, para conseguir un contacto de continuidad |
 | **Piezas** | Deck de 10 diapositivas o menos; guion del pitch; tarjetas QR numeradas con datos ficticios; una nota impresa de demo; sello «Palabra cumplida»; video; manifiesto del README; 3 publicaciones (8.7) |
 | **Responsables** | José: pitch, stand, mentoría y publicaciones. Claude (chat): copys, deck y guion. Claude Code: frontend desplegado, `demo.sh`, capturas y, si alcanza, «modo stand» |
 | **Métricas** | Entrega completa antes de la hora oficial; enlaces que abren en incógnito; ≥3 comentarios de mentores registrados; jueces o mentores que firmaron en el stand (si aplica); ≥1 contacto del ecosistema con seguimiento agendado; 3 publicaciones hechas. **No se persiguen likes ni seguidores** |
@@ -429,21 +429,21 @@ Por defecto van de «usted», con variante de «tú» para las bodegas que tutea
 *Variante con «tú»:* [Nombre], [Bodega] confirmó tu pago de la nota [folio]. **Cumpliste tu palabra:** queda firmado a tu favor. ¡Gracias!
 
 **d) Solicitud de permiso de consulta**
-> [Nombre], [Bodega B] le pide permiso para ver el resumen de su historial en Cuentas Claras durante 30 días. Verá cuántas notas ha cumplido, en cuántas bodegas y el rango de monto más alto. No verá montos exactos, productos ni sus datos personales. Usted decide: [Dar permiso] [No, gracias]. Puede quitar el permiso cuando quiera, y cada consulta le llegará como aviso.
+> [Nombre], [Bodega que consulta] le pide permiso para ver el resumen de su historial en Cuentas Claras durante 30 días. Verá cuántas notas ha cumplido, en cuántas bodegas y el rango de monto más alto. No verá montos exactos, productos ni sus datos personales. Usted decide: [Dar permiso] [No, gracias]. Puede quitar el permiso cuando quiera, y cada consulta le llegará como aviso.
 
 (El texto «no verá…» describe lo que muestra la app. Antes de usarlo con clientes reales se cumple la condición de la sección 13.2.)
 
 **e) Bienvenida a una bodega del Círculo**
 
 Al cliente:
-> Bienvenido a [Bodega B], bodega del Círculo Cuentas Claras: aquí su palabra vale. Con su permiso, ya revisamos su resumen. [Encargado] lo atiende para platicar de su fiado; la decisión es de la bodega. Gracias por su confianza.
+> Bienvenido a [Bodega que consulta], bodega del Círculo Cuentas Claras: aquí su palabra vale. Con su permiso, ya revisamos su resumen. [Encargado] lo atiende para platicar de su fiado; la decisión es de la bodega. Gracias por su confianza.
 
 A una bodega que entra al Círculo:
 > [Nombre del dueño], bienvenido al Círculo Cuentas Claras. Desde hoy su bodega puede consultar, con permiso del cliente, el historial de quienes cumplen su palabra en otras bodegas, y sus clientes cumplidos llevan el suyo. Le entregamos su distintivo en la junta del [fecha]. Las reglas del Círculo están aquí: [enlace].
 
 **f) Complementarios**
-- *Permiso por vencer:* «[Nombre], su permiso a [Bodega B] vence el [fecha]. Si quiere renovarlo, avísele a la bodega.»
-- *Permiso terminado:* «[Bodega B] ya no puede consultar su resumen.»
+- *Permiso por vencer:* «[Nombre], su permiso a [Bodega que consulta] vence el [fecha]. Si quiere renovarlo, avísele a la bodega.»
+- *Permiso terminado:* «[Bodega que consulta] ya no puede consultar su resumen.»
 - *Aclaración abierta:* «Su nota [folio] quedó en aclaración con [Bodega]. Mientras se resuelve, queda registrada como aclaración, no como impago.»
 
 ### 8.4 Cartel de mostrador (tamaño carta o tabloide)
@@ -485,10 +485,10 @@ La app habla de «tú», que es la voz de marca. Los mensajes de WhatsApp de la 
 | Cliente avisa que pagó | «Le avisamos a [Bodega] que ya pagaste. Falta su confirmación.» | «[Cliente] dice que ya pagó la nota [folio]. Confírmalo o abre una aclaración.» |
 | Pago confirmado | «**Cumpliste tu palabra.** [Bodega] confirmó tu pago de la nota [folio].» | «Pago de la nota [folio] confirmado.» |
 | Aclaración abierta | «La nota [folio] está en aclaración. Queda registrada como aclaración, no como impago.» | Igual |
-| Solicitud de permiso | «[Bodega B] pide ver tu resumen por 30 días. Tú decides.» | «Solicitud enviada a [cliente].» |
-| Permiso otorgado | «Diste permiso a [Bodega B] hasta el [fecha]. Puedes quitarlo cuando quieras.» | «[Cliente] te dio permiso hasta el [fecha].» |
-| **Consulta realizada** | «[Bodega B] consultó tu resumen hoy a las [hora].» | — |
-| Permiso por vencer o terminado | «Tu permiso a [Bodega B] vence el [fecha].» / «[Bodega B] ya no puede ver tu resumen.» | «El permiso de [cliente] terminó.» |
+| Solicitud de permiso | «[Bodega que consulta] pide ver tu resumen por 30 días. Tú decides.» | «Solicitud enviada a [cliente].» |
+| Permiso otorgado | «Diste permiso a [Bodega que consulta] hasta el [fecha]. Puedes quitarlo cuando quieras.» | «[Cliente] te dio permiso hasta el [fecha].» |
+| **Consulta realizada** | «[Bodega que consulta] consultó tu resumen hoy a las [hora].» | — |
+| Permiso por vencer o terminado | «Tu permiso a [Bodega que consulta] vence el [fecha].» / «[Bodega que consulta] ya no puede ver tu resumen.» | «El permiso de [cliente] terminó.» |
 | Consulta sin permiso | — | «No tienes permiso de este cliente. Pídeselo en el mostrador.» |
 | Historial insuficiente | «Todavía no hay suficiente historial. Cada nota que cumples lo construye.» | «Historial insuficiente: todavía no hay suficientes notas cerradas para mostrar un semáforo. La decisión es tuya.» |
 
@@ -644,7 +644,7 @@ No se inventan montos. Todo queda **por cotizar**.
 | Decir que reduce la extorsión | Frase en el pitch o en un cartel | Vetado. Solo «diseñado para no exponer tus datos» |
 | Exposición en las piezas | Nombres, locales, montos, fachadas o plano en fotos y publicaciones | Revisión de privacidad antes de publicar cualquier cosa (13.3, regla 7) |
 | **El identificador de la bodega en documentos públicos** | Los documentos públicos del repo (`plan-maestro.md`, `problema-solucion.md`, la spec) nombran a la bodega del equipo junto con su colocación diaria de fiado. Juntos, son el tipo de dato que el propio proyecto considera un mapa para extorsionadores | **José decide antes de publicar o entregar** si se sustituye el identificador por «bodega ancla» en todos los documentos públicos. Esta campaña ya usa «bodega ancla» |
-| Nombres ficticios que coincidan con bodegas reales | Los nombres de demo de la spec v1 podían coincidir con bodegas reales de la Central | Resuelto en la spec v2: «Bodega A», «Bodega B» y «Doña Mary (personaje ficticio)» |
+| Nombres ficticios que coincidan con bodegas reales | Los nombres de demo de la spec v1 podían coincidir con bodegas reales de la Central | Resuelto en la spec v2: «Bodega A-17», «Bodega B-40» y «Doña Mary (personaje ficticio)» |
 | Suplantación (phishing) de mensajes de Cuentas Claras | Estafadores que envían «notas» falsas | Número oficial de cada bodega; «lo que nunca te pediremos»; enlaces con dominio propio; nunca pedir pagos por WhatsApp |
 | Incentivos mal diseñados (ley de Goodhart) | Se premia el volumen de notas y aparecen notas fabricadas (colusión entre bodega y cliente) | Nunca incentivos por nota. Se mide en ciclos cerrados con clientes distintos. La lista de emisores y el factor de diversidad ya están en la spec |
 | Logos sin permiso | CEDA, FICEDA o UNAM en el deck o en un cartel | Prohibido. La plantilla del organizador, solo como la entregó |

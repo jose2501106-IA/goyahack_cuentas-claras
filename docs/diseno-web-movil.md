@@ -47,14 +47,14 @@ Contrastes medidos sobre el fondo con la fórmula de WCAG 2.x. Todos superan 4.5
 
 | Paso | Pantalla en el teléfono | En el mapa |
 |---|---|---|
-| 1 | Aviso: «Bodega A te registró una nota: $5,000–$20,000, vence el [fecha]. ¿Estás de acuerdo?» y botón «Acepto» | Trazo de A-17 a Doña Mary |
+| 1 | Aviso: «Bodega A-17 te registró una nota: $5,000–$20,000, vence el [fecha]. ¿Estás de acuerdo?» y botón «Acepto» | Trazo de A-17 a Doña Mary |
 | 2 | «Firmada por los dos», con el hash y «Verlo en la cadena» | Segunda firma |
 | 3 | Sello CUMPLIDA: «Cumpliste tu palabra: queda firmado a tu favor.» | Sello sobre A-17 |
-| 4 | «Bodega B pidió tu resumen sin permiso y no se le entregó.» (sin hash: no se envió transacción) | B-40 parpadea en gris |
-| 5 | «¿Das permiso a Bodega B por 30 días?», con «Dar permiso» | Puente punteado |
-| 6 | «Bodega B consultó tu resumen. Quedó registrado.» y el hash | Pulso y semáforo |
+| 4 | «Bodega B-40 pidió tu resumen sin permiso y no se le entregó.» (sin hash: no se envió transacción) | B-40 parpadea en gris |
+| 5 | «¿Das permiso a Bodega B-40 por 30 días?», con «Dar permiso» | Puente punteado |
+| 6 | «Bodega B-40 consultó tu resumen. Quedó registrado.» y el hash | Pulso y semáforo |
 
-- **Interruptor «Ver como: Cliente / Bodega B»:** del lado de la bodega, las pantallas muestran el rechazo sin permiso y el semáforo con «historial insuficiente» y su lista de condiciones.
+- **Interruptor «Ver como: Cliente / Bodega B-40»:** del lado de la bodega, las pantallas muestran el rechazo sin permiso y el semáforo con «historial insuficiente» y su lista de condiciones.
 - **La silueta:** dibujada con CSS o SVG, genérica (bordes redondeados, sin muesca ni botones de una marca real), con la barra de estado que dice «testnet».
 - **En un celular de verdad** (menos de 900 px), la silueta desaparece y las pantallas ocupan el ancho: el teléfono del jurado se vuelve la app.
 - **Letrero fijo:** «Prototipo de la app. Datos ficticios. En este sitio no se firma nada: cada paso enlaza a su transacción real en Stellar testnet.»

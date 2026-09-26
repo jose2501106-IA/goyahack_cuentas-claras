@@ -14,10 +14,10 @@
   - servidor Node sin dependencias que llama al Stellar CLI (#45);
   - frontend HTML, CSS y JS sin framework;
   - portada «Pasillo A-B»: gemelo digital con la forma real del pasillo, leída de `plano/pasillo-a-b.json` (#47, #48);
-  - cuatro vistas: Bodega A, Teléfono de Doña Mary, Bodega B y Para el jurado;
+  - cuatro vistas: Bodega A-17, Teléfono de Doña Mary, Bodega B-40 y Para el jurado;
   - 27 pruebas con `node --test backend/`.
 - **Datos de demo:**
-  - Bodega A = A-17, Bodega B = B-40 (la que no conoce a Doña Mary), Bodega C = A-73 (segundo emisor, sembrado con `demo/sembrar.sh`). Posiciones ilustrativas.
+  - Bodega A-17, Bodega B-40 (la que no conoce a Doña Mary) y Bodega A-73 (segundo emisor, sembrado con `demo/sembrar.sh`). Posiciones ilustrativas.
   - Doña Mary es ficticia.
 - **Respaldo:** `./demo/demo.sh --paso-a-paso` (plan B por línea de comandos).
 - **Pitch y demo vigentes:** `pitch/2026-09-26_pitch-3-minutos-v2.md` y `pitch/2026-09-26_guion-demo-v2.md`.

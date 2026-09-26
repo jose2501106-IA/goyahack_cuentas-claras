@@ -1,6 +1,6 @@
 # pitch/ — presentación de Cuentas Claras
 
-Borradores v1 del 25-sep-2026, **pendientes de aprobación de José**. Proyecto: **Cuentas Claras**; equipo: **Palabra**. Datos de demo ficticios (Bodega A, Bodega B, Doña Mary). Todo lo que depende de la construcción está marcado **[CONFIRMAR]**.
+Borradores v1 del 25-sep-2026, **pendientes de aprobación de José**. Proyecto: **Cuentas Claras**; equipo: **Palabra**. Datos de demo ficticios (Bodega A-17, Bodega B-40, Doña Mary). Todo lo que depende de la construcción está marcado **[CONFIRMAR]**.
 
 | Archivo | Qué es | Uso |
 |---|---|---|

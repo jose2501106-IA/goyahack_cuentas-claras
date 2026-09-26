@@ -245,19 +245,19 @@ Nombre visible del producto: **Cuentas Claras**; del equipo: **Palabra** (decisi
 
 Tres vistas, sin registro ni login (cuentas de demo preseleccionadas):
 
-1. **Bodega A**: crear nota (cliente ficticio, monto exacto → el backend lo convierte a rango, vencimiento) → estado `Created`; botón "confirmar pago".
-2. **Cliente** (simula el teléfono): ver nota → "Aceptar"; después "Autorizar a Bodega B por 30 días".
-3. **Bodega B**: consultar historial del cliente → sin consentimiento: error visible; con consentimiento: semáforo, contadores y `issuers_count`; enlace al evento `aggregate_read` en el explorador.
+1. **Bodega A-17**: crear nota (cliente ficticio, monto exacto → el backend lo convierte a rango, vencimiento) → estado `Created`; botón "confirmar pago".
+2. **Cliente** (simula el teléfono): ver nota → "Aceptar"; después "Autorizar a Bodega B-40 por 30 días".
+3. **Bodega B-40**: consultar historial del cliente → sin consentimiento: error visible; con consentimiento: semáforo, contadores y `issuers_count`; enlace al evento `aggregate_read` en el explorador.
 
 Cada acción muestra el hash de la transacción con enlace al explorador de testnet. Idioma: español de México. Nada de la palabra "blockchain" en la interfaz del bodeguero o del cliente (solo en la vista del jurado / README).
 
 ## 10. Guion de la demo (camino feliz) y plan B
 
-1. Bodega A crea la nota (evento `note_created`).
+1. Bodega A-17 crea la nota (evento `note_created`).
 2. Cliente acepta (evento `note_accepted`).
-3. Bodega A confirma el pago (evento `paid_confirmed`, `on_time = true`).
-4. Cliente autoriza a Bodega B por 30 días (evento `consent_granted`).
-5. Bodega B consulta: semáforo + contadores (evento `aggregate_read`).
+3. Bodega A-17 confirma el pago (evento `paid_confirmed`, `on_time = true`).
+4. Cliente autoriza a Bodega B-40 por 30 días (evento `consent_granted`).
+5. Bodega B-40 consulta: semáforo + contadores (evento `aggregate_read`).
 6. Si el tiempo alcanza (recomendado antes del paso 4): la misma consulta **sin** permiso falla (`NoConsent`). Se dice: "sin permiso, el contrato no entrega el resumen, y el intento queda registrado". No se dice "nadie puede verlo" (sección 3b).
 
 `demo/demo.sh` ejecuta 1–5 con `stellar contract invoke` y las cuentas de `deploy.json`, e imprime los enlaces al explorador. Cuentas fondeadas y explorador abierto **antes** de presentar. Video grabado como respaldo y entregable.
@@ -273,9 +273,9 @@ Cada acción muestra el hash de la transacción con enlace al explorador de test
 
 ## 12. Datos de la demo (ficticios) y guion de negocio
 
-El guion de negocio es literal a lo que José describe: un cliente bueno de la Bodega A, con años de relación y 15 días de plazo, llega a la Bodega B, donde nadie lo conoce y donde hoy le dirían que no. Con la bitácora, el cliente autoriza a la Bodega B a leer su agregado y la Bodega B ve tres notas pagadas a tiempo, un emisor distinto, y decide.
+El guion de negocio es literal a lo que José describe: un cliente bueno de la Bodega A-17, con años de relación y 15 días de plazo, llega a la Bodega B-40, donde nadie lo conoce y donde hoy le dirían que no. Con la bitácora, el cliente autoriza a la Bodega B-40 a leer su agregado y la Bodega B-40 ve tres notas pagadas a tiempo, un emisor distinto, y decide.
 
-Datos ficticios mínimos (nombres elegidos para que no coincidan con ningún negocio real): **Bodega A (demo)** (emisor verificado), **Bodega B (demo)** (emisor verificado, lector), **Doña Mary (personaje ficticio, perfil 15 días)**, **Cliente 2 — fonda (demo, perfil 7 días)**, **Cliente 3 — sin historial (demo)** (→ "historial insuficiente"). Teléfonos ficticios con prefijo reservado para pruebas. Montos en MXN dentro de los rangos 1k–5k y 5k–20k. Nada real: ni nombres, ni teléfonos, ni el plano sin aprobación.
+Datos ficticios mínimos (nombres elegidos para que no coincidan con ningún negocio real): **Bodega A-17 (demo)** (emisor verificado), **Bodega B-40 (demo)** (emisor verificado, lector), **Doña Mary (personaje ficticio, perfil 15 días)**, **Cliente 2 — fonda (demo, perfil 7 días)**, **Cliente 3 — sin historial (demo)** (→ "historial insuficiente"). Teléfonos ficticios con prefijo reservado para pruebas. Montos en MXN dentro de los rangos 1k–5k y 5k–20k. Nada real: ni nombres, ni teléfonos, ni el plano sin aprobación.
 
 ## 13. Pendientes que no bloquean la construcción
 

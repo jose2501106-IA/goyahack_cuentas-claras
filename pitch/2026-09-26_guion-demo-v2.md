@@ -22,25 +22,25 @@
 | Ventana | Qué muestra |
 |---|---|
 | 1 | Deck en la diapositiva 3 |
-| 2 | App, portada **«Pasillo A-B»**: el gemelo digital, con Bodega A (A-17), Bodega B (B-40) y Bodega C (A-73). Las posiciones son ilustrativas |
+| 2 | App, portada **«Pasillo A-B»**: el gemelo digital, con Bodega A-17, Bodega B-40 y Bodega A-73. Las posiciones son ilustrativas |
 | 3 | App, vista **«Teléfono de Doña Mary»**: en un teléfono si se puede; si no, en la laptop |
 | 4 | Explorador de testnet en la página del contrato |
 | 5 | Terminal con `./demo/demo.sh --paso-a-paso` (plan B) |
 | 6 | Video de respaldo, copia local en MP4 |
 
-**Bodega C** es el segundo emisor: ya le fió y le cobró una nota a Doña Mary (`demo/sembrar.sh`). Por eso el semáforo puede marcar «2 bodegas ✓». La que no la conoce es **Bodega B**.
+**Bodega A-73** es el segundo emisor: ya le fió y le cobró una nota a Doña Mary (`demo/sembrar.sh`). Por eso el semáforo puede marcar «2 bodegas ✓». La que no la conoce es **Bodega B-40**.
 
 ## 2. Pasos (unos 70 s en el pitch)
 
 | # | Acción · quién firma | Qué se dice | Qué pasa en el mapa | En el explorador |
 |---|---|---|---|---|
 | 0 | — | «Este es el Pasillo A-B, con su forma real. Datos ficticios, Stellar testnet.» | Portada con el pasillo y el rótulo «no a escala; posiciones ilustrativas» | — |
-| 1 | Bodega A **crea** la nota (8,500 MXN, 15 días) | «Sale la nota; todavía no es deuda.» | Trazo de tinta de A-17 a la ficha de Doña Mary; papelito «Esperando firma» | `note_created`: rango `5k–20k`, sin nombre ni monto |
+| 1 | Bodega A-17 **crea** la nota (8,500 MXN, 15 días) | «Sale la nota; todavía no es deuda.» | Trazo de tinta de A-17 a la ficha de Doña Mary; papelito «Esperando firma» | `note_created`: rango `5k–20k`, sin nombre ni monto |
 | 2 | Doña Mary **acepta** | «Segunda firma: ahora existe. En la cadena no va su nombre ni el monto.» | Segundo trazo de regreso; «Firmada por los dos» | `note_accepted`, firmado por **otra** dirección |
-| 3 | Bodega A **confirma el pago** **[CORTABLE]** | «Cumplida.» | Cae el sello CUMPLIDA sobre A-17 | `paid_confirmed` |
-| N | Bodega B **consulta sin permiso** | «Bodega B, que no la conoce, pide su historial: rechazado.» *(pausa de dos segundos)* | B-40 parpadea en gris: «Sin permiso: no se entrega el resumen». Ningún trazo | **Nada**: la simulación lo rechaza y no se envía transacción |
+| 3 | Bodega A-17 **confirma el pago** **[CORTABLE]** | «Cumplida.» | Cae el sello CUMPLIDA sobre A-17 | `paid_confirmed` |
+| N | Bodega B-40 **consulta sin permiso** | «Bodega B-40, que no la conoce, pide su historial: rechazado.» *(pausa de dos segundos)* | B-40 parpadea en gris: «Sin permiso: no se entrega el resumen». Ningún trazo | **Nada**: la simulación lo rechaza y no se envía transacción |
 | 4 | Doña Mary **da permiso** por 30 días | «Le da permiso por 30 días, y lo puede quitar cuando quiera.» | Puente punteado de Doña Mary a B-40 | `consent_granted` |
-| 5 | Bodega B **consulta otra vez** | «Ve sus notas cumplidas y en cuántas bodegas… y dice "historial insuficiente". Es a propósito: con menos de dos meses de historial, no juzgamos.» | Pulso de ida y vuelta; semáforo ○ «Historial insuficiente» con la lista de condiciones; hash | `aggregate_read` |
+| 5 | Bodega B-40 **consulta otra vez** | «Ve sus notas cumplidas y en cuántas bodegas… y dice "historial insuficiente". Es a propósito: con menos de dos meses de historial, no juzgamos.» | Pulso de ida y vuelta; semáforo ○ «Historial insuficiente» con la lista de condiciones; hash | `aggregate_read` |
 
 Nunca saltes N ni 5: son la prueba. Si vas tarde, salta el 3.
 
@@ -50,7 +50,7 @@ Nunca saltes N ni 5: son la prueba. Si vas tarde, salta el 3.
 
 **T − 60 min**
 - [ ] `node backend/server.js` corriendo en el Codespace y la app abierta en el navegador (puerto 8080, **privado**).
-- [ ] **Doña Mary sin permiso vigente para Bodega B.** Si ya ensayaste, en «Teléfono de Doña Mary» toca **«Quitar permiso»**. Si no, el paso N no fallaría.
+- [ ] **Doña Mary sin permiso vigente para Bodega B-40.** Si ya ensayaste, en «Teléfono de Doña Mary» toca **«Quitar permiso»**. Si no, el paso N no fallaría.
 - [ ] Un ensayo completo con cronómetro: demo de 70 s o menos y pitch de 3:00 o menos.
 - [ ] `./demo/demo.sh --paso-a-paso` probado (plan B).
 - [ ] Video subido; el enlace abre en ventana de incógnito; copia local.

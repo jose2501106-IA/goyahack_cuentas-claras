@@ -36,15 +36,15 @@ Convenciones: `‖` = pausa de un segundo. *[cursiva entre corchetes]* = acotaci
 
 > Este es el Pasillo A-B de la Central, con su forma real. Las bodegas y los datos de la demo son ficticios, y todo corre en Stellar testnet.
 >
-> Bodega A le fía 8,500 pesos a Doña Mary, a 15 días. *[clic]* Sale la nota; todavía no es deuda.
+> Bodega A-17 le fía 8,500 pesos a Doña Mary, a 15 días. *[clic]* Sale la nota; todavía no es deuda.
 >
 > Doña Mary la acepta desde su teléfono. *[clic]* Segunda firma: ahora existe. En la cadena no va su nombre ni el monto: un seudónimo y un rango.
 >
-> Paga, y Bodega A lo confirma. *[clic]* Cumplida. **[CORTABLE]**
+> Paga, y Bodega A-17 lo confirma. *[clic]* Cumplida. **[CORTABLE]**
 >
-> Ahora Doña Mary cruza el pasillo, a Bodega B, donde nadie la conoce. Bodega B pide su historial. *[clic]* Rechazado. ‖‖
+> Ahora Doña Mary cruza el pasillo, a Bodega B-40, donde nadie la conoce. Bodega B-40 pide su historial. *[clic]* Rechazado. ‖‖
 >
-> Doña Mary le da permiso por 30 días. *[clic]* Bodega B consulta otra vez. *[clic]* Ve sus notas cumplidas y en cuántas bodegas… y dice «historial insuficiente». Es a propósito: con menos de dos meses de historial, no juzgamos.
+> Doña Mary le da permiso por 30 días. *[clic]* Bodega B-40 consulta otra vez. *[clic]* Ve sus notas cumplidas y en cuántas bodegas… y dice «historial insuficiente». Es a propósito: con menos de dos meses de historial, no juzgamos.
 
 *[Mientras confirma cada transacción, habla; si la frase termina antes, espera en silencio. Si la vista del cliente está en la laptop: «desde su teléfono —aquí, simulado—». Narra lo que aparezca en pantalla: si los contadores cambian, di lo que se ve [CONFIRMAR en el ensayo].]*
 
@@ -90,7 +90,7 @@ El gota a gota (ADN40, 2022), la LRSIC y la extorsión pasan a preguntas y a la 
 | Cierre | 35 | 2:45–3:00 |
 | **Total** | **410** | **3:00**, a unas 135 palabras por minuto (rango: 390–420) |
 
-Si el ensayo pasa de 3:05, quita el paso del pago (**[CORTABLE]**, 6 palabras más su transacción): el mapa ya muestra la nota cumplida de Bodega C.
+Si el ensayo pasa de 3:05, quita el paso del pago (**[CORTABLE]**, 6 palabras más su transacción): el mapa ya muestra la nota cumplida de Bodega A-73.
 
 ## 4. Notas de entrega (lo que cambia respecto a la v1)
 

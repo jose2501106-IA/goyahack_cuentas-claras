@@ -48,23 +48,23 @@ cadena (siempre en monoespaciada, con "↗ Verlo en la cadena"). Sello = la pala
 cumplida (sello circular girado, "CUMPLIDA", una vez por pantalla).
 
 PANTALLAS · APP DEL CLIENTE (Doña Mary, personaje ficticio)
-1. Aviso de nota: "Bodega A te registró una nota: $5,000–$20,000, vence el 11 oct.
+1. Aviso de nota: "Bodega A-17 te registró una nota: $5,000–$20,000, vence el 11 oct.
    ¿Estás de acuerdo?" Botón principal "Acepto"; secundario "No reconozco esta nota".
 2. Firmada: "Firmada por los dos." Dos trazos de firma. Seudónimo "fe1b5cfb…" y hash
    "a1e0…793d ↗" (hash real del paso 2 en testnet).
 3. Cumplida: sello CUMPLIDA grande. "Cumpliste tu palabra: queda firmado a tu favor."
-4. Aviso: "Bodega B pidió tu resumen sin tu permiso y no se le entregó." Sin hash
+4. Aviso: "Bodega B-40 pidió tu resumen sin tu permiso y no se le entregó." Sin hash
    (no hubo transacción).
-5. Permiso: "¿Das permiso a Bodega B por 30 días para consultar tu resumen?" Qué
+5. Permiso: "¿Das permiso a Bodega B-40 por 30 días para consultar tu resumen?" Qué
    verá (notas cumplidas, en cuántas bodegas, rango máximo) y qué no verá (montos
    exactos, productos, tus datos). Botones "Dar permiso" / "No, gracias".
-6. Constancia: "Bodega B consultó tu resumen. Quedó registrado." Hash "a843…183c ↗" (real). Lista
+6. Constancia: "Bodega B-40 consultó tu resumen. Quedó registrado." Hash "a843…183c ↗" (real). Lista
    "Quién ha consultado mi historial".
 Texto fijo al pie de la app: "En la cadena no va tu nombre, tu teléfono ni el monto
 exacto. Tú decides a qué bodega le das permiso de pedir tu resumen; cada consulta
 queda registrada."
 
-PANTALLAS · APP DE LA BODEGA (Bodega B, ficticia)
+PANTALLAS · APP DE LA BODEGA (Bodega B-40, ficticia)
 7. Consulta sin permiso: "Doña Mary no te ha dado permiso. Sin permiso no se
    entrega su resumen. Pídeselo en el mostrador."
 8. Consulta con permiso: semáforo "○ Historial insuficiente" con la lista de

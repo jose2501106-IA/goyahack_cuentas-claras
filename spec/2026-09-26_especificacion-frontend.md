@@ -4,7 +4,7 @@
 
 ## 0. Qué se construye
 
-Una app web local, en el Codespace, que hace en el navegador el mismo flujo de `demo.sh` contra el contrato vigente de testnet (`demo/deploy.json`). Tiene cuatro vistas: **Bodega A**, **Teléfono de Doña Mary**, **Bodega B** y **Para el jurado**. Sirve para el video, para la demo en vivo y para que un juez la entienda en 30 segundos.
+Una app web local, en el Codespace, que hace en el navegador el mismo flujo de `demo.sh` contra el contrato vigente de testnet (`demo/deploy.json`). Tiene cuatro vistas: **Bodega A-17**, **Teléfono de Doña Mary**, **Bodega B-40** y **Para el jurado**. Sirve para el video, para la demo en vivo y para que un juez la entienda en 30 segundos.
 
 No se construye: registro ni inicio de sesión, passkeys, relayer, un despliegue público, WhatsApp ni el mapa de sectores. Tampoco se toca el contrato.
 
@@ -80,7 +80,7 @@ Pruebas mínimas con `node:test`:
 
 Encabezado común: «Cuentas Claras» y una pestaña por vista. Cada vista lleva el rótulo «Demo · datos ficticios». Mientras el CLI trabaja, el botón queda deshabilitado y dice «Registrando…» (cada firma tarda unos segundos). Cada acción muestra «Ver comprobante» con el enlace al explorador.
 
-**Bodega A.** Título: «Nueva nota de fiado». Campos: cliente «Doña Mary» (fijo), monto en MXN y plazo (7, 15 o 30 días). Botón: «Crear nota». Debajo, la lista de notas con estas etiquetas de estado:
+**Bodega A-17.** Título: «Nueva nota de fiado». Campos: cliente «Doña Mary» (fijo), monto en MXN y plazo (7, 15 o 30 días). Botón: «Crear nota». Debajo, la lista de notas con estas etiquetas de estado:
 
 | Estado en el contrato | Etiqueta en pantalla |
 |---|---|
@@ -96,12 +96,12 @@ Encabezado común: «Cuentas Claras» y una pestaña por vista. Cada vista lleva
 En las notas firmadas aparece el botón «Confirmar pago». Texto de apoyo: «El monto exacto se queda en tu registro; en la nota firmada solo va el rango.»
 
 **Teléfono de Doña Mary** (marco de teléfono, 390 px de ancho). Encabezado: «Tu palabra vale.»
-- Nota pendiente: «Bodega A te registró una nota: $5,000–$20,000, vence el [fecha]. ¿Estás de acuerdo?», con el botón «Acepto».
+- Nota pendiente: «Bodega A-17 te registró una nota: $5,000–$20,000, vence el [fecha]. ¿Estás de acuerdo?», con el botón «Acepto».
 - Cuando la nota se paga: el sello CUMPLIDA y «Cumpliste tu palabra: queda firmado a tu favor.»
-- Permisos: «Dar permiso a Bodega B por 30 días». Ya dado: «Bodega B puede pedir tu resumen hasta el [fecha]», con el botón «Quitar permiso».
+- Permisos: «Dar permiso a Bodega B-40 por 30 días». Ya dado: «Bodega B-40 puede pedir tu resumen hasta el [fecha]», con el botón «Quitar permiso».
 - **Texto obligatorio (spec v2 §9):** «En la cadena no va tu nombre, tu teléfono ni el monto exacto. Tú decides a qué bodega le das permiso de pedir tu resumen; cada consulta queda registrada.»
 
-**Bodega B.** Título: «Consultar el historial de un cliente», con el botón «Consultar a Doña Mary».
+**Bodega B-40.** Título: «Consultar el historial de un cliente», con el botón «Consultar a Doña Mary».
 - **Sin permiso:** «Doña Mary no te ha dado permiso. Sin permiso no se entrega su resumen. Pídeselo en el mostrador.» Aclaración: «No se envió ninguna consulta.»
 - **Con permiso:** el semáforo real (hoy, ○ «Historial insuficiente» con la lista de condiciones ✓/✗), los contadores (notas firmadas, cumplidas a tiempo, tarde, vencidas, incumplidas, bodegas distintas, rango más alto), «Esta consulta quedó registrada · Ver comprobante» y «La decisión de fiar es tuya; el semáforo solo resume lo firmado.»
 - **Aparte**, una tarjeta con borde punteado: «Ejemplo con datos ficticios · no es una consulta». Muestra el semáforo del ejemplo (● Verde) y una línea: «Así se vería con 4 meses de historial en 3 bodegas.»
@@ -121,7 +121,7 @@ En las notas firmadas aparece el botón «Confirmar pago». Texto de apoyo: «El
 
 ## 6. Segundo emisor (`demo/sembrar.sh`)
 
-Script de una sola ejecución: Bodega C crea una nota para Doña Mary, ella la acepta y Bodega C confirma el pago (decisión #46: el segundo emisor nunca es Bodega B, que es la que consulta). Resultado: `issuers_count = 2` y la condición «2 bodegas» en ✓. Reutiliza las utilidades de `demo.sh`, imprime los enlaces y no altera `demo.sh`. Se corre una vez, antes de grabar.
+Script de una sola ejecución: Bodega A-73 crea una nota para Doña Mary, ella la acepta y Bodega A-73 confirma el pago (decisión #46: el segundo emisor nunca es Bodega B-40, que es la que consulta). Resultado: `issuers_count = 2` y la condición «2 bodegas» en ✓. Reutiliza las utilidades de `demo.sh`, imprime los enlaces y no altera `demo.sh`. Se corre una vez, antes de grabar.
 
 ## 7. Criterios de aceptación
 

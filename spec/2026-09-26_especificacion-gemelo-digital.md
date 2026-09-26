@@ -27,7 +27,7 @@ Una vista nueva, **«Pasillo A-B»**, que muestra el pasillo como una maqueta is
   - bloques de Kraft `#D8C3A0` con dos caras laterales un tono más oscuro, para dar volumen;
   - borde de Tinta `#1E3A8A` de 1 px;
   - el número en IBM Plex Mono.
-- **Bodegas de la demo:** se elevan un poco, llevan borde Tinta de 2 px y su etiqueta («Bodega A», «Bodega B», «Bodega C»).
+- **Bodegas de la demo:** se elevan un poco, llevan borde Tinta de 2 px y su etiqueta («Bodega A-17», «Bodega B-40», «Bodega A-73»).
 - **Corredor:** franja de Niebla `#E8EEF9` con el rótulo «Pasillo A-B».
 - **Doña Mary:** una ficha redonda en el corredor, con sus iniciales. No es un avatar ni una cara.
 - **Trazos de tinta:** líneas de Tinta de 2 px que se dibujan solas en unos 900 ms.
@@ -41,10 +41,10 @@ Una vista nueva, **«Pasillo A-B»**, que muestra el pasillo como una maqueta is
 | Nota creada | Trazo de la bodega emisora a la ficha de Doña Mary. La nota aparece como papelito «Esperando firma». |
 | Nota aceptada | Segundo trazo de Doña Mary a la bodega: las dos firmas. El papelito dice «Firmada por los dos». |
 | Pago confirmado | El sello CUMPLIDA cae sobre la bodega emisora. |
-| Permiso dado | Puente punteado de Doña Mary a Bodega B, con la vigencia. |
+| Permiso dado | Puente punteado de Doña Mary a Bodega B-40, con la vigencia. |
 | Permiso quitado | El puente se borra. |
-| Consulta sin permiso | Bodega B parpadea en gris con el texto «Sin permiso: no se entrega el resumen». No sale ningún trazo (no hay transacción). |
-| Consulta con permiso | Pulso de Bodega B a Doña Mary y de regreso. Aparece el semáforo real («Historial insuficiente» y sus condiciones) y el hash, que abre el explorador. |
+| Consulta sin permiso | Bodega B-40 parpadea en gris con el texto «Sin permiso: no se entrega el resumen». No sale ningún trazo (no hay transacción). |
+| Consulta con permiso | Pulso de Bodega B-40 a Doña Mary y de regreso. Aparece el semáforo real («Historial insuficiente» y sus condiciones) y el hash, que abre el explorador. |
 
 Cada animación ocurre **después** de que la API responde con `tx_hash`, nunca antes: el mapa no promete nada que la cadena no haya registrado. Un contador discreto muestra «Notas firmadas en este pasillo: N».
 
