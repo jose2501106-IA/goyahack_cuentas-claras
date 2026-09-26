@@ -16,12 +16,8 @@
 - [x] **4. Motor de la simulación.** `simulacion/motor.js` con las reglas y el semáforo. *Criterio:* pruebas del motor en verde, incluida la equivalencia con `backend/semaforo.js`.
 - [x] **5. Agentes y vista.** `agentes.js` y `vista.js`: 20 bodegas y 40 clientes, controles de tiempo, fichas, trazos, sellos, feed, tarjeta de «pensamiento» y rótulo de simulación. *Criterio:* a los 90 días simulados hay semáforos de los tres colores y el rótulo del día 60 aparece.
 - [x] **6. Pulido y accesibilidad.** `prefers-reduced-motion`, pausa, contraste y textos. *Criterio:* criterios 3, 4 y 6 de la spec web.
-- [!] **7. Cierre.** Capturas en `demo/capturas/web-*.png`, sección «Sitio público» en el README, índice y `llms.txt` al día. *Criterio:* criterios 1 a 8 de la spec web.
-  - **[!] Parada obligatoria (sáb 26-sep): tocar fuera de `web/`, `docs/` o `README.md`.** Lo que falta de esta tarea vive fuera de lo permitido:
-    - las capturas van en `demo/capturas/web-*.png` (carpeta `demo/`; además el criterio 5 pide no tocar `demo/`);
-    - `llms.txt`, en la raíz del repo, debe mencionar el sitio (regla de `CLAUDE.md`: índice y `llms.txt` al día).
-  - **Sí quedó hecho:** sección «Sitio público» en el README (con la URL de Vercel pendiente para que la pegue José) y la fila de `web/` en `docs/indice.md`. Criterios de la spec web: 2, 3, 4, 5 y 6 verificados; 1 verificado con `file://` y con `python3 -m http.server`; 7 y 8 (URL) pendientes.
-  - **Qué necesita José:** (1) autorizar que Claude Code escriba en `demo/capturas/` y `llms.txt`, o hacerlo en el Codespace; las capturas se sacan con Chromium sin interfaz en 390 px y 1920 px (Inicio, Pasillo vivo en el día 90, demo real en el paso 6, Cómo funciona). (2) Este trabajo está en la rama `claude/hopeful-bell-9ib4fo`, no en `main`: Vercel publica `main`, así que hay que fusionarla (o abrir un PR) para verlo en línea. (3) Pegar la URL de Vercel en el README.
+- [x] **7. Cierre.** Capturas en `demo/capturas/web-*.png`, sección «Sitio público» en el README, índice y `llms.txt` al día. *Criterio:* criterios 1 a 8 de la spec web.
+  - Se detuvo el sáb 26-sep por la parada «tocar fuera de `web/`, `docs/` o `README.md`»; José dio permiso para `demo/capturas/` y `llms.txt` y se terminó. Criterio 8: falta pegar la URL de Vercel en el README.
 
 ## Hechas
 

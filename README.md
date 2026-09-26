@@ -139,7 +139,7 @@ python3 -m http.server -d web 8000   # o abre web/index.html directo en el naveg
 node --test web/pruebas/              # 35 pruebas: motor, semáforo, agentes, hashes, copia del plano, vocabulario
 ```
 
-En Vercel: preset «Other», sin comando de build y con `web/` como directorio raíz. Si cambian `demo/salida-demo.txt` o `plano/pasillo-a-b.json`: `node web/herramientas/generar-repeticion.js` (si aplica), copiar el JSON del plano a `web/datos/` y luego `node web/herramientas/generar-datos.js` (envuelve los JSON en `datos/*.js` para que el sitio abra también desde `file://`).
+En Vercel: [`vercel.json`](vercel.json) en la raíz ya indica que se publica `web/` sin instalar ni compilar nada (preset «Other»), así que el *Root Directory* se deja en la raíz del repo. Capturas: `demo/capturas/web-*.png`. Si cambian `demo/salida-demo.txt` o `plano/pasillo-a-b.json`: `node web/herramientas/generar-repeticion.js` (si aplica), copiar el JSON del plano a `web/datos/` y luego `node web/herramientas/generar-datos.js` (envuelve los JSON en `datos/*.js` para que el sitio abra también desde `file://`).
 
 ## Criterios de aceptación (spec v2 §11)
 
