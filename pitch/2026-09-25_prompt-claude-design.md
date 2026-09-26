@@ -78,7 +78,7 @@ DIAPOSITIVAS
    "Bodega crea la nota" → "Cliente la acepta" → "Pago confirmado" →
    "Cliente da permiso" → "Otra bodega ve su semáforo".
    Debajo, en Sello: "Sin permiso, el contrato no entrega el resumen."
-   Pie: "Stellar testnet · datos ficticios · Contract ID CB5ACP…OIJH".
+   Pie: "Stellar testnet · datos ficticios · Contract ID CBNBVF…CCD3".
 6. ¿Por qué blockchain y no una base de datos?
    Título: "No hay un custodio en quien confíen bodegas que compiten."
    Tres viñetas: "Dos firmas o no hay deuda." / "Nadie edita ni borra, ni nosotros." /
