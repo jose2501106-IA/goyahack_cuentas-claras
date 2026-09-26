@@ -209,6 +209,10 @@
         el('span', null, opciones.rotulo || 'Posiciones ilustrativas. Ninguna bodega real participa.'))));
     mapa.maqueta = maqueta;
     mapa.barra = barra;
+    // En pantallas angostas el marco se desplaza: se abre centrado en el pasillo.
+    const marco = maqueta.parentElement;
+    const centrar = () => { if (marco.scrollWidth > marco.clientWidth) marco.scrollLeft = (marco.scrollWidth - marco.clientWidth) / 2; };
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(centrar);
     return mapa;
   }
 
