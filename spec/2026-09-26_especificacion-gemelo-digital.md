@@ -1,6 +1,6 @@
 # Especificación — gemelo digital del Pasillo A-B
 
-**Estado:** vigente para el fin de semana (decisión #47). La geometría pública del pasillo, `plano/pasillo-a-b.json`, la entrega Claude (chat) **solo después** de que José autorice por escrito publicarla. Sin ese archivo no se construye la sección 3. Complementa `spec/2026-09-26_especificacion-frontend.md` y no cambia su API.
+**Estado:** vigente para el fin de semana (decisión #47). José decidió (26-sep, 08:05) que la geometría real del plano **no se publica**: el pasillo se dibuja con un **esquema genérico generado en código** (sección 4). Complementa `spec/2026-09-26_especificacion-frontend.md` y no cambia su API.
 
 ## 0. Qué es
 
@@ -12,7 +12,7 @@ Una vista nueva, **«Pasillo A-B»**, que muestra el pasillo como una maqueta is
 
 1. **La ubicación nunca va a la cadena.** Qué cuenta de testnet corresponde a qué posición del pasillo vive solo en `backend/datos/` (o en una constante del frontend) y nunca en el contrato.
 2. **Posiciones ilustrativas.** Las bodegas de la demo ocupan posiciones del pasillo solo para mostrar el flujo. En pantalla va siempre: «Posiciones ilustrativas. Ninguna bodega real participa en esta demo.» La posición de cada bodega de la demo se define en una sola constante, para cambiarla sin tocar nada más.
-3. **Sin nombres ni infraestructura.** Solo bodegas numeradas, el corredor y el rótulo del pasillo. Nada de bancos, negocios, accesos, escaleras, rampas ni estacionamiento.
+3. **Nada del plano.** Ni geometría, ni medidas, ni bloques, ni nombres, ni infraestructura. Solo un esquema genérico: bodegas numeradas del mismo ancho, el corredor y el rótulo del pasillo. En pantalla va siempre: «Esquema ilustrativo, no a escala.»
 4. **Sin paquetes** (decisión #45): SVG y CSS. La perspectiva isométrica se logra con `transform` de CSS; las animaciones, con `@keyframes` y `stroke-dashoffset`.
 5. **Accesibilidad:**
    - con `prefers-reduced-motion`, no hay animaciones: los cambios aparecen de golpe;
@@ -50,29 +50,33 @@ Cada animación ocurre **después** de que la API responde con `tx_hash`, nunca 
 
 ## 4. Datos
 
-- **Geometría:** `plano/pasillo-a-b.json`, con la lista de bodegas (`id`, `lado`, `numero`, `x`, `w`), las filas, el corredor, el largo y la lista de los demás pasillos. Las unidades son del plano y no tienen escala verificada: la vista la ajusta al ancho de la pantalla.
-- **Posiciones de la demo:** constante `POSICIONES_DEMO = { bodega_a: 'A-17', bodega_b: 'B-40', bodega_c: 'A-73' }`. José puede cambiarlas.
-- **Crecimiento:** agregar un pasillo es agregar su JSON. El código no asume que solo existe A-B.
+- **Esquema genérico, sin archivo del plano:** `frontend/datos/pasillo.js` genera el pasillo con una función:
+  - `generarPasillo({ nombre: 'A-B', porFila: 48 })` devuelve la fila superior (lado A, nones 1 a 95) y la inferior (lado B, pares 2 a 96);
+  - todas las bodegas miden lo mismo, sin huecos ni bloques, y el corredor queda en medio.
+- **Posiciones de la demo:** constante `POSICIONES_DEMO = { bodega_a: 'A-17', bodega_b: 'B-40', bodega_c: 'A-73' }`, aprobada por José el 26-sep a las 08:05.
+- **Crecimiento:** los demás pasillos (C-D, E-F, G-H, I-J, K-L, M-N, O-P, Q-R, S-T, U-V, W-X) aparecen como pestañas grises, «próximamente». Agregar uno es llamar a `generarPasillo` con su nombre.
+- La geometría real del plano vive solo en `privado/` y no se usa en la app.
 
 ## 5. Criterios de aceptación
 
-1. La vista «Pasillo A-B» carga desde `plano/pasillo-a-b.json` y dibuja todas las bodegas del archivo.
+1. La vista «Pasillo A-B» dibuja el esquema genérico de la sección 4 y muestra el rótulo «Esquema ilustrativo, no a escala».
 2. El flujo completo de la spec del frontend (§7.4) se ve en el mapa con los eventos de la sección 3, y cada uno lleva su hash.
 3. Se ve el aviso de posiciones ilustrativas.
 4. Con `prefers-reduced-motion` no hay animaciones, y el botón «Vista plana» funciona.
-5. `grep -rni "metaverso" frontend/` no devuelve nada, y en `frontend/` y `plano/` no aparece ningún nombre de negocio ni de banco. La lista para revisarlo la tiene José en `privado/` y no se publica.
+5. `grep -rni "metaverso" frontend/` no devuelve nada, en `frontend/` no aparece ningún nombre de negocio ni de banco, y no existe `plano/pasillo-a-b.json` ni ningún otro dato del plano en el repo.
 6. No se instalan paquetes. `node --test backend/` y `cargo test` siguen en verde.
 7. Hay una captura de la vista en `demo/capturas/`.
 
-## 6. Prompt para Claude Code (cuando ya exista `plano/pasillo-a-b.json`)
+## 6. Prompt para Claude Code
 
 ```
-git pull --rebase origin main. Lee docs/decisiones.md (#47) y
+git pull --rebase origin main. Lee docs/decisiones.md (#46 y #47) y
 spec/2026-09-26_especificacion-gemelo-digital.md completa.
-Construye la vista «Pasillo A-B» (secciones 1 a 5) en frontend/, sin paquetes, con los
-datos de plano/pasillo-a-b.json; conéctala a los eventos que ya devuelve la API.
-Hazla la portada de la app y agrégala a la vista del jurado. No toques contracts/,
-research/ ni privado/, y no modifiques plano/pasillo-a-b.json.
+Construye la vista «Pasillo A-B» (secciones 1 a 5) en frontend/, sin paquetes, con el
+esquema genérico de la sección 4 (nada del plano real). Conéctala a los eventos que ya
+devuelve la API. Hazla la portada de la app y agrégala a la vista del jurado.
+Verifica que la app funciona con el contrato vigente de demo/deploy.json (bodega_c incluida).
+No toques contracts/, research/ ni privado/.
 Al terminar cada bloque, commit y push con 5 renglones en el mensaje. Detente y deja escrito
 el motivo si algo falla dos veces o si necesitas algo fuera de la spec.
 ```
