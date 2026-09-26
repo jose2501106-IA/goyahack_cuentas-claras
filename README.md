@@ -6,14 +6,15 @@
 
 Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de Ingeniería, Semana DIE 2026), track **Blockchain**. Evento del 22 al 26 de septiembre de 2026.
 
-> Estado (25-sep-2026, 17:40): contrato `cuentas_claras` desplegado en testnet con 11 pruebas en verde y `demo/demo.sh` corriendo el flujo completo contra la red (salida en `demo/salida-demo.txt`). Investigación cerrada en siete documentos (`research/00`–`06`), especificación v2 vigente, campaña, modelo de negocio, Lean Canvas y borradores de pitch. Para ubicar cualquier tema sin leer todo, empieza por [`llms.txt`](llms.txt) o [`docs/indice.md`](docs/indice.md). Este README se completa al entregar (enlaces al video, la app y los contratos en testnet).
+> **Estado (26-sep-2026, 15:30):** contrato `cuentas_claras` en Stellar testnet con 13 pruebas en verde, redesplegado el 26-sep tras cerrar dos huecos de privacidad (decisiones #42 y #46). **Sitio público: https://cuentas-claras-lemon.vercel.app** (gemelo digital del Pasillo A-B, la demo real verificable, «La app en tu mano» y «Pasillo vivo» con agentes simulados; 53 pruebas). App local que firma en testnet (27 pruebas) y `demo/demo.sh` como respaldo. Entrega: domingo 27-sep (plazo extendido, decisión #43).
 
 ## En vivo en Stellar testnet
 
 | | |
 |---|---|
 | Contrato | [`CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW`](https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW) |
-| Estado | Desplegado e inicializado el 25-sep-2026 (16:52 CDMX) · 11 pruebas en verde (`cargo test`) |
+| Estado | Desplegado e inicializado el 26-sep-2026 (07:44 CDMX) · 13 pruebas en verde (`cargo test`) · contratos anteriores obsoletos en `demo/deploy.json` |
+| Sitio público | [cuentas-claras-lemon.vercel.app](https://cuentas-claras-lemon.vercel.app) · estático, sin llaves; repite la corrida real con enlaces a cada transacción |
 | Toolchain | Stellar CLI 28.0.0 · soroban-sdk 28.0.0 · `wasm32v1-none` (decisión #41) |
 | Datos | Solo claves públicas y datos ficticios de demo en [`demo/deploy.json`](demo/deploy.json) |
 

@@ -109,11 +109,13 @@ DIAPOSITIVAS
    "Dictamen legal" → "Fondo de Stellar" → "Mainnet, tras auditoría".
 9. Equipo Palabra.
    "José Hugo · experiencia operativa en una bodega de la Central."
-   "Construido con Claude y Claude Code." Código QR al repositorio: https://github.com/jose2501106-IA/goyahack_cuentas-claras
+   "Construido con Claude y Claude Code." Dos QR: sitio (https://cuentas-claras-lemon.vercel.app)
+   y repositorio (https://github.com/jose2501106-IA/goyahack_cuentas-claras).
 10. Cierre (fondo Tinta, texto Papel).
    Grande: "Cuentas claras, amistades largas."  Pequeño: "Equipo Palabra".
    Sello rojo "CUMPLIDA" con la fecha 27·09·2026.
-   Dos QR pequeños: repositorio (https://github.com/jose2501106-IA/goyahack_cuentas-claras) y video [CONFIRMAR].
+   Dos QR pequeños: sitio para probarlo en el teléfono (https://cuentas-claras-lemon.vercel.app)
+   y video [CONFIRMAR].
 
 NOTAS DEL ORADOR
 Agrega en cada diapositiva una nota de 1-2 frases que siga el pitch: abrir diciendo
