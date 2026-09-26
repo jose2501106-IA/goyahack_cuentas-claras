@@ -248,3 +248,26 @@ main:focus { outline: none; }
   .maqueta, .dibujar, .aparecer, .parpadeo, .sello-mapa.caer { animation: none !important; transition: none !important; }
   .dibujar { stroke-dashoffset: 0; }
 }
+
+/* ---------- La demo real, verificable ---------- */
+.encabezado-demo { margin-bottom: 1rem; }
+.encabezado-demo p { margin-bottom: 0.4rem; }
+.etiqueta-red { display: inline-block; font-family: var(--f-mono); font-size: 1rem; background: var(--tinta); color: var(--papel); border-radius: 999px; padding: 0.05rem 0.7rem; margin-right: 0.4rem; }
+.aclaracion { font-weight: 700; }
+.paso-contador { margin: 0; color: var(--tinta); font-weight: 600; }
+.controles-demo { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1rem 0; }
+.paso-tarjeta { background: var(--blanco-papel); border: 1px solid var(--kraft); border-radius: 10px; padding: 1rem 1.2rem; min-height: 9rem; }
+.paso-num { color: var(--gris); margin-bottom: 0.2rem; }
+.paso-accion { font-family: var(--f-titulo); font-weight: 800; font-size: 1.25rem; color: var(--tinta); }
+.paso-enlace { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+.hash, .detalle { color: var(--gris); font-size: 1rem; word-break: break-all; }
+.sin-enlace { font-weight: 700; }
+.resumen-real { margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--kraft); }
+.resumen-titulo { font-weight: 700; }
+.resumen-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0.4rem 1rem; margin: 0 0 0.8rem; }
+.resumen-lista dt { color: var(--gris); font-size: 1rem; }
+.resumen-lista dd { margin: 0; font-weight: 600; color: var(--tinta); }
+.semaforo-grande { font-family: var(--f-titulo); font-size: 1.4rem; margin-bottom: 0.3rem; }
+.pasos-lista { padding-left: 1.4rem; display: grid; gap: 0.45rem; }
+.pasos-lista li[aria-current="step"] { background: var(--niebla); border-radius: 6px; padding: 0.1rem 0.4rem; }
+.pasos-lista a { word-break: break-all; }

@@ -1,0 +1,86 @@
+{
+  "fuente": "Generado por web/herramientas/generar-repeticion.js solo con demo/salida-demo.txt y demo/deploy.json. No editar a mano.",
+  "red": "Stellar testnet",
+  "contrato": {
+    "id": "CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
+    "url": "https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
+    "desplegado_utc": "2026-09-26T13:44:00Z"
+  },
+  "pasos": [
+    {
+      "numero": 1,
+      "accion": "Bodega A registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).",
+      "firma": "Bodega A",
+      "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
+      "funcion": "create_note",
+      "hash": "cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872",
+      "url": "https://stellar.expert/explorer/testnet/tx/cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872",
+      "sin_transaccion": null,
+      "detalle_salida": null
+    },
+    {
+      "numero": 2,
+      "accion": "Doña Mary acepta la nota: sin su firma la deuda no existe.",
+      "firma": "Doña Mary",
+      "cuenta_publica": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO",
+      "funcion": "accept_note",
+      "hash": "a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d",
+      "url": "https://stellar.expert/explorer/testnet/tx/a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d",
+      "sin_transaccion": null,
+      "detalle_salida": null
+    },
+    {
+      "numero": 3,
+      "accion": "Doña Mary paga y Bodega A confirma el pago.",
+      "firma": "Bodega A",
+      "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
+      "funcion": "confirm_paid",
+      "hash": "09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326",
+      "url": "https://stellar.expert/explorer/testnet/tx/09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326",
+      "sin_transaccion": null,
+      "detalle_salida": null
+    },
+    {
+      "numero": 4,
+      "accion": "Bodega B pide el resumen de Doña Mary SIN permiso.",
+      "firma": null,
+      "cuenta_publica": null,
+      "funcion": "read_stats (simulación, sin enviar)",
+      "hash": null,
+      "url": null,
+      "sin_transaccion": "No se envió transacción: el contrato lo rechazó.",
+      "detalle_salida": "NoConsent — el contrato no entrega el resumen sin permiso (no se envía transacción)"
+    },
+    {
+      "numero": 5,
+      "accion": "Doña Mary autoriza a Bodega B a leer su resumen por 30 días.",
+      "firma": "Doña Mary",
+      "cuenta_publica": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO",
+      "funcion": "grant_consent",
+      "hash": "cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814",
+      "url": "https://stellar.expert/explorer/testnet/tx/cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814",
+      "sin_transaccion": null,
+      "detalle_salida": null
+    },
+    {
+      "numero": 6,
+      "accion": "Bodega B consulta con permiso vigente y ve el resumen de cumplimiento.",
+      "firma": "Bodega B",
+      "cuenta_publica": "GD2TUPI6ZZE7BGCQIEBTWA2AIZHEVALYF3UTEJFF6ENP7K76ERRNY55D",
+      "funcion": "read_stats",
+      "hash": "a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c",
+      "url": "https://stellar.expert/explorer/testnet/tx/a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c",
+      "sin_transaccion": null,
+      "detalle_salida": "Esta consulta queda registrada (evento aggregate_read)."
+    }
+  ],
+  "resumen_paso_6": {
+    "Notas aceptadas": "1",
+    "Pagadas a tiempo": "1",
+    "Pagadas tarde": "0",
+    "Vencidas abiertas": "0",
+    "Incumplidas": "0",
+    "Emisores distintos": "1",
+    "Rango máximo visto": "B5k_20k"
+  }
+}
