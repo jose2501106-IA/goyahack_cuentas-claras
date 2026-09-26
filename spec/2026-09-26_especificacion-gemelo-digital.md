@@ -81,7 +81,7 @@ Cada animación ocurre **después** de que la API responde con `tx_hash`, nunca 
 ```
 git pull --rebase origin main. Lee docs/decisiones.md (#46, #47 y #48) y
 spec/2026-09-26_especificacion-gemelo-digital.md completa.
-Construye la vista «Pasillo A-B» (secciones 1 a 5) en frontend/, sin paquetes, con el
+Rehaz la vista «Pasillo A-B» (secciones 1 a 5) en frontend/, sin paquetes, con la
 forma real de plano/pasillo-a-b.json (sección 4; no modifiques ese archivo). Conéctala a
 los eventos que ya devuelve la API. Hazla la portada de la app y agrégala a la vista del jurado.
 Verifica que la app funciona con el contrato vigente de demo/deploy.json (bodega_c incluida).
