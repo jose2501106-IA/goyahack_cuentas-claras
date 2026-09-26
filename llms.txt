@@ -21,6 +21,7 @@ Cómo leer este repositorio sin gastar de más:
 - [CLAUDE.md](CLAUDE.md): reglas y contexto para Claude Code
 - [Relevo para Claude Code](docs/relevo-claude-code.md): estado actual y prompt para retomar en una sesión nueva
 - [Cola de trabajo](docs/cola-de-trabajo.md): tareas que Claude Code recorre sola, con paradas
+- [Auditoría del 26-sep](docs/auditoria-2026-09-26.md): seguridad del contrato, la app y el sitio; plan de corrección
 - [Sitio público y agentes](spec/2026-09-26_especificacion-web-y-agentes.md): Vercel sin llaves y «Pasillo vivo»
 - [Especificación del frontend](spec/2026-09-26_especificacion-frontend.md): app de cuatro vistas sin dependencias, semáforo honesto y prompt para Claude Code (fin de semana)
 - [Gemelo digital del Pasillo A-B](spec/2026-09-26_especificacion-gemelo-digital.md): portada de la app, maqueta isométrica con cada firma real
