@@ -6,6 +6,11 @@
   <title>Cuentas Claras · fiado de palabra, firmado por los dos</title>
   <meta name="description" content="Cuentas Claras: la bitácora de fiado co-firmada de la Central de Abasto, en Stellar testnet. Proyecto del Equipo Palabra para GOYA HACK 2026.">
   <meta name="theme-color" content="#1E3A8A">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    // Tema elegido antes (si lo hay), antes de pintar: evita el parpadeo. Sin almacenamiento, sigue al sistema.
+    try { var t = localStorage.getItem('cc-tema'); if (t === 'claro' || t === 'oscuro') document.documentElement.setAttribute('data-tema', t); } catch (e) {}
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@700&family=IBM+Plex+Mono:wght@400;600&display=swap">
@@ -19,6 +24,9 @@
         <span class="logotipo">Cuentas Claras</span>
         <span class="trazos" aria-hidden="true"></span>
       </a>
+      <button type="button" class="interruptor-tema" aria-pressed="false" aria-label="Tema oscuro" title="Tema oscuro">
+        <span class="icono-tema" aria-hidden="true">☾</span>
+      </button>
       <nav class="navegacion" aria-label="Secciones">
         <a href="#inicio" data-seccion="inicio">Inicio</a>
         <a href="#pasillo-vivo" data-seccion="pasillo-vivo">Pasillo vivo</a>
@@ -148,7 +156,7 @@
         <h3>Enlaces</h3>
         <ul class="enlaces">
           <li><a href="https://github.com/jose2501106-IA/goyahack_cuentas-claras" target="_blank" rel="noopener noreferrer">Repositorio en GitHub</a>: contrato, pruebas, decisiones y documentos.</li>
-          <li><a href="https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW" target="_blank" rel="noopener noreferrer">El contrato en stellar.expert</a> (Stellar testnet): <code class="id-contrato">CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW</code></li>
+          <li><a href="https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW" target="_blank" rel="noopener noreferrer">El contrato en stellar.expert</a> (Stellar testnet): <code class="id-contrato hash">CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW</code></li>
           <li><a href="https://lab.stellar.org/r/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW" target="_blank" rel="noopener noreferrer">El mismo contrato en Stellar Lab</a>.</li>
         </ul>
         <p class="apoyo">Este sitio es estático: no tiene llaves, no firma y no envía transacciones. La demo que firma en vivo corre en la app local del equipo.</p>

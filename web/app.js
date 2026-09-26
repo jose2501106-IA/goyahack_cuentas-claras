@@ -60,7 +60,34 @@
     }
   }
 
+  // Interruptor de tema (docs/diseno-web-movil.md §1). Solo cambia html[data-tema];
+  // la elección se recuerda si el navegador lo permite.
+  function interruptorTema() {
+    const boton = document.querySelector('.interruptor-tema');
+    if (!boton) return;
+    const html = document.documentElement;
+    const sistema = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
+    const oscuro = () => html.getAttribute('data-tema') === 'oscuro'
+      || (!html.hasAttribute('data-tema') && !!(sistema && sistema.matches));
+    const pintar = () => {
+      const o = oscuro();
+      boton.setAttribute('aria-pressed', String(o));
+      boton.querySelector('.icono-tema').textContent = o ? '☀' : '☾';
+    };
+    boton.addEventListener('click', () => {
+      const nuevo = oscuro() ? 'claro' : 'oscuro';
+      html.setAttribute('data-tema', nuevo);
+      try { localStorage.setItem('cc-tema', nuevo); } catch (e) { /* sin almacenamiento: igual cambia */ }
+      pintar();
+    });
+    if (sistema && sistema.addEventListener) sistema.addEventListener('change', pintar);
+    pintar();
+  }
+  CC.oscuro = () => document.documentElement.getAttribute('data-tema') === 'oscuro'
+    || (!document.documentElement.hasAttribute('data-tema') && typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches);
+
   function montar() {
+    interruptorTema();
     navegacion();
     for (const [id, montador] of Object.entries(CC.secciones)) {
       const destino = document.getElementById(id);

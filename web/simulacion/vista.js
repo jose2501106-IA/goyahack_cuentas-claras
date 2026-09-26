@@ -12,7 +12,7 @@
   const MS_POR_DIA = 2000;
   const MAX_ANIMADOS = 10;   // animaciones por día; el resto solo va al feed
   const MAX_FEED = 30;
-  const TONOS = ['#EFE6D3', '#E2CFAE', '#D2B98F', '#C3A477', '#B08F5E']; // Kraft, de poco a mucho fiado
+  const TONOS = [0, 1, 2, 3, 4].map((i) => `var(--tono-${i})`); // de poco a mucho fiado; cambian con el tema
   const R = 1.75;            // radio de la ficha de cliente, en unidades del plano
 
   const SEM_CLASE = { verde: 'sem-verde', amarillo: 'sem-amarillo', rojo: 'sem-rojo', insuficiente: 'sem-insuficiente' };
@@ -61,7 +61,7 @@
         el('span', { class: 'sem sem-amarillo' }, '▲ Amarillo'), ' · ',
         el('span', { class: 'sem sem-rojo' }, '■ Rojo'), ' · ',
         el('span', { class: 'sem sem-insuficiente' }, '○ Historial insuficiente')),
-      el('p', null, el('strong', null, 'Bodegas: '), 'el tono de Kraft indica cuánto han fiado ',
+      el('p', null, el('strong', null, 'Bodegas: '), 'el tono de la bodega indica cuánto ha fiado ',
         el('span', { class: 'tonos', 'aria-hidden': 'true' }, TONOS.map((t) => el('span', { style: `background:${t}` }))),
         ' de poco a mucho. Trazo de tinta: nota firmada por los dos. Sello: cumplida. Marca gris: incumplida. Línea punteada: permiso.'));
     destino.append(leyenda);

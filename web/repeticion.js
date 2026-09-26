@@ -42,7 +42,7 @@
     destino.append(
       el('div', { class: 'encabezado-demo' },
         el('p', null, el('span', { class: 'etiqueta-red' }, datos.red), ' Contrato ',
-          CC.enlaceExterno(datos.contrato.id, datos.contrato.url, 'id-contrato mono')),
+          CC.enlaceExterno(datos.contrato.id, datos.contrato.url, 'id-contrato mono hash')),
         el('p', { class: 'aclaracion' },
           'Esta es la repetición de una corrida real. Para firmar en vivo usamos la app local; este sitio no firma nada.')),
     );
@@ -183,7 +183,7 @@
       lista.append(el('li', null,
         el('span', null, rango(p.accion)), ' ',
         p.url
-          ? CC.enlaceExterno(`Verlo en la cadena · ${hashCorto(p.hash)}`, p.url, 'mono')
+          ? CC.enlaceExterno(`Verlo en la cadena · ${hashCorto(p.hash)}`, p.url, 'mono hash')
           : el('span', { class: 'apoyo' }, p.sin_transaccion)));
     }
 
