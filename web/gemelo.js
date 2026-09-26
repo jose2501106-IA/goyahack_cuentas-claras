@@ -57,6 +57,7 @@
     return `M ${+x1.toFixed(2)} ${+y1.toFixed(2)} Q ${+mx.toFixed(2)} ${+my.toFixed(2)} ${+x2.toFixed(2)} ${+y2.toFixed(2)}`;
   }
 
+  // opciones.centroX (unidades del plano): dónde centrar el marco en pantallas angostas.
   // Dibuja el pasillo. marcadas: { 'A-17': 'Bodega A', … } se elevan y llevan etiqueta.
   function dibujar(forma, { marcadas = {}, descripcion } = {}) {
     const g = geometria(forma);
@@ -211,7 +212,11 @@
     mapa.barra = barra;
     // En pantallas angostas el marco se desplaza: se abre centrado en el pasillo.
     const marco = maqueta.parentElement;
-    const centrar = () => { if (marco.scrollWidth > marco.clientWidth) marco.scrollLeft = (marco.scrollWidth - marco.clientWidth) / 2; };
+    const centrar = () => {
+      if (marco.scrollWidth <= marco.clientWidth) return;
+      const fraccion = Number.isFinite(opciones.centroX) ? mapa.xDePlano(opciones.centroX) / mapa.geo.ancho : 0.5;
+      marco.scrollLeft = Math.max(0, fraccion * marco.scrollWidth - marco.clientWidth / 2);
+    };
     if (typeof requestAnimationFrame === 'function') requestAnimationFrame(centrar);
     return mapa;
   }

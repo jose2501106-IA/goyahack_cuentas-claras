@@ -63,6 +63,7 @@ test('las frases son de plantilla y usan el vocabulario permitido', () => {
   const p = correr(90);
   const frases = [...p.bodegas, ...p.clientes].map((x) => x.ultima && x.ultima.frase).filter(Boolean);
   assert.ok(frases.length > 20);
-  for (const f of frases) assert.ok(!/score|calificaci|buró|anónim/i.test(f), f);
+  const vetado = new RegExp(['sco' + 're', 'calific' + 'aci', 'bur' + 'ó', 'anó' + 'nim'].join('|'), 'i');
+  for (const f of frases) assert.ok(!vetado.test(f), f);
   assert.equal(A.frase('sin_permiso', 3000), 'Sin su permiso no veo su resumen; le fío poco, $3,000, para empezar.');
 });

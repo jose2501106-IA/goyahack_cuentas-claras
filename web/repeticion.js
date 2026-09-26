@@ -55,6 +55,7 @@
       barra: contador,
       descripcion: 'Forma del Pasillo A-B con Bodega A, Bodega B y Doña Mary en el corredor. Cada paso de la corrida real se dibuja aquí; el texto de cada paso está debajo.',
       rotulo: 'Posiciones ilustrativas. Bodegas y Doña Mary son ficticias.',
+      centroX: 115, // entre Bodega A y Doña Mary, para pantallas angostas
     });
     const fx = mapa.xDePlano(X_FICHA);
     const fy = mapa.corredor.centro;

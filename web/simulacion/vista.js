@@ -45,6 +45,9 @@
     const rotulo60 = el('p', { class: 'rotulo-dia60', role: 'status' });
 
     destino.append(el('div', { class: 'barra-sim' }, dia, controles), rotulo60);
+    if (reducido) {
+      destino.append(el('p', { class: 'apoyo' }, 'Tienes activado «reducir movimiento»: la simulación no arranca sola y los trazos aparecen sin animación. Usa «Empezar» o «Pausa» cuando quieras.'));
+    }
 
     const mapa = CC.Gemelo.montar(destino, forma, {
       descripcion: 'Pasillo A-B simulado: 20 bodegas y 40 clientes ficticios. Lo que pasa en el mapa se repite en texto en «Lo que pasa en el pasillo».',
@@ -63,10 +66,11 @@
         ' de poco a mucho. Trazo de tinta: nota firmada por los dos. Sello: cumplida. Marca gris: incumplida. Línea punteada: permiso.'));
     destino.append(leyenda);
 
-    const tarjeta = el('div', { class: 'pensamiento', 'aria-live': 'polite' });
+    const tarjeta = el('div', { class: 'pensamiento' });
+    const anuncio = el('p', { class: 'lector', role: 'status' });
     const feed = el('ol', { class: 'feed-sim' });
     destino.append(el('div', { class: 'sim-columnas' },
-      el('div', null, el('h3', null, 'Lo que piensa el agente'), tarjeta),
+      el('div', null, el('h3', null, 'Lo que piensa el agente'), tarjeta, anuncio),
       el('div', null, el('h3', null, 'Lo que pasa en el pasillo'), el('p', { class: 'apoyo' }, 'Los últimos 30 movimientos, del más nuevo al más viejo.'), feed)));
 
     const listaClientes = el('ul', { class: 'lista-personajes' });
@@ -243,6 +247,8 @@
     function seleccionar(tipo, id) {
       seleccion = { tipo, id };
       pintarTarjeta();
+      const quien = tipo === 'cliente' ? p.clientes.find((c) => c.id === id) : p.bodegas.find((b) => b.id === id);
+      anuncio.textContent = `${quien.nombre}. ${(quien.ultima && quien.ultima.frase) || 'Sin decisiones todavía.'}`;
       pintarListas();
       for (const f of Object.values(fichas)) f.g.classList.remove('elegida');
       for (const b of Object.values(mapa.bodegas)) b.g.classList.remove('elegida');
