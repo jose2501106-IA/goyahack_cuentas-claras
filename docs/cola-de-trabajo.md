@@ -10,7 +10,7 @@
 
 ## Cola
 
-- [ ] **1. Base del sitio.** `web/` con `index.html`, `estilos.css` y `app.js`, navegación de las cuatro secciones, identidad «Tinta y Sello» y las secciones Inicio y Cómo funciona con su texto. *Criterio:* abre sin instalar nada y se ve bien en 390 px y 1920 px.
+- [x] **1. Base del sitio.** `web/` con `index.html`, `estilos.css` y `app.js`, navegación de las cuatro secciones, identidad «Tinta y Sello» y las secciones Inicio y Cómo funciona con su texto. *Criterio:* abre sin instalar nada y se ve bien en 390 px y 1920 px.
 - [ ] **2. Gemelo en `web/`.** `gemelo.js` dibuja la copia idéntica de `plano/pasillo-a-b.json` (trazos + 96 bodegas), en isométrico y en vista plana. *Criterio:* prueba de copia idéntica en verde; se ve igual que la portada de la app local.
 - [ ] **3. La demo real, verificable.** `repeticion.json` sacado de `demo/salida-demo.txt` y `demo/deploy.json`, más la pantalla de pasos con «Verlo en la cadena». *Criterio:* la prueba de hashes está en verde y ningún hash es inventado.
 - [ ] **4. Motor de la simulación.** `simulacion/motor.js` con las reglas y el semáforo. *Criterio:* pruebas del motor en verde, incluida la equivalencia con `backend/semaforo.js`.
@@ -21,3 +21,4 @@
 ## Hechas
 
 *(Claude Code mueve aquí cada tarea terminada, con hora y commit.)*
+- **1.** sáb 26-sep 13:52 · `f57538c` · Base del sitio en `web/`: cuatro secciones, Inicio y Cómo funciona con texto; scripts clásicos para que abra también desde `file://`. Revisado en 390 px y 1920 px (Chromium sin interfaz).
