@@ -63,10 +63,10 @@ test('caso Rojo', () => {
   sinNumeroP(r);
 });
 
-test('una disputa abierta no cambia el color y se reporta aparte', () => {
-  const sin = semaforo(statsEjemplo(AHORA), AHORA);
+test('una aclaración abierta se reporta aparte y pesa como una vencida (decisión #56)', () => {
   const con = semaforo({ ...statsEjemplo(AHORA), disputes_open: 1 }, AHORA);
-  assert.equal(con.color, sin.color);
+  const vencida = semaforo({ ...statsEjemplo(AHORA), overdue_open: 1 }, AHORA);
+  assert.equal(con.color, vencida.color);
   assert.equal(con.aclaraciones_abiertas, 1);
   const am = semaforo(base({ paid_on_time: 4, defaulted: 1, disputes_open: 3 }), AHORA);
   assert.equal(am.color, 'amarillo');

@@ -70,7 +70,7 @@ Claude (chat) verificó el hallazgo crítico contra el código (`lib.rs`, `creat
 
 ## 4. Agentes de IA
 
-Los agentes del «Pasillo vivo» funcionan: 20 bodegas y 40 clientes con reglas iguales a las del contrato. Al día 90 hay 28 verdes, 8 amarillos, 1 rojo y 3 insuficientes.
+Los agentes del «Pasillo vivo» funcionan: 20 bodegas y 40 clientes con reglas iguales a las del contrato. Al día 90 hay 28 verdes, 7 amarillos y 5 rojos *(corregido el 26-sep en la tarea B de la cola: la cifra anterior, 28/8/1/3, venía de una medición con otro parámetro de visitas)*.
 
 **Agentes con un modelo de lenguaje real: no antes de entregar.**
 - Exigirían un servidor y una llave de API en Vercel, lo que contradice la decisión #50 (sitio sin llaves ni servidor).

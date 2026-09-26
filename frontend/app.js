@@ -69,9 +69,10 @@ export class ErrorApi extends Error {}
 
 export async function api(ruta, { metodo = 'GET', cuerpo } = {}) {
   const opciones = { method: metodo, headers: { Accept: 'application/json' } };
-  if (cuerpo !== undefined) {
+  // El servidor exige JSON en toda escritura (defensa contra CSRF, decisión #56).
+  if (metodo !== 'GET' && metodo !== 'HEAD') {
     opciones.headers['Content-Type'] = 'application/json';
-    opciones.body = JSON.stringify(cuerpo);
+    opciones.body = JSON.stringify(cuerpo === undefined ? {} : cuerpo);
   }
   let resp;
   try {

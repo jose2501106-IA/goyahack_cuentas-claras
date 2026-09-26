@@ -283,7 +283,7 @@ function pintarPanel(estado) {
   if (ultima.tipo === 'consulta_sin_permiso') {
     estado.panel.replaceChildren(el('div', { class: 'tarjeta sin-permiso' },
       el('p', { class: 'sin-permiso-texto' }, 'Sin permiso: no se entrega el resumen.'),
-      el('p', { class: 'apoyo' }, 'No se envió ninguna consulta.')));
+      el('p', { class: 'apoyo' }, 'No se envió ninguna transacción.')));
     return;
   }
   const sem = ultima.semaforo || null;

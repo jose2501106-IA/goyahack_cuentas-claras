@@ -162,7 +162,40 @@ function servirEstatico(req, res, pathname, frontendDir) {
 
 // --- Aplicación -----------------------------------------------------------------
 
-function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'frontend'), planoDir = path.join(RAIZ, 'plano'), ahora = () => Math.floor(Date.now() / 1000), log = console }) {
+// --- Defensas de la app local (decisión #56; auditoría B1, B2 y B3) ------------------
+
+// B2 · Rebinding de DNS: solo se atiende a 127.0.0.1 o localhost (en el puerto del servidor,
+// si se conoce) y a los dominios de Codespaces. `puerto` null acepta cualquier puerto local.
+function hostPermitido(host, puerto) {
+  if (typeof host !== 'string' || !host) return false;
+  const h = host.toLowerCase();
+  const local = h.match(/^(127\.0\.0\.1|localhost):(\d{1,5})$/);
+  if (local) return puerto === null || puerto === undefined || Number(local[2]) === Number(puerto);
+  const sinPuerto = h.replace(/:\d{1,5}$/, '');
+  return /^[a-z0-9-]+(\.[a-z0-9-]+)*\.app\.github\.dev$/.test(sinPuerto);
+}
+
+// B1 · CSRF: todo lo que no sea GET o HEAD exige JSON y, si trae Origin, que sea de un host permitido.
+function revisarEscritura(req, puerto) {
+  const tipo = String(req.headers['content-type'] || '').split(';')[0].trim().toLowerCase();
+  if (tipo !== 'application/json') return { status: 415, cuerpo: { error: 'Se esperaba Content-Type: application/json', mensaje: 'La solicitud debe enviarse como JSON.' } };
+  const origen = req.headers.origin;
+  if (origen !== undefined) {
+    let host = null;
+    try { host = new URL(origen).host; } catch (_) { host = null; }
+    if (!hostPermitido(host, puerto)) return { status: 403, cuerpo: { error: 'Origen no permitido', mensaje: 'Origen no permitido.' } };
+  }
+  return null;
+}
+
+// B3 · Nunca éxito sin comprobante: sin txHash no se registra nada ni se cambia estado local.
+const SIN_COMPROBANTE = 'No pudimos confirmar el comprobante. Revisa el explorador antes de repetir.';
+function exigirComprobante(r) {
+  if (!r || typeof r.txHash !== 'string' || !r.txHash) throw new ErrorHttp(502, SIN_COMPROBANTE, SIN_COMPROBANTE);
+  return r;
+}
+
+function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'frontend'), planoDir = path.join(RAIZ, 'plano'), ahora = () => Math.floor(Date.now() / 1000), log = console, puerto = null }) {
   const { contractId, cuentas, subjectId } = config;
   const transacciones = [];
   const urlTx = (h) => `${EXPLORADOR}/tx/${h}`;
@@ -206,6 +239,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
         '--issuer', cuentas.bodega_a, '--note_id', note_id, '--subject_id', subjectId,
         '--amount_bucket', rango, '--due_ts', due_ts,
       ]);
+      exigirComprobante(r);
       const nota = {
         note_id, documento, aleatoriedad_hex: aleatoriedad.toString('hex'),
         monto_mxn: b.monto_mxn, rango, plazo_dias: b.plazo_dias, due_ts, creado_ts, emisor: 'bodega_a',
@@ -251,6 +285,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
       const r = await stellar.enviar('dona_mary', 'grant_consent', [
         '--subject', cuentas.dona_mary, '--reader', cuentas.bodega_b, '--exp_ts', exp_ts, '--nonce', t,
       ]);
+      exigirComprobante(r);
       await almacen.guardarPermiso({ exp_ts });
       registrarTx('Doña Mary dio permiso a Bodega B-40 por 30 días', r);
       return { tx_hash: r.txHash, url: r.url, exp_ts };
@@ -258,7 +293,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
 
     'DELETE /api/permisos': async () => {
       try {
-        const r = await stellar.enviar('dona_mary', 'revoke_consent', ['--subject', cuentas.dona_mary, '--reader', cuentas.bodega_b]);
+        const r = exigirComprobante(await stellar.enviar('dona_mary', 'revoke_consent', ['--subject', cuentas.dona_mary, '--reader', cuentas.bodega_b]));
         await almacen.borrarPermiso();
         registrarTx('Doña Mary retiró el permiso a Bodega B-40', r);
         return { tx_hash: r.txHash, url: r.url };
@@ -286,7 +321,7 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
         }
         throw e;
       }
-      const r = await stellar.enviar('bodega_b', 'read_stats', args);
+      const r = exigirComprobante(await stellar.enviar('bodega_b', 'read_stats', args));
       if (!r.valor || typeof r.valor !== 'object') {
         throw new ErrorHttp(502, 'respuesta_invalida', 'La red respondió, pero no pudimos leer el resumen.');
       }
@@ -309,17 +344,25 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
   async function accionNota(id, accion) {
     notaLocalOError(id);
     if (accion === 'aceptar') {
-      const r = await stellar.enviar('dona_mary', 'accept_note', ['--subject', cuentas.dona_mary, '--note_id', id]);
+      const r = exigirComprobante(await stellar.enviar('dona_mary', 'accept_note', ['--subject', cuentas.dona_mary, '--note_id', id]));
       registrarTx('Doña Mary firmó la nota', r);
       return { tx_hash: r.txHash, url: r.url, estado: 'Accepted', etiqueta: V.etiquetaDeEstado('Accepted') };
     }
     // Pago: la misma secuencia que el paso 3 de demo.sh (solo confirm_paid de Bodega A-17).
-    const r = await stellar.enviar('bodega_a', 'confirm_paid', ['--issuer', cuentas.bodega_a, '--note_id', id]);
+    const r = exigirComprobante(await stellar.enviar('bodega_a', 'confirm_paid', ['--issuer', cuentas.bodega_a, '--note_id', id]));
     registrarTx('Bodega A-17 confirmó el pago', r);
     return { tx_hash: r.txHash, url: r.url, estado: 'Paid', etiqueta: V.etiquetaDeEstado('Paid') };
   }
 
   return async function manejar(req, res) {
+    if (!hostPermitido(req.headers.host, puerto)) {
+      res.writeHead(421, { ...CABECERAS_SEGURIDAD, 'Content-Type': 'text/plain; charset=utf-8' });
+      return res.end('Host no permitido');
+    }
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      const rechazo = revisarEscritura(req, puerto);
+      if (rechazo) { req.resume(); return responderJson(res, rechazo.status, rechazo.cuerpo); }
+    }
     let url;
     try { url = new URL(req.url, 'http://localhost'); } catch (_) { return responderJson(res, 400, { error: 'url_invalida', mensaje: 'Dirección no válida.' }); }
     const pathname = url.pathname;
@@ -357,8 +400,8 @@ function main() {
   }
   const stellar = crearStellar({ contractId: config.contractId, network: RED, explorador: EXPLORADOR });
   const almacen = crearAlmacen(path.join(__dirname, 'datos', 'notas.json'));
-  const servidor = http.createServer(crearApp({ config, stellar, almacen }));
   const puerto = Number(process.env.PORT) || 8080;
+  const servidor = http.createServer(crearApp({ config, stellar, almacen, puerto }));
   servidor.listen(puerto, '127.0.0.1', () => {
     console.log(`Cuentas Claras escuchando en http://127.0.0.1:${puerto} (red: ${RED}; contrato ${config.contractId.slice(0, 6)}…)`);
   });
@@ -366,4 +409,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { crearApp, cargarConfig, leerHmacKey, subjectIdDe, canonico, calcularNoteId, normalizarEstado };
+module.exports = { crearApp, hostPermitido, cargarConfig, leerHmacKey, subjectIdDe, canonico, calcularNoteId, normalizarEstado };

@@ -45,7 +45,7 @@ function pintarConsulta(zona, r) {
       : r.mensaje;
     zona.replaceChildren(el('div', { class: 'tarjeta sin-permiso' },
       el('p', { class: 'sin-permiso-texto' }, principal),
-      el('p', { class: 'apoyo' }, 'No se envió ninguna consulta.'),
+      el('p', { class: 'apoyo' }, 'No se envió ninguna transacción.'),
     ));
     return;
   }

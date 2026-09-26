@@ -93,6 +93,7 @@
     const paidLate = num(s.paid_late);
     const defaulted = num(s.defaulted);
     const overdueOpen = num(s.overdue_open);
+    const disputesOpen = num(s.disputes_open);
     const issuers = num(s.issuers_count);
     const firstTs = num(s.first_ts);
 
@@ -110,7 +111,8 @@
       color = 'insuficiente';
     } else {
       const r = paidOnTime + 0.5 * paidLate;
-      const sMal = defaulted + 0.5 * overdueOpen; // las aclaraciones abiertas NO suman
+      // Las aclaraciones abiertas pesan como una vencida: abrir una aclaración no mejora el color (decisión #56).
+      const sMal = defaulted + 0.5 * overdueOpen + 0.5 * disputesOpen;
       const p = ((r + 1) / (r + sMal + 2)) * Math.min(1, issuers / BODEGAS_PLENAS);
       color = p >= UMBRAL_VERDE ? 'verde' : p >= UMBRAL_AMARILLO ? 'amarillo' : 'rojo';
     }
