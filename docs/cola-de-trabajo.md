@@ -34,7 +34,7 @@
     - `node --test backend/test/*.test.js` y `node --test web/pruebas/` en verde, con la prueba de equivalencia del motor incluida;
     - si cambian los conteos del «Pasillo vivo» al día 90 (hoy 28 verdes, 8 amarillos, 1 rojo y 3 insuficientes), anota los nuevos aquí y corrige cualquier texto del sitio que los cite.
   - **Orden:** esta tarea va antes que el contrato v4 del Codespace (K2 toca `backend/` después). Haz push en cuanto termines.
-- [ ] **W. Cabeceras de seguridad del sitio (decisión #56; auditoría W1 y W2).**
+- [x] **W. Cabeceras de seguridad del sitio (decisión #56; auditoría W1 y W2).**
   - Mueve el `<script>` en línea del `<head>` de `web/index.html` a `web/tema-inicial.js`, cargado en el mismo lugar **sin** `defer` (para que no parpadee el tema).
   - Crea `web/vercel.json` con estas cabeceras para `"/(.*)"`:
     - `Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests`
@@ -73,3 +73,4 @@
 - **10.** sáb 26-sep 15:13 · `c535060` · Portada en seis pasos, hoja inferior en Pasillo vivo y «Ver como registro». En 390 px (Chromium): Pasillo vivo mide 1.69 pantallas con la hoja cerrada, sin desplazamiento horizontal, nada táctil menor a 48 px. 53 pruebas en verde.
 - **0.** sáb 26-sep 15:17 · `7483ad3` + `01fb323` · Bodegas con número en `web/`, `frontend/`, `backend/` y `demo/*.sh` (#54); `demo/salida-demo.txt` sin tocar.
 - **B.** sáb 26-sep 17:56 · `693250f` · B1, B2, B3, B5 y C3. Pruebas nuevas en `backend/test/defensas.test.js` (Origin ajeno 403, sin JSON 415, Host ajeno 421, Host de Codespaces pasa, sin hash 502 sin registro, aclaración que no mejora el color). Backend 35 y web 53 en verde. Conteos del Pasillo vivo al día 90 sin cambio: 28 verdes, 7 amarillos y 5 rojos (la cifra 28/8/1/3 estaba mal anotada desde la tarea 5; corregida aquí y en la auditoría).
+- **W.** sáb 26-sep 17:59 · `c50fac3` · CSP estricta y cabeceras en `web/vercel.json`, `tema-inicial.js`, `.vercelignore` y servidor de prueba. Chromium con esas cabeceras: 0 violaciones de CSP (4 secciones × 2 temas × 390/1920 px), fuentes cargadas, Pasillo vivo corre, teléfono cambia. 57 pruebas en verde.
