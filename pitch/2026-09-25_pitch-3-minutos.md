@@ -1,5 +1,7 @@
 # Pitch de 3 minutos — Cuentas Claras
 
+> **Superado por `2026-09-26_pitch-3-minutos-v2.md` (26-sep).** Se conserva como bitácora.
+
 > **Borrador v1 — pendiente de aprobación de José**
 > Fecha: 2026-09-25 · Proyecto: **Cuentas Claras** · Equipo: **Palabra** (en formularios: "Equipo Palabra") · GOYA HACK · Hackathon UNAM 2026 · track Blockchain
 > Estado del código: **por construirse hoy**. Aquí se describe *lo que mostraremos*. Toda frase que dependa de la construcción está marcada **[CONFIRMAR]** y trae una frase alternativa por si no queda lista.

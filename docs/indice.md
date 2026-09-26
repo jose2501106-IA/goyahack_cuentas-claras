@@ -81,11 +81,13 @@ Actualizado: 26-sep-2026, 01:10. Proyecto **Cuentas Claras**; equipo **Palabra**
 | Archivo | Qué contiene | Etiquetas | Palabras | Cuándo leerlo | Estado |
 |---|---|---|---|---|---|
 | [`pitch/README.md`](../pitch/README.md) | Índice de los borradores de presentación y lo que falta confirmar. | #pitch | 213 | Antes de ensayar | borrador |
-| [`pitch/2026-09-25_pitch-3-minutos.md`](../pitch/2026-09-25_pitch-3-minutos.md) | Guion palabra por palabra con tiempos, cinco datos que se dicen, versiones de 60 y 30 segundos, variante con el refrán, notas de entrega. | #pitch | 2,624 | Ensayo y video | borrador |
+| [`pitch/2026-09-26_pitch-3-minutos-v2.md`](../pitch/2026-09-26_pitch-3-minutos-v2.md) | Pitch v2: refrán, tres reglas, demo en el gemelo digital, los dos huecos cerrados, cierre; 410 palabras verificadas. | #pitch | 1250 | Para ensayar | borrador |
+| [`pitch/2026-09-26_guion-demo-v2.md`](../pitch/2026-09-26_guion-demo-v2.md) | Guion de demo v2: pasos en el gemelo digital, checklist (quitar permiso antes de presentar), plan B y video. | #demo #pitch | 1110 | Antes de ensayar y grabar | borrador |
+| [`pitch/2026-09-25_pitch-3-minutos.md`](../pitch/2026-09-25_pitch-3-minutos.md) | Guion palabra por palabra con tiempos, cinco datos que se dicen, versiones de 60 y 30 segundos, variante con el refrán, notas de entrega. | #pitch | 2,624 | Ensayo y video | bitácora (superado por v2) |
 | [`pitch/2026-09-25_prompt-claude-design.md`](../pitch/2026-09-25_prompt-claude-design.md) | Prompt listo para pegar en Claude Design: 10 diapositivas minimalistas con el Lean Canvas y la identidad visual. | #pitch #marca | 939 | Al generar la presentación | borrador |
 | [`pitch/2026-09-25_lamina-central-por-sectores.png`](../pitch/2026-09-25_lamina-central-por-sectores.png) | Lámina esquemática «La Central, por sectores» (PNG y SVG), sin ubicaciones reales. | #pitch #datos-ceda | — | Deck y video | lista |
 | [`pitch/2026-09-25_deck.md`](../pitch/2026-09-25_deck.md) | Diez diapositivas: texto en pantalla, visual sugerido, notas del orador y fuente de cada dato. | #pitch | 3,371 | Al armar el deck | borrador |
-| [`pitch/2026-09-25_guion-demo.md`](../pitch/2026-09-25_guion-demo.md) | Pasos de la demo con lo que se dice, plan B (`demo.sh` y video), versión de stand y lista de verificación. | #demo #pitch | 3,044 | Ensayo de la demo | borrador |
+| [`pitch/2026-09-25_guion-demo.md`](../pitch/2026-09-25_guion-demo.md) | Pasos de la demo con lo que se dice, plan B (`demo.sh` y video), versión de stand y lista de verificación. | #demo #pitch | 3,044 | Ensayo de la demo | bitácora (superado por v2) |
 | [`pitch/2026-09-25_mentoria-5-minutos.md`](../pitch/2026-09-25_mentoria-5-minutos.md) | Guía de cinco minutos para la mentoría, preguntas para el mentor y plantilla de notas. | #pitch #organizador | 1,591 | Antes de la mentoría | borrador |
 | [`pitch/2026-09-25_preguntas-jurado.md`](../pitch/2026-09-25_preguntas-jurado.md) | Banco de preguntas del jurado con respuesta y fuente (legal, privacidad, Stellar, adopción, negocio). | #pitch #riesgos | 2,249 | Antes del Q&A | borrador |
 

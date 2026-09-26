@@ -160,6 +160,40 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 
 ---
 
+## I. Preguntas nuevas del 26-sep (gemelo digital y seguridad)
+
+### 21. ¿Qué eran esos «dos huecos»? ¿Por qué no los vieron antes?
+
+**R.** Uno era una función de consulta que entregaba el resumen del cliente sin pedir permiso. El otro, una regla que dejaba leerlo a cualquier bodega que ya le hubiera fiado, aunque el cliente no se lo hubiera autorizado. Los encontramos en nuestra propia revisión antes de entregar, los cerramos con pruebas que fallan si vuelven a aparecer, y desplegamos un contrato nuevo. Los anteriores quedan registrados como obsoletos en el repositorio.
+
+*Fuente:* decisiones #42 y #46; `demo/deploy.json` (`contratos_anteriores`); pruebas `no_hay_get_stats_publico` y `emisor_con_notas_necesita_permiso`.
+
+### 22. Si no se puede actualizar, ¿qué controla el administrador?
+
+**R.** Solo el padrón de bodegas emisoras: dar de alta o de baja a quién puede crear notas. No puede editar ni borrar notas, no puede leer resúmenes sin permiso y no puede cambiar las reglas, porque el contrato no tiene función de actualización. En producción, ese padrón lo validaría la administración de la Central con más de una firma.
+
+*Fuente:* spec v2 §5; decisión #30 (sin `upgrade`); decisión #24 (administración como validadora, propuesta).
+
+### 23. ¿El mapa es real? ¿La ubicación de la bodega va a la cadena?
+
+**R.** Es la forma real del Pasillo A-B, tomada del plano con autorización y sin rótulos. Las bodegas de la demo están en posiciones ilustrativas: ninguna bodega real participa. La ubicación nunca va a la cadena; el contrato no sabe dónde está cada bodega.
+
+*Fuente:* decisiones #47 y #48; `plano/pasillo-a-b.json`.
+
+### 24. ¿Por qué el semáforo dice «historial insuficiente» si tiene notas cumplidas?
+
+**R.** Porque exige tres condiciones: tres notas cerradas, dos bodegas distintas y 60 días de historial. En testnet no se pueden fabricar 60 días, y no bajamos la regla para que la demo salga en verde. Una sola bodega, o pocos días, no bastan para juzgar a alguien. Eso también protege contra una bodega y un cliente que se pongan de acuerdo (pregunta 18).
+
+*Fuente:* spec v2 §8; decisión #44.
+
+### 25. Ya hubo un proyecto de la Central de Abasto que ganó un hackathon. ¿En qué se diferencian?
+
+**R.** *[Pendiente: no lo hemos podido identificar. Una mentora nos lo mencionó. Antes del pitch hay que conseguir el nombre o el repositorio y escribir esta respuesta con datos. Mientras tanto: «No conocemos su código a detalle. Lo nuestro no mueve dinero ni emite token: es la bitácora de fiado firmada por los dos, con el historial en manos del cliente. Si resuelven otra parte de la Central, somos complementarios».]*
+
+*Fuente:* por confirmar (`docs/preguntas-pendientes.md`).
+
+---
+
 ## Si el jurado usa estas palabras (no cuentan entre las 20)
 
 | El jurado dice | Nosotros decimos |

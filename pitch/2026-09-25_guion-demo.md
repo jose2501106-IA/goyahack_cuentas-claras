@@ -1,5 +1,7 @@
 # Guion de demo — Cuentas Claras
 
+> **Superado por `2026-09-26_guion-demo-v2.md` (26-sep).** Se conserva como bitácora.
+
 > **Borrador v1 — pendiente de aprobación de José**
 > Fecha: 2026-09-25 · Proyecto: **Cuentas Claras** · Equipo: **Palabra** (en formularios: "Equipo Palabra") · GOYA HACK · Hackathon UNAM 2026 · track Blockchain
 > Estado del código: **por construirse hoy**. Este documento describe **lo que mostraremos**. Todo lo que depende de la construcción (URL, Contract ID, hashes, textos de error, tiempos) está marcado **[CONFIRMAR]** y se ajusta después del primer ensayo real.

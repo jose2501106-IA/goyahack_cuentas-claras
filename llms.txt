@@ -38,10 +38,10 @@ Cómo leer este repositorio sin gastar de más:
 
 ## Presentación
 
-- [Pitch de 3 minutos](pitch/2026-09-25_pitch-3-minutos.md): guion con tiempos y variante con el refrán
+- [Pitch de 3 minutos v2](pitch/2026-09-26_pitch-3-minutos-v2.md): refrán, demo en el gemelo digital y los dos huecos cerrados
 - [Deck](pitch/2026-09-25_deck.md): diez diapositivas con notas y fuentes
 - [Prompt para Claude Design](pitch/2026-09-25_prompt-claude-design.md): presentación minimalista lista para generar
-- [Guion de demo](pitch/2026-09-25_guion-demo.md): pasos, plan B y versión de stand
+- [Guion de demo v2](pitch/2026-09-26_guion-demo-v2.md): pasos en el gemelo digital, checklist y plan B
 - [Preguntas del jurado](pitch/2026-09-25_preguntas-jurado.md): respuestas preparadas con fuente
 
 ## Investigación

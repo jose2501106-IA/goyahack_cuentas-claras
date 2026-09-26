@@ -1,8 +1,10 @@
 # Prompt para Claude Design — presentación de Cuentas Claras
 
-**Estado:** borrador del 25-sep-2026 (15:00). Cópialo completo, desde «Contexto» hasta el final del bloque, en Claude Design. Si tienes capturas reales de la demo o el Contract ID, pégalos también; si no, deja los marcadores [CONFIRMAR].
+**Estado:** borrador del 25-sep-2026 (15:00), actualizado el 26-sep a las 13:10 con el gemelo digital, los dos huecos cerrados y el Contract ID vigente. Cópialo completo, desde «Contexto» hasta el final del bloque, en Claude Design. Si tienes capturas reales de la demo o el Contract ID, pégalos también; si no, deja los marcadores [CONFIRMAR].
 
 Base: `docs/lean-canvas.md`, `docs/identidad-visual.md`, `pitch/2026-09-25_deck.md`, `docs/hoja-de-hechos.md`.
+
+**Imagen obligatoria para la diapositiva 5:** sube `demo/capturas/pasillo-a-b-plana.png`, la captura del gemelo digital (o una captura tuya de la app en el navegador, que se verá mejor), y pide que se use tal cual, sin redibujarla.
 
 **Lámina opcional «La Central, por sectores»:** ya está hecha en `pitch/2026-09-25_lamina-central-por-sectores.png` (y `.svg`). Súbela a Claude Design como imagen y pide que la inserte entre la diapositiva 3 y la 4, sin modificarla. Es un esquema no a escala, sin ubicaciones reales (decisión #40).
 
@@ -49,7 +51,7 @@ Logotipo: "Cuentas Claras" en Archivo, color Tinta, con dos trazos de bolígrafo
 NO USAR
 Neón, degradados morado/cian, fondos negros con circuitos, monedas, cadenas, eslabones,
 cubos 3D, cohetes, candados, gráficas que suben, apretones de manos, fotos de dinero,
-rostros, fachadas o números de bodega, logos de CEDA, FICEDA o UNAM, mapas o planos.
+rostros, fotos de fachadas, logos de CEDA, FICEDA o UNAM, y ningún mapa o plano salvo la imagen del gemelo digital que se adjunta.
 Palabras prohibidas en pantalla: "buró", "score", "calificación", "pagaré", "anónimo",
 "100 % seguro", "reduce la extorsión". No inventes cifras, testimonios ni logos.
 
@@ -73,16 +75,22 @@ DIAPOSITIVAS
    Tres reglas, una por renglón, con ícono:
    "Ninguna bodega escribe sola una deuda." / "Nadie la borra ni la maquilla." /
    "Tu historial es tuyo."
-5. Cómo funciona (demo).
-   Cinco pasos en línea horizontal, estilo sellos numerados:
+5. Cómo funciona: el gemelo digital del Pasillo A-B.
+   Título: "Cada firma, en su pasillo."
+   La imagen adjunta del gemelo digital ocupa casi toda la diapositiva.
+   Debajo, cinco pasos pequeños en línea, estilo sellos numerados:
    "Bodega crea la nota" → "Cliente la acepta" → "Pago confirmado" →
-   "Cliente da permiso" → "Otra bodega ve su semáforo".
-   Debajo, en Sello: "Sin permiso, el contrato no entrega el resumen."
-   Pie: "Stellar testnet · datos ficticios · Contract ID CDPFZN…GBDTW".
+   "Cliente da permiso" → "Otra bodega consulta".
+   En Sello, una sola línea: "Sin permiso, el contrato no entrega el resumen."
+   Pie: "Stellar testnet · datos ficticios · posiciones ilustrativas · forma del
+   pasillo sin escala · Contract ID CDPFZN…GBDTW".
 6. ¿Por qué blockchain y no una base de datos?
    Título: "No hay un custodio en quien confíen bodegas que compiten."
    Tres viñetas: "Dos firmas o no hay deuda." / "Nadie edita ni borra, ni nosotros." /
    "Cualquiera verifica sin confiar en el operador."
+   Recuadro abajo: "Encontramos dos huecos en nuestro propio contrato y los cerramos.
+   Como no se puede actualizar, cerrarlos fue desplegar uno nuevo: ni nosotros
+   cambiamos las reglas en silencio."
    Pie: "En la cadena no hay nombres, teléfonos ni montos exactos: solo un seudónimo
    y rangos."
 7. Lean Canvas (una sola diapositiva, cuadrícula de 9 celdas en Kraft con títulos en
@@ -104,7 +112,7 @@ DIAPOSITIVAS
    "Construido con Claude y Claude Code." Código QR al repositorio: https://github.com/jose2501106-IA/goyahack_cuentas-claras
 10. Cierre (fondo Tinta, texto Papel).
    Grande: "Cuentas claras, amistades largas."  Pequeño: "Equipo Palabra".
-   Sello rojo "CUMPLIDA" con la fecha 25·09·2026.
+   Sello rojo "CUMPLIDA" con la fecha 27·09·2026.
    Dos QR pequeños: repositorio (https://github.com/jose2501106-IA/goyahack_cuentas-claras) y video [CONFIRMAR].
 
 NOTAS DEL ORADOR
