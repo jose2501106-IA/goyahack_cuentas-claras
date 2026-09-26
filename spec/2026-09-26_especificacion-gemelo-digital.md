@@ -1,6 +1,6 @@
 # Especificación — gemelo digital del Pasillo A-B
 
-**Estado:** vigente para el fin de semana (decisión #47). José decidió (26-sep, 08:05) que la geometría real del plano **no se publica**: el pasillo se dibuja con un **esquema genérico generado en código** (sección 4). Complementa `spec/2026-09-26_especificacion-frontend.md` y no cambia su API.
+**Estado:** vigente para el fin de semana (decisiones #47 y #48). Desde el 26-sep a las 08:30 el pasillo se dibuja con su **forma real**, a partir de `plano/pasillo-a-b.json`, que José autorizó publicar (#48). Sustituye al esquema genérico de las 08:05. Complementa `spec/2026-09-26_especificacion-frontend.md` y no cambia su API.
 
 ## 0. Qué es
 
@@ -12,7 +12,7 @@ Una vista nueva, **«Pasillo A-B»**, que muestra el pasillo como una maqueta is
 
 1. **La ubicación nunca va a la cadena.** Qué cuenta de testnet corresponde a qué posición del pasillo vive solo en `backend/datos/` (o en una constante del frontend) y nunca en el contrato.
 2. **Posiciones ilustrativas.** Las bodegas de la demo ocupan posiciones del pasillo solo para mostrar el flujo. En pantalla va siempre: «Posiciones ilustrativas. Ninguna bodega real participa en esta demo.» La posición de cada bodega de la demo se define en una sola constante, para cambiarla sin tocar nada más.
-3. **Nada del plano.** Ni geometría, ni medidas, ni bloques, ni nombres, ni infraestructura. Solo un esquema genérico: bodegas numeradas del mismo ancho, el corredor y el rótulo del pasillo. En pantalla va siempre: «Esquema ilustrativo, no a escala.»
+3. **Del plano, solo lo autorizado (#48):** los trazos del Pasillo A-B (bloques, acceso central, locales de esquina, estacionamiento, escaleras, contenedores) **sin ningún rótulo ni uso** y las bodegas con su número. La app no agrega nombres, giros ni usos de ningún local. En pantalla va siempre: «Forma del Pasillo A-B; no a escala. Posiciones de la demo ilustrativas.»
 4. **Sin paquetes** (decisión #45): SVG y CSS. La perspectiva isométrica se logra con `transform` de CSS; las animaciones, con `@keyframes` y `stroke-dashoffset`.
 5. **Accesibilidad:**
    - con `prefers-reduced-motion`, no hay animaciones: los cambios aparecen de golpe;
@@ -50,31 +50,40 @@ Cada animación ocurre **después** de que la API responde con `tx_hash`, nunca 
 
 ## 4. Datos
 
-- **Esquema genérico, sin archivo del plano:** `frontend/datos/pasillo.js` genera el pasillo con una función:
-  - `generarPasillo({ nombre: 'A-B', porFila: 48 })` devuelve la fila superior (lado A, nones 1 a 95) y la inferior (lado B, pares 2 a 96);
-  - todas las bodegas miden lo mismo, sin huecos ni bloques, y el corredor queda en medio.
-- **Posiciones de la demo:** constante `POSICIONES_DEMO = { bodega_a: 'A-17', bodega_b: 'B-40', bodega_c: 'A-73' }`, aprobada por José el 26-sep a las 08:05.
-- **Crecimiento:** los demás pasillos (C-D, E-F, G-H, I-J, K-L, M-N, O-P, Q-R, S-T, U-V, W-X) aparecen como pestañas grises, «próximamente». Agregar uno es llamar a `generarPasillo` con su nombre.
-- La geometría real del plano vive solo en `privado/` y no se usa en la app.
+- **`plano/pasillo-a-b.json`** (autorizado por José, #48). No se modifica. Trae:
+  - `bodegas`: `id`, `lado`, `numero`, `x` y `w` de cada una de las 96;
+  - `filas`: el `y` y el `alto` de A y B;
+  - `corredor`;
+  - `trazos`: unos 5,000 segmentos `[x1, y1, x2, y2]` con el contorno completo del pasillo;
+  - `otros_pasillos`.
+
+  Las unidades son del plano. El origen está en el borde izquierdo del primer bloque y en la base de la fila B.
+- **Cómo se dibuja:**
+  1. Capa base: los `trazos` en Tinta al 45 % de opacidad, como dibujo de arquitecto sobre papel.
+  2. Encima, cada bodega como bloque de Kraft con volumen (sección 2) en su `x` y `w` reales. Las de la demo se elevan.
+  3. Todo en perspectiva isométrica con `transform` de CSS sobre un solo SVG, con «Vista plana» disponible.
+  4. Los trazos van en un solo `<path>` para que cargue rápido.
+- **Posiciones de la demo:** `POSICIONES_DEMO = { bodega_a: 'A-17', bodega_b: 'B-40', bodega_c: 'A-73' }`, aprobadas el 26-sep a las 08:05.
+- **Crecimiento:** los demás pasillos aparecen como pestañas grises, «próximamente». Agregar uno es agregar su JSON con la misma forma. Mientras no exista, la función `generarPasillo` del esquema genérico sirve de respaldo.
 
 ## 5. Criterios de aceptación
 
-1. La vista «Pasillo A-B» dibuja el esquema genérico de la sección 4 y muestra el rótulo «Esquema ilustrativo, no a escala».
+1. La vista «Pasillo A-B» dibuja los trazos y las 96 bodegas de `plano/pasillo-a-b.json` en su posición real, con el rótulo de la regla 3.
 2. El flujo completo de la spec del frontend (§7.4) se ve en el mapa con los eventos de la sección 3, y cada uno lleva su hash.
 3. Se ve el aviso de posiciones ilustrativas.
 4. Con `prefers-reduced-motion` no hay animaciones, y el botón «Vista plana» funciona.
-5. `grep -rni "metaverso" frontend/` no devuelve nada, en `frontend/` no aparece ningún nombre de negocio ni de banco, y no existe `plano/pasillo-a-b.json` ni ningún otro dato del plano en el repo.
+5. `grep -rni "metaverso" frontend/` no devuelve nada, en `frontend/` no aparece ningún nombre de negocio ni de banco, y en el repo no hay más datos del plano que `plano/pasillo-a-b.json`.
 6. No se instalan paquetes. `node --test backend/` y `cargo test` siguen en verde.
 7. Hay una captura de la vista en `demo/capturas/`.
 
 ## 6. Prompt para Claude Code
 
 ```
-git pull --rebase origin main. Lee docs/decisiones.md (#46 y #47) y
+git pull --rebase origin main. Lee docs/decisiones.md (#46, #47 y #48) y
 spec/2026-09-26_especificacion-gemelo-digital.md completa.
 Construye la vista «Pasillo A-B» (secciones 1 a 5) en frontend/, sin paquetes, con el
-esquema genérico de la sección 4 (nada del plano real). Conéctala a los eventos que ya
-devuelve la API. Hazla la portada de la app y agrégala a la vista del jurado.
+forma real de plano/pasillo-a-b.json (sección 4; no modifiques ese archivo). Conéctala a
+los eventos que ya devuelve la API. Hazla la portada de la app y agrégala a la vista del jurado.
 Verifica que la app funciona con el contrato vigente de demo/deploy.json (bodega_c incluida).
 No toques contracts/, research/ ni privado/.
 Al terminar cada bloque, commit y push con 5 renglones en el mensaje. Detente y deja escrito
