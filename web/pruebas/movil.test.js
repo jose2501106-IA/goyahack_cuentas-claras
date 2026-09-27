@@ -69,3 +69,13 @@ test('en el celular la hoja y los controles van fijos abajo; mapa plano bajo 900
   const gemelo = fs.readFileSync(path.join(WEB, 'gemelo.js'), 'utf8');
   assert.match(gemelo, /matchMedia\('\(max-width: 899px\)'\)/);
 });
+
+test('primera pantalla con producto: bajo el titular, mini mapa y «Ver la demo real» antes del texto largo', () => {
+  const inicio = html.slice(html.indexOf('<section id="inicio"'), html.indexOf('</section>', html.indexOf('<section id="inicio"')));
+  const h1 = inicio.indexOf('<h1');
+  const mapa = inicio.indexOf('id="portada-mapa"');
+  const boton = inicio.search(/<a class="boton boton-primario" href="#demo-real">Ver la demo real<\/a>/);
+  const entrada = inicio.indexOf('<p class="entrada">');
+  assert.ok(h1 >= 0 && h1 < mapa && mapa < boton && boton < entrada, `${h1} ${mapa} ${boton} ${entrada}`);
+  assert.match(css, /\.portada-accion \.boton \{[^}]*min-height: 48px/);
+});

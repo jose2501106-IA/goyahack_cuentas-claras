@@ -6,13 +6,25 @@
 (function (raiz) {
   const CC = raiz.CC;
 
+  // Primera pantalla (cola, tarea 12): bajo el titular, el mini mapa con la nota ya
+  // firmada por los dos (paso 2 de la corrida real) para que se vea el producto.
+  CC.secciones['portada-mapa'] = function montarPortada(destino) {
+    const forma = CC.Gemelo.formaDelSitio();
+    if (!forma || typeof CC.crearEscena !== 'function') return;
+    const { pintar } = CC.crearEscena(destino, forma, {
+      recorte: { x1: 44, x2: 216, y1: -14, y2: 48 },
+      descripcion: 'Mini mapa del Pasillo A-B: la nota entre Bodega A-17 y Doña Mary, firmada por los dos.',
+    });
+    pintar(2, !CC.movimientoReducido());
+  };
+
   CC.secciones['historia-mapa'] = function montarHistoria(destino) {
     const forma = CC.Gemelo.formaDelSitio();
     const pasos = Array.from(document.querySelectorAll('.historia-paso'));
     if (!forma || !pasos.length || typeof CC.crearEscena !== 'function') return;
 
     const { pintar } = CC.crearEscena(destino, forma, {
-      recorte: { x1: 40, x2: 196, y1: -14, y2: 48 }, // unidades del plano
+      recorte: { x1: 44, x2: 216, y1: -14, y2: 48 }, // unidades del plano
       descripcion: 'Mini mapa del Pasillo A-B entre Bodega A-17, Bodega B-40 y Doña Mary.',
     });
 
