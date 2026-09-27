@@ -3,12 +3,12 @@
   "fuente": "Generado por web/herramientas/generar-repeticion.js solo con demo/salida-demo.txt y demo/deploy.json. No editar a mano.",
   "red": "Stellar testnet",
   "contrato": {
-    "id": "CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
-    "url": "https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
-    "desplegado_utc": "2026-09-26T13:44:00Z"
+    "id": "CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
+    "url": "https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
+    "desplegado_utc": "2026-09-27T02:22:45Z"
   },
   "seudonimo_cliente": "fe1b5cfb1b99ba1b…",
-  "nota_id": "18216b523aaca302…",
+  "nota_id": "84d3e6ca520040a2…",
   "pasos": [
     {
       "numero": 1,
@@ -16,8 +16,8 @@
       "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "create_note",
-      "hash": "cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872",
-      "url": "https://stellar.expert/explorer/testnet/tx/cea99f447db963d1a1b37a0278765409555b322d2fbf041240d8020c25f2d872",
+      "hash": "07042a534ef9792d13024c113b9b416ef5be30139e4f611f28989dbfe2b74bad",
+      "url": "https://stellar.expert/explorer/testnet/tx/07042a534ef9792d13024c113b9b416ef5be30139e4f611f28989dbfe2b74bad",
       "sin_transaccion": null,
       "detalle_salida": null
     },
@@ -27,8 +27,8 @@
       "firma": "Doña Mary",
       "cuenta_publica": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO",
       "funcion": "accept_note",
-      "hash": "a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d",
-      "url": "https://stellar.expert/explorer/testnet/tx/a1e08fc445938de25d22e6bd99c90b11fd2142108bc3a4eacbec5cd898f4793d",
+      "hash": "960e7a1dc7e866ca893b87c98765f3696fa6922af91de268badb241225cc398f",
+      "url": "https://stellar.expert/explorer/testnet/tx/960e7a1dc7e866ca893b87c98765f3696fa6922af91de268badb241225cc398f",
       "sin_transaccion": null,
       "detalle_salida": null
     },
@@ -38,8 +38,8 @@
       "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "confirm_paid",
-      "hash": "09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326",
-      "url": "https://stellar.expert/explorer/testnet/tx/09317d8006996ad98a8d19248271a56216c91b9bca36e6c5d198b92f4d7d8326",
+      "hash": "5500cd0d8061424805ac56a357fd4f458fb5dd2fbbdd640f449af10c5b562ff5",
+      "url": "https://stellar.expert/explorer/testnet/tx/5500cd0d8061424805ac56a357fd4f458fb5dd2fbbdd640f449af10c5b562ff5",
       "sin_transaccion": null,
       "detalle_salida": null
     },
@@ -60,8 +60,8 @@
       "firma": "Doña Mary",
       "cuenta_publica": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO",
       "funcion": "grant_consent",
-      "hash": "cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814",
-      "url": "https://stellar.expert/explorer/testnet/tx/cc1b529374045cfc2c53fbf4fa433e6215388b0948f22cba65a599f0892a6814",
+      "hash": "e0a9e00da89e8603922e3887ecff64edf0c244dfc7302ec9f63d7edf1827b618",
+      "url": "https://stellar.expert/explorer/testnet/tx/e0a9e00da89e8603922e3887ecff64edf0c244dfc7302ec9f63d7edf1827b618",
       "sin_transaccion": null,
       "detalle_salida": null
     },
@@ -71,19 +71,19 @@
       "firma": "Bodega B-40",
       "cuenta_publica": "GD2TUPI6ZZE7BGCQIEBTWA2AIZHEVALYF3UTEJFF6ENP7K76ERRNY55D",
       "funcion": "read_stats",
-      "hash": "a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c",
-      "url": "https://stellar.expert/explorer/testnet/tx/a8437564162cc1cd651debd65a403bd9b989458bb56feaf1d71f6f638df6183c",
+      "hash": "7d28b260dd655872bcd9f40e57f40b3d3d85043e4f8264232720ec6c0ee92f85",
+      "url": "https://stellar.expert/explorer/testnet/tx/7d28b260dd655872bcd9f40e57f40b3d3d85043e4f8264232720ec6c0ee92f85",
       "sin_transaccion": null,
       "detalle_salida": "Esta consulta queda registrada (evento aggregate_read)."
     }
   ],
   "resumen_paso_6": {
-    "Notas aceptadas": "1",
-    "Pagadas a tiempo": "1",
+    "Notas aceptadas": "2",
+    "Pagadas a tiempo": "2",
     "Pagadas tarde": "0",
     "Vencidas abiertas": "0",
     "Incumplidas": "0",
-    "Emisores distintos": "1",
+    "Emisores distintos": "2",
     "Rango máximo visto": "B5k_20k"
   }
 };

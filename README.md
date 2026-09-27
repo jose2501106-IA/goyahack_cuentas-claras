@@ -6,14 +6,14 @@
 
 Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de Ingeniería, Semana DIE 2026), track **Blockchain**. Evento del 22 al 26 de septiembre de 2026.
 
-> **Estado (26-sep-2026, 15:30):** contrato `cuentas_claras` en Stellar testnet con 13 pruebas en verde, redesplegado el 26-sep tras cerrar dos huecos de privacidad (decisiones #42 y #46). **Sitio público: https://cuentas-claras-lemon.vercel.app** (gemelo digital del Pasillo A-B, la demo real verificable, «La app en tu mano» y «Pasillo vivo» con agentes simulados; 53 pruebas). App local que firma en testnet (27 pruebas) y `demo/demo.sh` como respaldo. Entrega: domingo 27-sep (plazo extendido, decisión #43).
+> **Estado (26-sep-2026, 20:40):** contrato `cuentas_claras` v4 en Stellar testnet con 23 pruebas en verde. El cliente se vincula a su seudónimo antes de su primera nota y ninguna bodega puede aceptar su propia nota (decisión #55); antes se redesplegó por dos huecos de privacidad (#42 y #46). **Sitio público: https://cuentas-claras-lemon.vercel.app** (gemelo digital del Pasillo A-B, la demo real verificable, «La app en tu mano» y «Pasillo vivo» con agentes simulados; 53 pruebas). App local que firma en testnet (27 pruebas) y `demo/demo.sh` como respaldo. Entrega: domingo 27-sep (plazo extendido, decisión #43).
 
 ## En vivo en Stellar testnet
 
 | | |
 |---|---|
-| Contrato | [`CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW`](https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW) |
-| Estado | Desplegado e inicializado el 26-sep-2026 (07:44 CDMX) · 13 pruebas en verde (`cargo test`) · contratos anteriores obsoletos en `demo/deploy.json` |
+| Contrato | [`CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ`](https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ) |
+| Estado | Contrato v4, desplegado e inicializado el 26-sep-2026 (20:22 CDMX) · 23 pruebas en verde (`cargo test`) · contratos anteriores obsoletos en `demo/deploy.json` |
 | Sitio público | [cuentas-claras-lemon.vercel.app](https://cuentas-claras-lemon.vercel.app) · estático, sin llaves; repite la corrida real con enlaces a cada transacción |
 | Toolchain | Stellar CLI 28.0.0 · soroban-sdk 28.0.0 · `wasm32v1-none` (decisión #41) |
 | Datos | Solo claves públicas y datos ficticios de demo en [`demo/deploy.json`](demo/deploy.json) |

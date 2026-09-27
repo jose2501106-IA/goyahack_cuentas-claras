@@ -131,6 +131,8 @@ Consecuencias que hay que asumir y decir:
 - Rotación del seudónimo por época y evento de consulta con el lector cifrado o comprometido, para evitar represalias.
 - Pruebas de conocimiento cero de rango ("≥ N notas pagadas, 0 incumplidas") con el verificador Groth16 disponible en Soroban (ver `research/00_sintesis-estrategica.md`, hoja de ruta).
 
+v4 (decisión #55): el cliente se vincula a su seudónimo antes de su primera nota, con la firma de la plataforma y la suya; ninguna bodega puede aceptar su propia nota.
+
 ## 4. Parámetros
 
 El plazo de cada nota (`due_ts`) **lo fija la bodega por cliente al crear la nota**, porque en la operación real cada cliente tiene un plazo propio (experiencia de José). El contrato no impone un plazo estándar; solo exige `due_ts > now`. En la demo se usan tres perfiles de cliente: 1 día, 7 días y 15 días. Lo demás son ventanas de sistema *(propuesta; José puede cambiarlas)*:

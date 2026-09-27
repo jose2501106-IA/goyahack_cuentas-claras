@@ -2,7 +2,7 @@
 
 > **Borrador v2 — pendiente de aprobación de José** · 26-sep-2026. Sustituye a `2026-09-25_guion-demo.md` (v1, bitácora).
 > **Demo principal (nivel 1):** la app local con el gemelo digital del Pasillo A-B como portada.
-> **Contrato:** [`CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW`](https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW), en Stellar testnet.
+> **Contrato:** [`CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ`](https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ), en Stellar testnet.
 > **Respaldos:** el sitio público https://cuentas-claras-lemon.vercel.app (repetición verificable, sin llaves), `demo/demo.sh` (nivel 2) y el video. Lo que depende del ensayo está marcado **[CONFIRMAR]**.
 
 ## 0. Qué prueba la demo

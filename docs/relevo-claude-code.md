@@ -1,21 +1,22 @@
 # Relevo para Claude Code — cómo retomar en una sesión nueva
 
-**Actualizado:** sábado 26-sep-2026, 13:15. Léelo completo antes de tocar nada; son dos minutos.
+**Actualizado:** sábado 26-sep-2026, 20:45. Léelo completo antes de tocar nada; son dos minutos.
 
 ## 1. Dónde estamos
 
 - **Entrega:** domingo 27-sep, antes de las 20:00 (meta interna). **Código congelado el domingo a las 15:00.** Decisión #43; plan en `docs/plan-maestro.md` §4b.
-- **Contrato vigente en testnet:** `CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW` (`demo/deploy.json`).
-  - 13 pruebas en verde (`cd contracts/cuentas_claras && cargo test`).
+- **Contrato vigente en testnet (v4, decisión #55):** `CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ` (`demo/deploy.json`), desplegado el 26-sep a las 20:22 (CDMX).
+  - 23 pruebas en verde (`cd contracts/cuentas_claras && cargo test`).
   - Sin función de actualización (#30).
-  - Contratos anteriores, obsoletos, en `contratos_anteriores`: el primero se retiró por `get_stats` (#42), el segundo por la excepción del emisor (#46).
+  - Contratos anteriores, obsoletos, en `contratos_anteriores`: el primero se retiró por `get_stats` (#42), el segundo por la excepción del emisor (#46), el tercero por el hueco C1 del vínculo (#55).
+- **Vínculo previo (v4):** el cliente se vincula a su seudónimo antes de su primera nota: la plataforma invita (`invite_subject`) y el cliente firma (`bind_subject`). `create_note` falla si el seudónimo no está vinculado o si está vinculado al propio emisor, y solo la dirección vinculada acepta. `demo.sh` y `sembrar.sh` vinculan solo si `subject_of` está vacío. Doña Mary ya está vinculada en el contrato v4.
 - **Regla de lectura actual:** el resumen (`read_stats`) solo lo lee sin permiso el propio cliente. Cualquier bodega, incluso la que le fió, necesita su permiso vigente.
 - **App local** (`node backend/server.js`, puerto 8080, sin `npm install`):
   - servidor Node sin dependencias que llama al Stellar CLI (#45);
   - frontend HTML, CSS y JS sin framework;
   - portada «Pasillo A-B»: gemelo digital con la forma real del pasillo, leída de `plano/pasillo-a-b.json` (#47, #48);
   - cuatro vistas: Bodega A-17, Teléfono de Doña Mary, Bodega B-40 y Para el jurado;
-  - 27 pruebas con `node --test backend/`.
+  - 35 pruebas con `node --test backend/test/*.test.js`.
 - **Datos de demo:**
   - Bodega A-17, Bodega B-40 (la que no conoce a Doña Mary) y Bodega A-73 (segundo emisor, sembrado con `demo/sembrar.sh`). Posiciones ilustrativas.
   - Doña Mary es ficticia.
@@ -37,7 +38,7 @@ Las identidades `plataforma`, `bodega_a`, `bodega_b`, `bodega_c` y `dona_mary` v
    - revisar la inclinación isométrica y las animaciones.
 2. **Capturas** de las cuatro vistas y la portada en `demo/capturas/`.
 3. **Video** de 2–3 minutos con el flujo real (guion de demo v2, §5).
-0. **Contrato v4 (decisión #55), solo en el Codespace original:** `spec/2026-09-26_especificacion-contrato-v4.md`, pasos K1–K3. Prompt en la sección 6.
+0. ~~**Contrato v4 (decisión #55)**~~: hecho el 26-sep (K1–K3). Queda la revisión en navegador de la app local con el contrato nuevo.
 4. **Sitio público y «Pasillo vivo»** (#49–#51): se construyen en `web/` siguiendo `docs/cola-de-trabajo.md` y `spec/2026-09-26_especificacion-web-y-agentes.md`, desde Claude Code en la web. No necesitan llaves.
 
 ## 4. Reglas que no cambian
