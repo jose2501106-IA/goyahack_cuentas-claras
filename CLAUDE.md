@@ -19,21 +19,22 @@ La bitácora de fiado co-firmada de la Central de Abasto de la CDMX: cada nota d
 ## Lee en este orden
 
 1. `spec/2026-09-25_especificacion-tecnica-v2.md` — qué construir, interfaz del contrato, invariantes, criterios de aceptación, datos de la demo. **Lee la sección 3b (qué garantiza el diseño y qué no).** (v0 y v1 son historia; no las uses.)
-2. `docs/decisiones.md` — decisiones tomadas y su estado (`aprobada` / `propuesta`).
-3. `docs/problema-solucion.md` — el porqué, en una página.
-4. `research/00_sintesis-estrategica.md` — solo si necesitas el fundamento de una decisión (es largo).
+2. `spec/2026-09-26_especificacion-contrato-v5.md` — contrato vigente (v5) y flujo de la demo.
+3. `docs/decisiones.md` — decisiones tomadas y su estado (`aprobada` / `propuesta`).
+4. `docs/problema-solucion.md` — el porqué, en una página.
+5. `research/00_sintesis-estrategica.md` — solo si necesitas el fundamento de una decisión (es largo).
 
 ## Reglas duras
 
 - **Solo testnet.** Mainnet únicamente después de entregar y con aprobación explícita de José.
-- **Nada personal ni dinero en cadena.** En el contrato solo hay identificadores seudónimos (HMAC), rangos de monto, fechas, estados, contadores, emisores y consentimientos. Nombres, teléfonos, RFC, montos exactos y documentos viven fuera de cadena.
+- **Nada personal ni dinero en cadena.** En el contrato solo hay identificadores seudónimos (HMAC), rangos de monto, fechas, estados, contadores, emisores y eventos de consulta (desde la v5 ya no hay consentimientos). Nombres, teléfonos, RFC, montos exactos y documentos viven fuera de cadena.
 - **Ninguna llave real ni secreto en el repo.** Solo cuentas de testnet fondeadas por Friendbot. Variables de entorno en `.env` (ignorado por git); `.env.example` sí se versiona.
 - **Cero crates fuera de `soroban-sdk`.** `Cargo.lock` va en el repo. Verifica cada nombre de crate contra crates.io (ataques de typosquatting en 2025–2026).
 - **Versiones fijas** (decisión #41; ver spec, sección 1): soroban-sdk `=28.0.0` (fijada en `contracts/cuentas_claras/Cargo.toml`), Stellar CLI 28.0.0 por binario (la instalada), target `wasm32v1-none`, JS SDK 16.2.0. Si `stellar contract init` genera otra versión, fíjala y anótalo en `docs/decisiones.md`. **No mezclar 27.x con 28.x.**
 - **`cargo test` verde antes de `stellar contract build`.** Despliega temprano y guarda el Contract ID en `demo/deploy.json`.
 - **Un flujo completo vale más que dos a medias.** Passkeys, relayer, ZK, MXNe, token, integración con ERP o MEGA: fuera del alcance de hoy.
 - **Marca:** proyecto **Cuentas Claras**, equipo **Palabra**; contrato, crate y carpeta `cuentas_claras`; tópico de eventos `cclaras` (`symbol_short!` admite máximo 9 caracteres; ver spec v2, sección 7). Microcopy de la interfaz: `docs/campana-marketing.md`, sección 8.
-- **Privacidad honesta (spec v2, 3b):** la cadena es pública; el permiso controla la consulta oficial (`read_stats`) y deja constancia, no hace secreto el estado. Nunca escribas en la interfaz "solo lo ve quien tú autorices", "anónimo" ni "nadie puede ver nada".
+- **Privacidad honesta (spec v2, 3b; decisión #57):** la cadena es pública. Desde la #57 (contrato v5) no hay paso de permiso: cualquiera con el código del cliente (su seudónimo) lee su historial, y cada consulta formal (`read_stats`) queda registrada con quien preguntó. El cliente decide a qué bodega le enseña su código. Nunca escribas en la interfaz "solo lo ve quien tú autorices", "anónimo" ni "nadie puede ver nada".
 - **Sin función de actualización del contrato** (nada de `upgrade` ni `update_current_contract_wasm`).
 - **Nada que identifique a la bodega del equipo** (nombre ni cifras) en código, datos de demo, commits o capturas. Datos de demo: **Bodega A-17, Bodega B-40 y Bodega A-73** (posiciones ilustrativas del Pasillo A-B; ninguna bodega real participa) y Doña Mary (ficticia). **Nunca «Bodega A», «Bodega B» ni «Bodega C» sin número** (decisión #54). Las identidades de testnet `bodega_a`, `bodega_b` y `bodega_c` son nombres internos: `bodega_a` = A-17, `bodega_b` = B-40, `bodega_c` = A-73.
 - **Vocabulario en la interfaz:** español de México; "nota firmada", "historial", "semáforo", "historial insuficiente". Nunca "pagaré ejecutable", "buró", "score", "calificación". La palabra "blockchain" no aparece en las vistas del bodeguero ni del cliente.

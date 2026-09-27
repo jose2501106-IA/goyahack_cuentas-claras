@@ -1,6 +1,6 @@
 # Relevo para Claude Code — cómo retomar en una sesión nueva
 
-**Actualizado:** sábado 26-sep-2026, 20:45. Léelo completo antes de tocar nada; son dos minutos.
+**Actualizado:** sábado 26-sep-2026, 23:30. Léelo completo antes de tocar nada; son dos minutos.
 
 ## 1. Dónde estamos
 
@@ -10,13 +10,13 @@
   - Sin función de actualización (#30).
   - Contratos anteriores, obsoletos, en `contratos_anteriores`: el primero se retiró por `get_stats` (#42), el segundo por la excepción del emisor (#46), el tercero por el hueco C1 del vínculo (#55), el cuarto (v4) por la #57.
 - **Vínculo previo (v4):** el cliente se vincula a su seudónimo antes de su primera nota: la plataforma invita (`invite_subject`) y el cliente firma (`bind_subject`). `create_note` falla si el seudónimo no está vinculado o si está vinculado al propio emisor, y solo la dirección vinculada acepta. `demo.sh` y `sembrar.sh` vinculan solo si `subject_of` está vacío. Doña Mary ya está vinculada en el contrato v5.
-- **Regla de lectura actual:** el resumen (`read_stats`) solo lo lee sin permiso el propio cliente. Cualquier bodega, incluso la que le fió, necesita su permiso vigente.
+- **Regla de lectura actual (v5, #57):** no hay paso de permiso. Cualquier bodega con el código del cliente (su seudónimo) lee el resumen con `read_stats`, y la consulta queda registrada (`aggregate_read`, con la dirección que preguntó). El cliente decide a qué bodega le enseña su código; una bodega que ya le fió lo conoce. Demo: 5 pasos, 4 transacciones (el paso 4, enseñar el código en el mostrador, no es transacción).
 - **App local** (`node backend/server.js`, puerto 8080, sin `npm install`):
   - servidor Node sin dependencias que llama al Stellar CLI (#45);
   - frontend HTML, CSS y JS sin framework;
   - portada «Pasillo A-B»: gemelo digital con la forma real del pasillo, leída de `plano/pasillo-a-b.json` (#47, #48);
   - cuatro vistas: Bodega A-17, Teléfono de Doña Mary, Bodega B-40 y Para el jurado;
-  - 35 pruebas con `node --test backend/test/*.test.js`.
+  - 36 pruebas con `node --test backend/test/*.test.js`.
 - **Datos de demo:**
   - Bodega A-17, Bodega B-40 (la que no conoce a Doña Mary) y Bodega A-73 (segundo emisor, sembrado con `demo/sembrar.sh`). Posiciones ilustrativas.
   - Doña Mary es ficticia.

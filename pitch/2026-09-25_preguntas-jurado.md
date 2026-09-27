@@ -46,7 +46,7 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 
 ### 5. ¿No es solo guardar un hash en cadena? ¿Por qué no una cadena privada entre bodegas?
 
-**R.** No: un hash sería almacenamiento, y el fondo de Stellar lo descarta. El contrato hace cumplir reglas: dos firmas, gracia antes de «incumplida», lectura solo con permiso. Y una cadena privada entre bodegas sería un consorcio de competidores, como TradeLens, que cerró por falta de colaboración.
+**R.** No: un hash sería almacenamiento, y el fondo de Stellar lo descarta. El contrato hace cumplir reglas: dos firmas, gracia antes de «incumplida», cada consulta formal queda registrada. Y una cadena privada entre bodegas sería un consorcio de competidores, como TradeLens, que cerró por falta de colaboración.
 
 *Fuente:* [SCF Handbook](https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria): *"not… for data storage"*; spec v2 §6 (invariantes); [Maersk, 2022](https://www.maersk.com/news/articles/2022/11/29/maersk-and-ibm-to-discontinue-tradelens): *"the need for full global industry collaboration has not been achieved"*.
 
@@ -68,7 +68,7 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 
 ### 8. ¿Esto no es un buró de crédito? La LRSIC reserva esa actividad a sociedades autorizadas.
 
-**R.** Es nuestro principal riesgo legal y no está resuelto. La LRSIC reserva a sociedades autorizadas recopilar y entregar historiales; por eso el historial es del cliente: la consulta oficial de un tercero exige su permiso firmado, con vigencia, y cada consulta queda registrada. Dictamen legal antes de la segunda bodega.
+**R.** Es nuestro principal riesgo legal y no está resuelto. La LRSIC reserva a sociedades autorizadas recopilar y entregar historiales; por eso el historial es del cliente: él lo porta y decide a qué bodega le enseña su código, y cada consulta formal queda registrada. Dictamen legal antes de la segunda bodega; todavía no lo tenemos.
 
 *Fuente:* [LRSIC, arts. 5o y 28](https://www.diputados.gob.mx/LeyesBiblio/pdf/LRSIC.pdf); `docs/riesgos.md`; `docs/plan-maestro.md` P2. **Nunca** cifras de sanciones.
 
@@ -88,19 +88,19 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 
 ### 11. En la Central hay extorsión. ¿No están creando un mapa para extorsionadores?
 
-**R.** Diseñamos para que no lo sea: en cadena no hay nombres, locales, teléfonos ni montos exactos, solo seudónimos y rangos. Ningún tercero ve el agregado sin permiso del cliente, y cada consulta queda registrada. No prometemos resolver la extorsión: prometemos no darle un mapa.
+**R.** Diseñamos para que no lo sea: en cadena no hay nombres, locales, teléfonos ni montos exactos, solo seudónimos y rangos. Sin el código del cliente no hay forma de ligar un historial con una persona, y no hay directorio de clientes. Cada consulta formal queda registrada con la bodega que preguntó. No prometemos resolver la extorsión: prometemos no darle un mapa.
 
 *Fuente:* `docs/riesgos.md` ([Proceso, 2022](https://www.proceso.com.mx/reportajes/2022/11/17/la-central-de-abasto-una-gran-bodega-de-la-delincuencia-organizada-296458.html); [La Silla Rota, 2023](https://lasillarota.com/metropoli/2023/7/4/niegan-extorsiones-en-la-ceda-diableros-tienen-otros-datos-350133.html)). Sin cifras de extorsión. Nunca «reduce la extorsión».
 
-### 11b. La cadena es pública: ¿no puede cualquiera leer el historial sin permiso?
+### 11b. La cadena es pública: ¿no puede cualquiera leer el historial?
 
-**R.** Sí: lo que está en la cadena es público, y lo decimos. Por eso ahí no va nombre, teléfono ni monto exacto: solo un seudónimo y rangos. El permiso controla la consulta oficial al contrato, que es la que usa una bodega para decidir, y deja constancia. La confidencialidad completa, con seudónimos por bodega y pruebas de conocimiento cero, es el siguiente paso, antes de abrir consultas entre bodegas en el piloto.
+**R.** Sí, cualquiera que tenga el código del cliente, y lo decimos. Por eso en la cadena no va nombre, teléfono ni monto exacto: solo un seudónimo y rangos. Sin el código no hay forma de ligar el historial con una persona: el seudónimo sale de una llave que no está en la cadena, y no hay directorio de clientes. Una bodega que ya le fió conoce su código. Cada consulta formal queda registrada con la bodega que preguntó. La confidencialidad completa, con seudónimos por bodega y pruebas de conocimiento cero, es el siguiente paso, antes de abrir consultas entre bodegas en el piloto.
 
-*Fuente:* spec v2, sección 3b; `docs/riesgos.md`. **Nunca** decir «solo lo ve quien tú autorices» sin este matiz.
+*Fuente:* spec v2, sección 3b; decisión #57; `spec/2026-09-26_especificacion-contrato-v5.md`; `docs/riesgos.md`. **Nunca** decir «solo lo ve quien tú autorices» ni «anónimo».
 
 ### 12. ¿Quién tiene la llave del seudónimo? ¿No son ustedes un custodio?
 
-**R.** Sí, en el MVP la llave vive en nuestro servidor: con un hash sin llave, cualquiera adivinaría el teléfono detrás del seudónimo. Pero el historial no lo custodiamos: está en cadena y, con permiso del cliente, un lector lo lee directo del contrato. Las cuentas de demo sí las operamos.
+**R.** Sí, en el MVP la llave vive en nuestro servidor: con un hash sin llave, cualquiera adivinaría el teléfono detrás del seudónimo. Pero el historial no lo custodiamos: está en cadena y, con el código que le enseña el cliente, una bodega lo lee directo del contrato. Las cuentas de demo sí las operamos.
 
 *Fuente:* spec v2 §8 (un teléfono mexicano tiene 10^10 valores posibles y un hash simple se puede recorrer) y §5.1 (cuentas de demo custodiadas). Rotación del seudónimo por periodo y passkeys: fases posteriores.
 
@@ -128,7 +128,7 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 
 ### 16. ¿Qué hace exactamente el contrato? ¿Qué es real y qué es simulado?
 
-**R.** Hace cumplir: solo emiten bodegas de la lista; la nota existe con dos firmas; nada se edita; «incumplida» solo tras gracia; lectura solo con permiso. Real: contrato y transacciones en testnet *[CONFIRMAR]*. Simulado: datos ficticios y llaves de demo que guarda nuestro servidor; en producción, cada quien firma con la suya.
+**R.** Hace cumplir: solo emiten bodegas de la lista; la nota existe con dos firmas; nada se edita; «incumplida» solo tras gracia; cada consulta formal queda registrada. Real: contrato y transacciones en testnet *[CONFIRMAR]*. Simulado: datos ficticios y llaves de demo que guarda nuestro servidor; en producción, cada quien firma con la suya.
 
 *Fuente:* spec v2 §5, §5.1 y §6. **Pregunta de seguimiento probable:** «¿Entonces su servidor podría firmar por los dos?» → «En la demo, sí, porque las cuentas son de prueba; por eso el siguiente paso son passkeys en el teléfono de cada quien. El contrato ya exige dos firmas distintas y no cambia.»
 
@@ -162,15 +162,20 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 
 ## I. Preguntas nuevas del 26-sep (gemelo digital y seguridad)
 
-### 21. ¿Qué eran esos «dos huecos»? ¿Por qué no los vieron antes?
+### 21. ¿Qué cambiaron en el contrato? ¿Por qué no lo vieron antes?
 
-**R.** Uno era una función de consulta que entregaba el resumen del cliente sin pedir permiso. El otro, una regla que dejaba leerlo a cualquier bodega que ya le hubiera fiado, aunque el cliente no se lo hubiera autorizado. Los encontramos en nuestra propia revisión antes de entregar, los cerramos con pruebas que fallan si vuelven a aparecer, y desplegamos un contrato nuevo. Los anteriores quedan registrados como obsoletos en el repositorio.
+**R.** Tres cambios, cada uno con un contrato nuevo, porque el contrato no se actualiza:
+- **#42:** una función pública entregaba el resumen de cualquier cliente sin registrar quién preguntó. La quitamos; hoy cada consulta formal queda registrada.
+- **#55:** una bodega podía aceptar su propia nota y fabricar historial. Ahora el cliente se vincula a su seudónimo antes de su primera nota y el contrato lo rechaza.
+- **#57:** quitamos el paso de permiso: en una cadena pública no escondía nada. Ahora el cliente enseña su código y cada consulta queda registrada.
 
-*Fuente:* decisiones #42 y #46; `demo/deploy.json` (`contratos_anteriores`); pruebas `no_hay_get_stats_publico` y `emisor_con_notas_necesita_permiso`.
+Los dos primeros salieron de nuestra propia revisión; el tercero, de un mentor. Los contratos anteriores quedan registrados como obsoletos en el repositorio.
+
+*Fuente:* decisiones #42, #55 y #57; `demo/deploy.json` (`contratos_anteriores`); pruebas `no_hay_get_stats_publico`, `r2_bodega_no_acepta_su_nota` y `v5_cualquier_bodega_lee_y_queda_constancia`.
 
 ### 22. Si no se puede actualizar, ¿qué controla el administrador?
 
-**R.** Solo el padrón de bodegas emisoras: dar de alta o de baja a quién puede crear notas. No puede editar ni borrar notas, no puede leer resúmenes sin permiso y no puede cambiar las reglas, porque el contrato no tiene función de actualización. En producción, ese padrón lo validaría la administración de la Central con más de una firma.
+**R.** Solo el padrón de bodegas emisoras: dar de alta o de baja a quién puede crear notas. No puede editar ni borrar notas y no puede cambiar las reglas, porque el contrato no tiene función de actualización. En producción, ese padrón lo validaría la administración de la Central con más de una firma.
 
 *Fuente:* spec v2 §5; decisión #30 (sin `upgrade`); decisión #24 (administración como validadora, propuesta).
 
@@ -192,6 +197,18 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 
 *Fuente:* por confirmar (`docs/preguntas-pendientes.md`).
 
+### 26. Si todo es público, ¿qué controla el cliente?
+
+**R.** Controla a qué bodega le enseña su código. Sin ese código no hay forma de ligar su historial con él: el seudónimo sale de una llave fuera de la cadena y no hay directorio de clientes. Y cada consulta formal queda registrada con la bodega que preguntó, así que sabe quién miró. Una bodega que ya le fió conoce su código.
+
+*Fuente:* decisión #57; `spec/2026-09-26_especificacion-contrato-v5.md` §0.
+
+### 27. ¿Por qué quitaron el permiso?
+
+**R.** Un mentor nos señaló que era redundante: la cadena es pública y el permiso nunca escondía nada. Ahora el cliente decide a quién le enseña su código, y cada consulta queda registrada. Como el contrato no se actualiza, el cambio fue un contrato nuevo, la v5. La demo bajó a 5 pasos y 4 transacciones.
+
+*Fuente:* decisión #57; `demo/deploy.json` (`contratos_anteriores`). El argumento legal cambió a «el cliente porta su historial y decide a qué bodega le enseña su código»: va al dictamen legal, que está pendiente.
+
 ---
 
 ## Si el jurado usa estas palabras (no cuentan entre las 20)
@@ -199,6 +216,6 @@ Base: `docs/riesgos.md` (su última columna es el guion del Q&A), `docs/hoja-de-
 | El jurado dice | Nosotros decimos |
 |---|---|
 | «score», «calificación» | «Un agregado orientativo, con estado explícito de "historial insuficiente"; la bodega decide.» |
-| «buró» | «Una sociedad de información crediticia; no somos una: el cliente autoriza cada lectura.» |
+| «buró» | «Una sociedad de información crediticia; no somos una: el cliente porta su historial y decide a qué bodega le enseña su código.» |
 | «pagaré» | «Una nota firmada electrónicamente con valor probatorio.» |
-| «token», «cripto» | «No hay token y no se mueve dinero: la cadena solo registra firmas, estados y permisos.» |
+| «token», «cripto» | «No hay token y no se mueve dinero: la cadena solo registra firmas, estados y consultas.» |

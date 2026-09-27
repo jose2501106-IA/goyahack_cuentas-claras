@@ -4,6 +4,8 @@
 **Estado:** v1, 25 de septiembre de 2026, 09:20 CDMX. Aprobado en su estructura (plan A–E) por José a las 08:35. Se actualiza durante el día; los cambios quedan en la sección final.
 **Regla del documento:** cada afirmación sobre la CEDA lleva fuente o la etiqueta *experiencia del equipo*. Lo que es propuesta se marca *(propuesta)*.
 
+> **Actualización 26-sep, 23:30 (decisión #57, contrato v5):** ya no hay paso de permiso. La cadena es pública: una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Donde este documento hable de dar o pedir permiso, léase así.
+
 ---
 
 ## 1. Qué busca el organizador y cómo lo satisfacemos

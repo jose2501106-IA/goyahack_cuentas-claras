@@ -6,7 +6,7 @@
 
 Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de Ingeniería, Semana DIE 2026), track **Blockchain**. Evento del 22 al 26 de septiembre de 2026.
 
-> **Estado (26-sep-2026, 20:40):** contrato `cuentas_claras` v4 en Stellar testnet con 23 pruebas en verde. El cliente se vincula a su seudónimo antes de su primera nota y ninguna bodega puede aceptar su propia nota (decisión #55); antes se redesplegó por dos huecos de privacidad (#42 y #46). **Sitio público: https://cuentas-claras-lemon.vercel.app** (gemelo digital del Pasillo A-B, la demo real verificable, «La app en tu mano» y «Pasillo vivo» con agentes simulados; 53 pruebas). App local que firma en testnet (27 pruebas) y `demo/demo.sh` como respaldo. Entrega: domingo 27-sep (plazo extendido, decisión #43).
+> **Estado (26-sep-2026, 23:30):** contrato `cuentas_claras` v5 en Stellar testnet con 22 pruebas en verde. Ya no hay paso de «dar permiso» (decisión #57): la cadena es pública, una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Cambios del contrato en el camino: se quitó `get_stats` (#42), el cliente se vincula a su seudónimo antes de su primera nota y ninguna bodega acepta su propia nota (#55), y se quitó el permiso (#57). **Sitio público: https://cuentas-claras-lemon.vercel.app** (gemelo digital del Pasillo A-B, la demo real verificable, «La app en tu mano» y «Pasillo vivo» con agentes simulados; 69 pruebas). App local que firma en testnet (36 pruebas del backend) y `demo/demo.sh` como respaldo. Entrega: domingo 27-sep (plazo extendido, decisión #43).
 
 ## En vivo en Stellar testnet
 
@@ -26,10 +26,14 @@ En la Central de Abasto el fiado se pacta de palabra y se cobra en efectivo, as�
 
 1. **Ninguna bodega puede escribir sola una deuda**: la nota solo existe cuando el cliente la acepta (dos firmas, en pasos separados).
 2. **Nadie, ni la plataforma, puede borrar ni maquillar el historial**: cada corrección es un evento nuevo que referencia al anterior; "incumplida" solo existe después de vencer más un periodo de gracia.
-3. **El cliente se lleva su historial** a cualquier bodega o banco: un tercero solo lee el agregado si el cliente firmó un consentimiento con vigencia, y cada lectura deja rastro.
+3. **El cliente se lleva su historial** a cualquier bodega: la bodega lo consulta con el código que el cliente le enseña, y cada consulta formal queda registrada con la bodega que preguntó.
 4. **Un tercero verifica sin confiar en el operador.**
 
-En la cadena solo hay identificadores seudónimos, rangos de monto, fechas y estados. **En la cadena no hay nombres, teléfonos ni montos exactos: solo un seudónimo y rangos. El permiso del cliente controla la consulta oficial de su historial y deja constancia; no vuelve secreto lo que ya es público en la cadena.** No es una sociedad de información crediticia, no mueve dinero, no emite token, no califica personas.
+En la cadena solo hay identificadores seudónimos, rangos de monto, fechas y estados. **En la cadena no hay nombres, teléfonos ni montos exactos: solo un seudónimo y rangos. La cadena es pública: cualquier bodega con el código del cliente (su seudónimo) consulta su historial. Sin el código no hay forma de ligar el historial con una persona: el seudónimo sale de una llave que no está en la cadena y no hay directorio de clientes. El cliente decide a qué bodega le enseña su código, y cada consulta formal queda registrada.**
+
+**La demo, en 5 pasos y 4 transacciones:** 1) Bodega A-17 crea la nota; 2) Doña Mary la acepta; 3) A-17 confirma el pago; 4) Doña Mary le enseña su código a Bodega B-40 en el mostrador (no es una transacción); 5) B-40 consulta con ese código: ve el historial y el semáforo («historial insuficiente»), y la consulta queda registrada.
+
+No es una sociedad de información crediticia, no mueve dinero, no emite token, no califica personas.
 
 ## Cómo navegar este repositorio
 
@@ -115,9 +119,9 @@ node backend/server.js        # abre http://127.0.0.1:8080
 - **El puerto 8080 se queda privado** en Codespaces: no cambies su visibilidad. Ábrelo con «Open in Browser» desde la pestaña Ports (el servidor no se deja incrustar en marcos).
 - El servidor llama al Stellar CLI con `execFile`, una transacción a la vez; las llaves secretas no salen del CLI. Cada firma tarda unos segundos («Registrando…»).
 - Datos fuera de cadena (monto exacto y aleatoriedad del documento) en `backend/datos/notas.json`, ignorado por git.
-- Pruebas del servidor y del semáforo: `node --test backend/`.
+- Pruebas del servidor y del semáforo: `node --test backend/test/*.test.js` (36; en Node 22, `node --test backend/` no funciona).
 - Pasillo A-B: forma real de `plano/pasillo-a-b.json` (decisión #48; el servidor sirve solo ese archivo del plano, en `/plano/pasillo-a-b.json`), con las 96 bodegas en su posición y los trazos sin rótulos. Cada trazo aparece solo después de que la API devolvió el `tx_hash`. Los eventos salen de `GET /api/transacciones` y de la respuesta de `POST /api/consultas` (`frontend/bitacora.js`); la API no cambió. Captura: `demo/capturas/pasillo-a-b-plana.png`.
-- `demo/sembrar.sh` agrega a Bodega A-73 como segundo emisor (una sola vez, antes de grabar). Bodega B-40 nunca emite notas a Doña Mary: es la que consulta y debe necesitar permiso (decisión #46).
+- `demo/sembrar.sh` agrega a Bodega A-73 como segundo emisor (una sola vez, antes de grabar). Bodega B-40 nunca emite notas a Doña Mary: es la que consulta con su código. Desde la decisión #57 no hay paso de permiso (antes, #46).
 
 ## Sitio público
 
@@ -128,7 +132,7 @@ Sitio estático en [`web/`](web/) con cuatro secciones: **Inicio**, **Pasillo vi
 Qué hace:
 - **Pasillo vivo:** simulación con 20 bodegas y 40 clientes **ficticios** sobre el gemelo del Pasillo A-B, con las reglas del contrato y el mismo semáforo que `backend/semaforo.js` (una prueba compara los dos). Rotulada siempre: «Simulación con personajes ficticios. No es la cadena». Frases de plantilla; no usa ningún modelo de lenguaje.
 - **La demo real, verificable:** repetición paso a paso de la corrida de `demo/demo.sh` en Stellar testnet. Cada paso con transacción enlaza a stellar.expert; los hashes salen solo de `demo/salida-demo.txt` y `demo/deploy.json` (`web/herramientas/generar-repeticion.js`), y una prueba verifica que ninguno es inventado.
-- **Cómo funciona:** qué va en la cadena y qué no, por qué blockchain, los dos huecos cerrados (#42, #46) y el semáforo.
+- **Cómo funciona:** qué va en la cadena y qué no, por qué blockchain, tres cosas que cambiamos en el camino (#42, #55, #57) y el semáforo.
 
 Qué **no** hace:
 - No tiene llaves, servidor, API ni variables de entorno. **No firma ni envía transacciones**; no hace `fetch` a ningún servicio. La demo que firma en vivo es la app local.
@@ -137,7 +141,7 @@ Qué **no** hace:
 
 ```bash
 python3 -m http.server -d web 8000   # o abre web/index.html directo en el navegador
-node --test web/pruebas/              # 35 pruebas: motor, semáforo, agentes, hashes, copia del plano, vocabulario
+node --test web/pruebas/              # 69 pruebas: motor, semáforo, agentes, hashes, copia del plano, vocabulario
 ```
 
 En Vercel: proyecto `cuentas-claras` ligado al repo, con *Root Directory* `web`, sin framework, sin instalación ni compilación; publica cada push a `main`. La producción es pública; las vistas previas piden sesión de Vercel. Si cambian `demo/salida-demo.txt` o `plano/pasillo-a-b.json`: `node web/herramientas/generar-repeticion.js` (si aplica), copiar el JSON del plano a `web/datos/` y luego `node web/herramientas/generar-datos.js` (envuelve los JSON en `datos/*.js` para que el sitio abra también desde `file://`).
@@ -146,9 +150,9 @@ En Vercel: proyecto `cuentas-claras` ligado al repo, con *Root Directory* `web`,
 
 Cumplido hoy:
 
-- ✅ `cargo test` en verde con las pruebas de la sección 6 (11 invariantes).
+- ✅ `cargo test` en verde: 22 pruebas (invariantes de la spec v2 §6, regresiones de la auditoría y lectura pública de la v5).
 - ✅ Contrato desplegado **e inicializado** en testnet; [`demo/deploy.json`](demo/deploy.json) con Contract ID, cuentas públicas y hashes de transacción.
-- ✅ `demo/demo.sh` corre el flujo completo (camino feliz + paso negativo sin permiso) contra testnet, con enlaces al explorador en cada paso.
+- ✅ `demo/demo.sh` corre el flujo completo de 5 pasos (4 transacciones; B-40 consulta con el código de Doña Mary) contra testnet, con enlaces al explorador en cada paso.
 - ✅ Ningún dato personal real, ninguna llave real, ningún dato de la CEDA sin fuente; datos de demo ficticios.
 
 Siguiente paso (no bloquea la entrega de hoy):

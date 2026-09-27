@@ -19,10 +19,10 @@ No es un buró de crédito, no mueve dinero, no emite token, no califica persona
 
 ## La solución
 
-Una nota de crédito pasa a existir solo cuando **la bodega la crea y el cliente la acepta** (dos firmas, en pasos separados). Después, la bodega confirma el pago o la nota vence; el cliente puede disputar. Cada transición queda registrada en un contrato Soroban en Stellar que **hace cumplir** las reglas: nadie escribe una deuda solo, nadie edita ni borra, "incumplida" solo existe después de vencer más un periodo de gracia, y **la consulta oficial del agregado por un tercero exige un permiso firmado por el cliente**, con vigencia limitada, y deja constancia. En cadena solo hay identificadores seudónimos, rangos de monto y estados; nombres, teléfonos, montos exactos y la nota misma viven fuera, en una base cifrada y borrable. Lo que sí queda en la cadena es público: el permiso controla la consulta oficial, no vuelve secreto el estado (spec v2, sección 3b); la confidencialidad completa (seudónimos por bodega, pruebas de conocimiento cero) es el siguiente paso.
+Una nota de crédito pasa a existir solo cuando **la bodega la crea y el cliente la acepta** (dos firmas, en pasos separados). Después, la bodega confirma el pago o la nota vence; el cliente puede disputar. Cada transición queda registrada en un contrato Soroban en Stellar que **hace cumplir** las reglas: nadie escribe una deuda solo, nadie edita ni borra, "incumplida" solo existe después de vencer más un periodo de gracia, y **cada consulta formal del agregado queda registrada con la bodega que preguntó**. En cadena solo hay identificadores seudónimos, rangos de monto y estados; nombres, teléfonos, montos exactos y la nota misma viven fuera, en una base cifrada y borrable. Lo que sí queda en la cadena es público: cualquier bodega con el código del cliente (su seudónimo) consulta su historial, sin pedir permiso (decisión #57, contrato v5). Sin el código no hay forma de ligar el historial con una persona: el seudónimo sale de una llave que no está en la cadena y no hay directorio de clientes. El cliente decide a qué bodega le enseña su código. La confidencialidad completa (seudónimos por bodega, pruebas de conocimiento cero) es el siguiente paso.
 
 **Para el bodeguero:** cobranza documentada que el cliente no puede negar, y un semáforo para fiarle a quien llega de otra bodega.
-**Para el cliente:** su historial es suyo; se lo lleva a donde quiera y la consulta oficial de otra bodega exige su permiso y deja constancia. Paga cero y no instala nada: firma desde un enlace en WhatsApp.
+**Para el cliente:** su historial es suyo; se lo lleva a donde quiera, decide a qué bodega le enseña su código, y cada consulta formal queda registrada. Paga cero y no instala nada: firma desde un enlace en WhatsApp.
 **Para un banco (siguiente fase):** una certificación co-firmada de cumplimiento, como la que el Banco Agrario exige a los tenderos de Corabastos para abrir un cupo ([Banco Agrario de Colombia](https://www.bancoagrario.gov.co/noticias/el-banco-agrario-anuncia-cupos-de-credito-para-tenderos-que-compran-en-corabastos)).
 
 ## ¿Por qué blockchain y no una base de datos?
@@ -43,7 +43,7 @@ Comisión base de 100 stroops por operación y finalidad determinista sin reorga
 
 ## Lo que se construye hoy (MVP, testnet)
 
-Un contrato `cuentas_claras` (lista de emisores, máquina de estados, eventos, consentimiento), un backend mínimo que deriva el identificador seudónimo y calcula el semáforo, un frontend con el flujo de una nota y la vista del lector, cuentas G de testnet con una cuenta "plataforma" que paga las comisiones. Sin passkeys, sin ZK, sin dinero, sin token. Plan B: `demo.sh` con los mismos pasos por CLI y video grabado.
+Un contrato `cuentas_claras` (lista de emisores, máquina de estados, eventos, lectura con el código del cliente que deja constancia), un backend mínimo que deriva el identificador seudónimo y calcula el semáforo, un frontend con el flujo de una nota y la vista del lector, cuentas G de testnet con una cuenta "plataforma" que paga las comisiones. Sin passkeys, sin ZK, sin dinero, sin token. Plan B: `demo.sh` con los mismos pasos por CLI y video grabado.
 
 ## Lo que NO resuelve (y no se promete)
 

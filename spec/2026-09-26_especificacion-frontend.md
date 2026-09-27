@@ -2,6 +2,8 @@
 
 **Estado:** vigente para el sábado 26 y el domingo 27 de septiembre (decisión #43). Las secciones 1 y 4 aplican las decisiones #44 y #45, aprobadas por José el 26-sep a las 00:53. Complementa la spec v2 (§8 backend, §9 frontend) y la sustituye donde se contradicen.
 
+> **Actualización 26-sep, 23:30 (decisión #57, contrato v5):** ya no hay paso de permiso. La cadena es pública: una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Donde este documento hable de dar o pedir permiso, léase así.
+
 ## 0. Qué se construye
 
 Una app web local, en el Codespace, que hace en el navegador el mismo flujo de `demo.sh` contra el contrato vigente de testnet (`demo/deploy.json`). Tiene cuatro vistas: **Bodega A-17**, **Teléfono de Doña Mary**, **Bodega B-40** y **Para el jurado**. Sirve para el video, para la demo en vivo y para que un juez la entienda en 30 segundos.

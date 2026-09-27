@@ -2,6 +2,8 @@
 
 **Estado: v2, vigente para construcción (25-sep-2026, 11:50; nombre actualizado a las 12:30).** Sustituye a la v1. Corrige un error de la v1 sobre privacidad (sección 3b), prohíbe la función de actualización del contrato, fija el nombre (proyecto **Cuentas Claras**, contrato `cuentas_claras`; equipo **Palabra**) y cambia los datos de demo a nombres claramente ficticios. Cambios completos al final (secciones 15 y 16). Los valores marcados *(propuesta)* son parámetros que José puede cambiar.
 
+> **Actualización 26-sep, 23:30 (decisión #57, contrato v5):** ya no hay paso de permiso. La cadena es pública: una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Donde este documento hable de dar o pedir permiso, léase así.
+
 **Hechos de operación que fija esta spec (experiencia de José, 25-sep):** no existe ningún registro ni custodio compartido del crédito en la CEDA; las bodegas no se pasan referencias; cada bodega fía solo a clientes específicos (alto volumen y años de relación) y evalúa "de forma muy empírica"; cada cliente tiene un plazo propio, de 1 a 15 días típicamente y en casos muy seleccionados más de un mes; la bodega ancla fía cientos de miles de pesos al día (colocación diaria) y es persona moral.
 
 Destinatario: Claude Code en GitHub Codespaces. Lee primero `CLAUDE.md` en la raíz. Proyecto: **Cuentas Claras**. Equipo: **Palabra**. Nombre técnico del contrato, del crate y de la carpeta: `cuentas_claras`; repositorio: `goyahack_cuentas-claras`. Entrega: hoy antes de las 20:00 (orden de construcción y recorte de alcance en `docs/guia-codespaces.md`, sección 3).

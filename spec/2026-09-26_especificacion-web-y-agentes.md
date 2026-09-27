@@ -2,6 +2,8 @@
 
 **Estado:** vigente (decisiones #49, #50 y #51, aprobadas por José el 26-sep a las 13:11). Se construye en la carpeta **`web/`** y **no toca** `backend/`, `frontend/`, `contracts/` ni `demo/`, que forman la demo local que firma en testnet y que ya funciona.
 
+> **Actualización 26-sep, 23:30 (decisión #57, contrato v5):** ya no hay paso de permiso. La cadena es pública: una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Donde este documento hable de dar o pedir permiso, léase así.
+
 ## 0. Qué se construye
 
 Un sitio **estático y público** en Vercel, sin llaves ni servidor, con cuatro secciones:

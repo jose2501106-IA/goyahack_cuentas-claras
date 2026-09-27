@@ -2,6 +2,8 @@
 
 **Estado:** aprobado por José el 26-sep-2026 a las 14:50 (decisiones #52 y #53). Aplica **solo al sitio público** (`web/`, Vercel), que se dirige a académicos, gente cripto y especialistas en Web3. La app local que firma y los materiales para la Central conservan «Tinta y Sello» (`docs/identidad-visual.md`).
 
+> **Actualización 26-sep, 23:30 (decisión #57, contrato v5):** ya no hay paso de permiso. La cadena es pública: una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Donde este documento hable de dar o pedir permiso, léase así.
+
 **Punto de partida (26-sep, 14:50):**
 - `web/` ya existe, con cuatro secciones (Inicio, Pasillo vivo, La demo real, Cómo funciona), la simulación de agentes y la repetición verificable. Tiene 35 pruebas en verde.
 - Hoy usa «Tinta y Sello» en claro.

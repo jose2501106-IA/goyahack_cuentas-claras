@@ -3,6 +3,9 @@
 **Sistema y ecosistema de marketing: cómo se presenta Cuentas Claras en GOYA HACK, cómo se aplica en la Central de Abasto y cómo vence las barreras de entrada**
 
 **Estado:** borrador v1 para aprobación de José · 25 de septiembre de 2026. **Nombre actualizado a las 12:30:** el proyecto se llama **Cuentas Claras** y el equipo, **Palabra** (decisión #36). La campaña conserva «Tu palabra vale».
+
+> **Actualización 26-sep, 23:30 (decisión #57, contrato v5):** ya no hay paso de permiso. La cadena es pública: una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Donde este documento hable de dar o pedir permiso, léase así.
+
 **Qué es:** la estrategia de comunicación y adopción de Cuentas Claras, desde el pitch del hackathon hasta el piloto y la propuesta a la Central. Complementa `docs/plan-maestro.md` (secciones 4, 5 y 5b), `docs/problema-solucion.md`, `docs/riesgos.md`, `docs/hoja-de-hechos.md` y `docs/nombre-y-marca.md`. No los sustituye.
 **Convenciones:** *(experiencia de José)* = dato sin fuente pública; *(inferencia)* = deducción nuestra; *(propuesta)* = diseño pendiente de aprobación. Toda cifra lleva fuente. Las fuentes de comportamiento se verificaron hoy en la web, y el detalle está en la nota `research/notas/ronda-3/campana_fuentes_comportamiento.md`.
 
@@ -120,7 +123,7 @@ Cómo lo sabemos:
 
 | No decimos | Decimos | Por qué |
 |---|---|---|
-| «buró», «te reportamos», «reporte de crédito» | «tu historial, con tu permiso» | La LRSIC (art. 5o) reserva esa actividad a las sociedades de información crediticia ([LRSIC](https://www.diputados.gob.mx/LeyesBiblio/pdf/LRSIC.pdf); `docs/riesgos.md`) |
+| «buró», «te reportamos», «reporte de crédito» | «tu historial es tuyo: tú decides a qué bodega le enseñas tu código» | La LRSIC (art. 5o) reserva esa actividad a las sociedades de información crediticia ([LRSIC](https://www.diputados.gob.mx/LeyesBiblio/pdf/LRSIC.pdf); `docs/riesgos.md`) |
 | «score», «calificación», «puntaje», «te calificamos» | «semáforo orientativo; la bodega decide» | Mismo riesgo legal. Además, el semáforo no es un juicio sobre la persona |
 | «pagaré ejecutable» | «nota firmada por los dos» (con el jurado: «firma electrónica con valor probatorio») | Tesis 2031391 (`docs/decisiones.md` #7) |
 | «blockchain», «cripto», «token», «wallet», «Web3», «NFT» (hacia bodegas y clientes) | «un registro que nadie puede cambiar» | Regla del proyecto. La confianza se gana con beneficio, no con tecnología. **Si alguien pregunta directamente, se responde con la verdad** (sección 8.2) |

@@ -2,6 +2,8 @@
 
 Fuente: `research/00_sintesis-estrategica.md`, sección "Riesgos y mitigaciones". Este registro es también el guion del Q&A: la última columna es lo que se responde si preguntan.
 
+> **Actualización 26-sep, 23:30 (decisión #57, contrato v5):** ya no hay paso de permiso. La cadena es pública: una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Donde este documento hable de dar o pedir permiso, léase así.
+
 | Riesgo | Evidencia | Mitigación en el MVP | Mitigación en producción | Qué se dice en el pitch |
 |---|---|---|---|---|
 | Actividad reservada a las SIC (LRSIC art. 5o) | Un tercero que recopila y entrega historiales de clientes de varias Empresas Comerciales calza en la descripción ([LRSIC](https://www.diputados.gob.mx/LeyesBiblio/pdf/LRSIC.pdf)) | El historial es del cliente; toda lectura exige consentimiento firmado con vigencia y deja rastro; no hay consulta libre; datos ficticios en testnet | Dictamen legal; convenio con una SIC autorizada para reporte formal o rol de proveedor tecnológico; persona física vs moral resuelto | "Nombramos la LRSIC antes que ustedes: el cliente porta su historial y autoriza cada lectura; no somos una sociedad de información crediticia" |
