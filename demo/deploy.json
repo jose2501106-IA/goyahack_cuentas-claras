@@ -5,14 +5,14 @@
   "red": "testnet",
   "network_passphrase": "Test SDF Network ; September 2015",
   "rpc_url": "https://soroban-testnet.stellar.org",
-  "desplegado_utc": "2026-09-27T02:22:45Z",
+  "desplegado_utc": "2026-09-27T04:47:27Z",
   "toolchain": {
     "stellar_cli": "28.0.0",
     "soroban_sdk": "=28.0.0",
     "target": "wasm32v1-none"
   },
-  "contract_id": "CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
-  "wasm_hash": "3f4fdb0bbc81aba4a7995ae8c61e8e4f71c61653a98367c186d52280fa1c9883",
+  "contract_id": "CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL",
+  "wasm_hash": "d33f8944e5e4fe55d566751eb937003abad3d1025295616b151dafe1d057c807",
   "cuentas_publicas": {
     "plataforma": "GCUHYSD6KDDZQQZPH7BBVDB3FXRNV5VRYCSEQVFF5MYCYTJK4T4QH3DD",
     "bodega_a": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
@@ -25,27 +25,44 @@
     "bodega_b",
     "bodega_c"
   ],
-  "nota_cuentas": "Solo claves PÚBLICAS. Las secretas viven en ~/.config/stellar/identity (fuera del repo). plataforma paga comisiones y es admin del MVP; bodega_a, bodega_b y bodega_c están registradas como emisores; bodega_c es el segundo emisor que siembra demo/sembrar.sh, y bodega_b nunca emite notas a Doña Mary para que el paso «consultar sin permiso» se vea; dona_mary es el cliente ficticio. Doña Mary firma en persona en producción; aquí su cuenta G de testnet la custodia la demo.",
+  "nota_cuentas": "Solo claves PÚBLICAS. Las secretas viven en ~/.config/stellar/identity (fuera del repo). plataforma paga comisiones y es admin del MVP; bodega_a (A-17), bodega_b (B-40) y bodega_c (A-73) están registradas como emisores; bodega_c es el segundo emisor que siembra demo/sembrar.sh, y bodega_b nunca emite notas a Doña Mary: la consulta con su código (paso 5) la hace una bodega sin relación previa. dona_mary es el cliente ficticio, ya vinculado a su seudónimo en el despliegue (invite_subject + bind_subject). Doña Mary firma en persona en producción; aquí su cuenta G de testnet la custodia la demo.",
   "params": {
     "accept_window": 259200,
     "grace_period": 2592000,
     "dispute_window": 1296000,
     "consent_ttl": 2592000,
-    "unidades": "segundos (72 h / 30 d / 15 d / 30 d)"
+    "unidades": "segundos (72 h / 30 d / 15 d / 30 d); consent_ttl sin uso desde la v5 (#57)"
   },
   "transacciones": {
-    "upload_wasm": "70ff191eb77f9411c8e8eb8d91a500049c932b088b15c1c952dfd763c5d3241b",
-    "deploy": "4ccf97e365408f755d172646980728f078ae9a674b1d9b477c018898143b72be",
-    "init": "fc4ce4783a8bbd5d26895c84f7bca5a3bfd449a50800dae03d16514dd93767a6",
-    "add_issuer_bodega_a": "505f5a745ba20130b1bbb4742d7ca136eeb04e17958f4b844415af229d6807d6",
-    "add_issuer_bodega_b": "dfa3ee8b683e5e43511f3ebbe04ce74a37425888a4d1e70e627e0fee390602dc",
-    "add_issuer_bodega_c": "94bcd29980b6f4e0b83de1c17b857001bfe6563185b7c82a7d2376d0f5897ab2"
+    "upload_wasm": "8adeec951152fc41bb4a8d96be4e787aafdf31f78a76810e1f4daa591720d176",
+    "deploy": "b817d64f4c95b514e2c7d2bed45ffb00f3f44e8024f62a47e77448f134e1083c",
+    "init": "890dd681811fabe0df51cf0bc7c15eda0aaef515547d0a3e2153e3fe2ff04985",
+    "add_issuer_bodega_a": "672724cec19b48b3a7ae37804b0ed696f531c9839ab88a38f024c9285bbca25f",
+    "add_issuer_bodega_b": "bc6b82aaa6f090d5a5fb1959f6a50be16e7d8d5355165ea465dd03ec383310cf",
+    "add_issuer_bodega_c": "a3416be5b69b4388458f771fde8f64faab6dd6718ccd1c70e0f7c8730b4460a2",
+    "invite_subject": "2783e66f455a2e692a387a44d20b75b97a6ea2c400e3ae95af2a8f4ad2072f46",
+    "bind_subject": "73ddd8712c083da14130d34ba046a82207572cd4cb0111b488943af62cd4a93c"
   },
   "exploradores": {
-    "contrato": "https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
-    "lab": "https://lab.stellar.org/r/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ"
+    "contrato": "https://stellar.expert/explorer/testnet/contract/CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL",
+    "lab": "https://lab.stellar.org/r/testnet/contract/CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL"
   },
   "contratos_anteriores": [
+    {
+      "contract_id": "CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
+      "wasm_hash": "3f4fdb0bbc81aba4a7995ae8c61e8e4f71c61653a98367c186d52280fa1c9883",
+      "desplegado_utc": "2026-09-27T02:22:45Z",
+      "transacciones": {
+        "upload_wasm": "70ff191eb77f9411c8e8eb8d91a500049c932b088b15c1c952dfd763c5d3241b",
+        "deploy": "4ccf97e365408f755d172646980728f078ae9a674b1d9b477c018898143b72be",
+        "init": "fc4ce4783a8bbd5d26895c84f7bca5a3bfd449a50800dae03d16514dd93767a6",
+        "add_issuer_bodega_a": "505f5a745ba20130b1bbb4742d7ca136eeb04e17958f4b844415af229d6807d6",
+        "add_issuer_bodega_b": "dfa3ee8b683e5e43511f3ebbe04ce74a37425888a4d1e70e627e0fee390602dc",
+        "add_issuer_bodega_c": "94bcd29980b6f4e0b83de1c17b857001bfe6563185b7c82a7d2376d0f5897ab2"
+      },
+      "obsoleto_desde_utc": "2026-09-27T04:47:27Z",
+      "razon": "#57: lectura pública sin permiso, por recomendación del mentor. Se redespliega sin upgrade (#30). No usar."
+    },
     {
       "contract_id": "CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
       "wasm_hash": "ad3d2264a83cfdb3457d52fa97f2775a376a8c859cb8362c59338cb28a0cf148",
@@ -86,5 +103,6 @@
       "razon": "Exponía get_stats: función pública que entregaba el agregado (SubjectStats) sin consentimiento ni constancia, en contra de read_stats (spec v2 §3b, invariante 11). Sin upgrade a propósito: se retira y se redespliega (decisión #42). No usar."
     }
   ],
-  "version_contrato": "v4 (decisión #55): vínculo previo del cliente (invite_subject + bind_subject)"
+  "version_contrato": 5,
+  "version_contrato_nota": "v5 (decisión #57): lectura pública con el código del cliente, sin permiso; read_stats deja constancia (aggregate_read)"
 }

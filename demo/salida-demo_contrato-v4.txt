@@ -1,0 +1,40 @@
+════════════════════════════════════════════════════════════════════
+ Cuentas Claras — demo en Stellar testnet
+   Contrato:   CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ
+   Explorer:   https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ
+   Seudónimo de Doña Mary (subject_id): fe1b5cfb1b99ba1b…
+   Nota de esta corrida (note_id):      84d3e6ca520040a2…
+════════════════════════════════════════════════════════════════════
+
+1) Bodega A-17 registra una nota de fiado para Doña Mary (15 días, rango 5k–20k).
+   ↳ https://stellar.expert/explorer/testnet/tx/07042a534ef9792d13024c113b9b416ef5be30139e4f611f28989dbfe2b74bad
+
+2) Doña Mary acepta la nota: sin su firma la deuda no existe.
+   ↳ https://stellar.expert/explorer/testnet/tx/960e7a1dc7e866ca893b87c98765f3696fa6922af91de268badb241225cc398f
+
+3) Doña Mary paga y Bodega A-17 confirma el pago.
+   ↳ https://stellar.expert/explorer/testnet/tx/5500cd0d8061424805ac56a357fd4f458fb5dd2fbbdd640f449af10c5b562ff5
+
+4) Bodega B-40 pide el resumen de Doña Mary SIN permiso.
+   ✅ esperado: NoConsent — el contrato no entrega el resumen sin permiso (no se envía transacción)
+
+5) Doña Mary autoriza a Bodega B-40 a leer su resumen por 30 días.
+   ↳ https://stellar.expert/explorer/testnet/tx/e0a9e00da89e8603922e3887ecff64edf0c244dfc7302ec9f63d7edf1827b618
+
+6) Bodega B-40 consulta con permiso vigente y ve el resumen de cumplimiento.
+   ↳ https://stellar.expert/explorer/testnet/tx/7d28b260dd655872bcd9f40e57f40b3d3d85043e4f8264232720ec6c0ee92f85
+   Esta consulta queda registrada (evento aggregate_read).
+   ── Resumen de Doña Mary ──────────────────────────────
+   Notas aceptadas:      2
+   Pagadas a tiempo:     2
+   Pagadas tarde:        0
+   Vencidas abiertas:    0
+   Incumplidas:          0
+   Emisores distintos:   2
+   Rango máximo visto:   B5k_20k
+
+✅ Demo completa. Las transacciones enviadas (pasos 1, 2, 3, 5 y 6) quedaron
+   registradas en la cadena (enlaces arriba). El paso 4 se rechazó en
+   simulación: no se envió transacción.
+   La cadena es pública; el permiso controla la consulta oficial y deja
+   constancia. En cadena no van nombre, teléfono ni monto exacto (spec v2, §3b).
