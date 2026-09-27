@@ -19,7 +19,7 @@ test('repeticion.json está al día con lo que genera la herramienta', () => {
 
 test('los hashes de repeticion.json son exactamente los de la salida real, en orden', () => {
   const hashesRep = rep.pasos.filter((p) => p.hash).map((p) => p.hash);
-  assert.equal(hashesSalida.length, 5);
+  assert.equal(hashesSalida.length, 4);
   assert.deepEqual(hashesRep, hashesSalida);
 });
 
@@ -32,13 +32,15 @@ test('ningún hash es inventado: todos aparecen en la salida y cada url es su en
   }
 });
 
-test('seis pasos; el 4 (sin permiso) va sin hash y con la razón', () => {
-  assert.deepEqual(rep.pasos.map((p) => p.numero), [1, 2, 3, 4, 5, 6]);
+test('cinco pasos (v5, #57); el 4 (Doña Mary enseña su código) va sin hash y sin función', () => {
+  assert.deepEqual(rep.pasos.map((p) => p.numero), [1, 2, 3, 4, 5]);
   const p4 = rep.pasos[3];
   assert.equal(p4.hash, null);
   assert.equal(p4.url, null);
-  assert.equal(p4.sin_transaccion, 'No se envió transacción: el contrato lo rechazó.');
+  assert.equal(p4.funcion, null);
+  assert.equal(p4.sin_transaccion, 'No es una transacción: sucede en el mostrador.');
   for (const p of rep.pasos.filter((x) => x.numero !== 4)) assert.ok(p.hash, `paso ${p.numero}`);
+  assert.deepEqual(rep.pasos.filter((p) => p.hash).map((p) => p.funcion), ['create_note', 'accept_note', 'confirm_paid', 'read_stats']);
 });
 
 test('el contrato y las cuentas son los de demo/deploy.json, y solo hay claves públicas', () => {

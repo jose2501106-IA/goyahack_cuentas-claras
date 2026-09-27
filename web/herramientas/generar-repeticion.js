@@ -2,6 +2,8 @@
 // demo/deploy.json (spec web §4). No inventa hashes: cada hash sale de un enlace
 // «↳ https://stellar.expert/…/tx/<hash>» de la salida real de demo/demo.sh.
 // Un paso sin enlace queda sin hash y con la razón que dice la propia salida.
+// Contrato v5 (decisión #57): 5 pasos y 4 transacciones; el paso 4 sucede en el
+// mostrador (Doña Mary enseña su código) y no es una transacción.
 //
 // Uso: node web/herramientas/generar-repeticion.js   (después: generar-datos.js)
 'use strict';
@@ -25,9 +27,10 @@ const QUIEN_FIRMA = {
   2: { cuenta: 'dona_mary', nombre: 'Doña Mary', funcion: 'accept_note' },
   3: { cuenta: 'bodega_a', nombre: 'Bodega A-17', funcion: 'confirm_paid' },
   4: null,
-  5: { cuenta: 'dona_mary', nombre: 'Doña Mary', funcion: 'grant_consent' },
-  6: { cuenta: 'bodega_b', nombre: 'Bodega B-40', funcion: 'read_stats' },
+  5: { cuenta: 'bodega_b', nombre: 'Bodega B-40', funcion: 'read_stats' },
 };
+
+const SIN_TRANSACCION = 'No es una transacción: sucede en el mostrador.';
 
 const RE_TX = /^https:\/\/stellar\.expert\/explorer\/testnet\/tx\/([0-9a-f]{64})$/;
 
@@ -104,14 +107,14 @@ function construir() {
         accion: conNumero(p.accion),
         firma: firma ? firma.nombre : null,
         cuenta_publica: firma ? deploy.cuentas_publicas[firma.cuenta] : null,
-        funcion: firma ? firma.funcion : 'read_stats (simulación, sin enviar)',
+        funcion: firma ? firma.funcion : null,
         hash: p.hash,
         url: p.url,
-        sin_transaccion: p.hash ? null : 'No se envió transacción: el contrato lo rechazó.',
+        sin_transaccion: p.hash ? null : SIN_TRANSACCION,
         detalle_salida: conNumero(p.sin_transaccion || (p.notas.length ? p.notas.join(' ') : null)),
       };
     }),
-    resumen_paso_6: resumen,
+    resumen_paso_5: resumen,
   };
 }
 
@@ -121,4 +124,4 @@ if (require.main === module) {
   console.log(`Escrito ${path.relative(RAIZ, DESTINO)} con ${datos.pasos.length} pasos.`);
 }
 
-module.exports = { leerSalida, construir, conNumero, QUIEN_FIRMA, RE_TX };
+module.exports = { leerSalida, construir, conNumero, QUIEN_FIRMA, RE_TX, SIN_TRANSACCION };

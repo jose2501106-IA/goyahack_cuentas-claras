@@ -2,12 +2,12 @@
   "fuente": "Generado por web/herramientas/generar-repeticion.js solo con demo/salida-demo.txt y demo/deploy.json. No editar a mano.",
   "red": "Stellar testnet",
   "contrato": {
-    "id": "CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
-    "url": "https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
-    "desplegado_utc": "2026-09-27T02:22:45Z"
+    "id": "CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL",
+    "url": "https://stellar.expert/explorer/testnet/contract/CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL",
+    "desplegado_utc": "2026-09-27T04:47:27Z"
   },
   "seudonimo_cliente": "fe1b5cfb1b99ba1b…",
-  "nota_id": "84d3e6ca520040a2…",
+  "nota_id": "d4641e8ad7225970…",
   "pasos": [
     {
       "numero": 1,
@@ -15,8 +15,8 @@
       "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "create_note",
-      "hash": "07042a534ef9792d13024c113b9b416ef5be30139e4f611f28989dbfe2b74bad",
-      "url": "https://stellar.expert/explorer/testnet/tx/07042a534ef9792d13024c113b9b416ef5be30139e4f611f28989dbfe2b74bad",
+      "hash": "176b37e5fba26bc0993e1bfe758468d54f7423a74e88c8aea12aaa0d394f68f8",
+      "url": "https://stellar.expert/explorer/testnet/tx/176b37e5fba26bc0993e1bfe758468d54f7423a74e88c8aea12aaa0d394f68f8",
       "sin_transaccion": null,
       "detalle_salida": null
     },
@@ -26,8 +26,8 @@
       "firma": "Doña Mary",
       "cuenta_publica": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO",
       "funcion": "accept_note",
-      "hash": "960e7a1dc7e866ca893b87c98765f3696fa6922af91de268badb241225cc398f",
-      "url": "https://stellar.expert/explorer/testnet/tx/960e7a1dc7e866ca893b87c98765f3696fa6922af91de268badb241225cc398f",
+      "hash": "8c01e4bcaef1965ded6ed07404d542128c6d13267e860c58c26834ad4ae98b75",
+      "url": "https://stellar.expert/explorer/testnet/tx/8c01e4bcaef1965ded6ed07404d542128c6d13267e860c58c26834ad4ae98b75",
       "sin_transaccion": null,
       "detalle_salida": null
     },
@@ -37,46 +37,35 @@
       "firma": "Bodega A-17",
       "cuenta_publica": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
       "funcion": "confirm_paid",
-      "hash": "5500cd0d8061424805ac56a357fd4f458fb5dd2fbbdd640f449af10c5b562ff5",
-      "url": "https://stellar.expert/explorer/testnet/tx/5500cd0d8061424805ac56a357fd4f458fb5dd2fbbdd640f449af10c5b562ff5",
+      "hash": "9b87f36a4d3d2f283ebcc930ac4ac587a1ae10116e98615f8b1b43c123d43c44",
+      "url": "https://stellar.expert/explorer/testnet/tx/9b87f36a4d3d2f283ebcc930ac4ac587a1ae10116e98615f8b1b43c123d43c44",
       "sin_transaccion": null,
       "detalle_salida": null
     },
     {
       "numero": 4,
-      "accion": "Bodega B-40 pide el resumen de Doña Mary SIN permiso.",
+      "accion": "Doña Mary le muestra su código a Bodega B-40 (en el mostrador; no es una transacción).",
       "firma": null,
       "cuenta_publica": null,
-      "funcion": "read_stats (simulación, sin enviar)",
+      "funcion": null,
       "hash": null,
       "url": null,
-      "sin_transaccion": "No se envió transacción: el contrato lo rechazó.",
-      "detalle_salida": "NoConsent — el contrato no entrega el resumen sin permiso (no se envía transacción)"
+      "sin_transaccion": "No es una transacción: sucede en el mostrador.",
+      "detalle_salida": "Código de Doña Mary: fe1b5cfb…"
     },
     {
       "numero": 5,
-      "accion": "Doña Mary autoriza a Bodega B-40 a leer su resumen por 30 días.",
-      "firma": "Doña Mary",
-      "cuenta_publica": "GDAMZTSYAAUY4CBIF4VMQXRV25T6KNAQN7HKKYA7ZRZSFIXYUC6ZSGSO",
-      "funcion": "grant_consent",
-      "hash": "e0a9e00da89e8603922e3887ecff64edf0c244dfc7302ec9f63d7edf1827b618",
-      "url": "https://stellar.expert/explorer/testnet/tx/e0a9e00da89e8603922e3887ecff64edf0c244dfc7302ec9f63d7edf1827b618",
-      "sin_transaccion": null,
-      "detalle_salida": null
-    },
-    {
-      "numero": 6,
-      "accion": "Bodega B-40 consulta con permiso vigente y ve el resumen de cumplimiento.",
+      "accion": "Bodega B-40 consulta el historial de Doña Mary con su código.",
       "firma": "Bodega B-40",
       "cuenta_publica": "GD2TUPI6ZZE7BGCQIEBTWA2AIZHEVALYF3UTEJFF6ENP7K76ERRNY55D",
       "funcion": "read_stats",
-      "hash": "7d28b260dd655872bcd9f40e57f40b3d3d85043e4f8264232720ec6c0ee92f85",
-      "url": "https://stellar.expert/explorer/testnet/tx/7d28b260dd655872bcd9f40e57f40b3d3d85043e4f8264232720ec6c0ee92f85",
+      "hash": "d86bc35f5e49dad92d095ab502bf3db3887f15ce59fbc2c5453eae47dfb1c833",
+      "url": "https://stellar.expert/explorer/testnet/tx/d86bc35f5e49dad92d095ab502bf3db3887f15ce59fbc2c5453eae47dfb1c833",
       "sin_transaccion": null,
-      "detalle_salida": "Esta consulta queda registrada (evento aggregate_read)."
+      "detalle_salida": "Esta consulta queda registrada en la cadena, con la bodega que preguntó (evento aggregate_read)."
     }
   ],
-  "resumen_paso_6": {
+  "resumen_paso_5": {
     "Notas aceptadas": "2",
     "Pagadas a tiempo": "2",
     "Pagadas tarde": "0",
