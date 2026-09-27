@@ -167,12 +167,13 @@ input[type="number"] { font-family: var(--f-mono); }
 .tel-tarjeta p { margin: 0; }
 .tel-cumplida { justify-items: center; text-align: center; padding-block: 1.5rem; }
 .tel-cumpliste { font-weight: 700; color: var(--tinta); font-size: 1.15rem; }
-.tel-permiso { display: grid; gap: 0.6rem; }
-.tel-permiso p { margin: 0; }
+.tel-codigo { display: grid; gap: 0.6rem; }
+.codigo-grande { font-size: 1.35rem; font-weight: 600; line-height: 1.5; color: var(--tinta); word-spacing: 0.35em; overflow-wrap: anywhere; }
 .tel-privacidad { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--kraft); color: var(--carbon); }
 
 /* ---------- Bodega B-40: consulta y semáforo ---------- */
-.sin-permiso-texto { font-weight: 700; color: var(--carbon); }
+.campo-codigo { font-family: var(--f-mono); font-size: 0.95rem; }
+.pasos-demo { display: grid; gap: 0.4rem; padding-left: 1.4rem; }
 .consulta { display: grid; gap: 1rem; }
 .consulta p { margin: 0; }
 .semaforo { border-left: 6px solid currentColor; padding: 0.5rem 0 0.5rem 1rem; }
@@ -250,14 +251,10 @@ input[type="number"] { font-family: var(--f-mono); }
 .bodega-num { font-family: var(--f-mono); font-size: 2.3px; fill: var(--carbon); }
 .bodega-demo .bodega-tapa { stroke-width: 2px; fill: #E2CFAE; }
 .bodega-demo .bodega-num { font-weight: 600; fill: var(--tinta); }
-.bodega-etiqueta, .ficha-mary .ficha-nombre, .corredor-rotulo, .texto-sin-permiso, .puente-texto {
+.bodega-etiqueta, .ficha-mary .ficha-nombre, .corredor-rotulo, .puente-texto {
   paint-order: stroke; stroke: var(--papel); stroke-width: 0.9px; stroke-linejoin: round;
 }
 .bodega-etiqueta { font-family: var(--f-titulo); font-weight: 800; font-size: 3.4px; fill: var(--tinta); }
-.bodega-demo.sin-permiso .bodega-tapa { fill: #D6D3CD; stroke: var(--gris); }
-.bodega-demo.sin-permiso .bodega-cara { fill: #B9B5AD; }
-.bodega-demo.parpadeo { animation: parpadeo 400ms steps(2, jump-none) 3; }
-.texto-sin-permiso { font-family: var(--f-texto); font-weight: 700; font-size: 2.5px; fill: var(--carbon); }
 
 .ficha-mary circle { fill: #FFFCF6; stroke: var(--tinta); stroke-width: 2px; vector-effect: non-scaling-stroke; }
 .ficha-mary text { font-family: var(--f-mono); font-weight: 600; font-size: 2.5px; fill: var(--tinta); }
@@ -281,7 +278,6 @@ input[type="number"] { font-family: var(--f-mono); }
 
 @keyframes dibujar { to { stroke-dashoffset: 0; } }
 @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
-@keyframes parpadeo { 0% { opacity: 1; } 100% { opacity: 0.35; } }
 @keyframes caer {
   from { opacity: 0; transform: translateY(-7px) rotate(-22deg) scale(1.3); }
   to { opacity: 1; transform: translateY(0) rotate(-12deg) scale(1); }
@@ -296,7 +292,7 @@ input[type="number"] { font-family: var(--f-mono); }
 .h-compacto { font-size: 1.15rem; }
 
 @media (prefers-reduced-motion: reduce) {
-  .maqueta, .dibujar, .aparecer, .parpadeo, .sello-mapa.caer { animation: none !important; transition: none !important; }
+  .maqueta, .dibujar, .aparecer, .sello-mapa.caer { animation: none !important; transition: none !important; }
   .dibujar { stroke-dashoffset: 0; }
 }
 

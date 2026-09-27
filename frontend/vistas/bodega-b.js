@@ -1,4 +1,5 @@
-// Vista: Bodega B-40 — consultar el historial de Doña Mary (con su permiso).
+// Vista: Bodega B-40 — consultar el historial de un cliente con su código (contrato v5,
+// decisión #57: la lectura es pública; ya no hay paso de permiso).
 // El semáforo siempre lleva forma y palabra; nunca se muestra un número calculado.
 
 import {
@@ -6,21 +7,62 @@ import {
 } from '../app.js';
 import { registrar } from '../bitacora.js';
 
+const RE_CODIGO = /^[0-9a-fA-F]{64}$/;
+
 let ultimaConsulta = null;
+let codigoEscrito = '';
+let codigoDeMary = null;  // el que llenó el botón «Doña Mary me enseñó su código»
 
 export function render(raiz) {
   const zonaConsulta = el('div', { class: 'resultado-consulta', 'aria-live': 'polite' });
   const zonaEjemplo = el('div', { class: 'zona-ejemplo' });
 
-  const boton = el('button', { type: 'button', class: 'boton boton-primario' }, 'Consultar a Doña Mary');
-  boton.addEventListener('click', async () => {
+  const campoCodigo = el('input', {
+    id: 'codigo', name: 'codigo', type: 'text', class: 'campo-codigo', autocomplete: 'off',
+    spellcheck: 'false', autocapitalize: 'off', maxlength: '64', value: codigoEscrito,
+    placeholder: '64 caracteres, 0–9 y a–f',
+  });
+  campoCodigo.addEventListener('input', () => { codigoEscrito = campoCodigo.value; });
+
+  // Paso 4 del guion: sucede en el mostrador; no es una transacción.
+  const botonEnseno = el('button', { type: 'button', class: 'boton boton-secundario' }, 'Doña Mary me enseñó su código');
+  botonEnseno.addEventListener('click', async () => {
     try {
-      const r = await conBoton(boton, () => api('/api/consultas', { metodo: 'POST' }));
+      const r = await conBoton(botonEnseno, () => api('/api/cliente/codigo'), 'Leyendo el código…');
+      codigoDeMary = String(r.codigo || '').toLowerCase();
+      campoCodigo.value = codigoEscrito = codigoDeMary;
+      registrar({ tipo: 'codigo_mostrado' });
+      campoCodigo.focus();
+    } catch (e) {
+      zonaConsulta.replaceChildren(aviso(e.message));
+    }
+  });
+
+  const botonConsultar = el('button', { type: 'submit', class: 'boton boton-primario' }, 'Consultar historial');
+
+  const formulario = el('form', { class: 'tarjeta formulario', novalidate: true },
+    el('div', { class: 'campo' },
+      el('label', { for: 'codigo', class: 'campo-etiqueta' }, 'Código del cliente'),
+      campoCodigo,
+    ),
+    botonEnseno,
+    botonConsultar,
+    el('p', { class: 'apoyo' }, 'Con el código ves su historial, sin su nombre ni el monto exacto.'),
+  );
+
+  formulario.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const codigo = campoCodigo.value.trim();
+    if (!RE_CODIGO.test(codigo)) {
+      zonaConsulta.replaceChildren(aviso('El código debe tener 64 caracteres (0–9 y a–f). Pídeselo al cliente.'));
+      return;
+    }
+    try {
+      const r = await conBoton(botonConsultar, () => api('/api/consultas', { metodo: 'POST', cuerpo: { codigo } }), 'Consultando…');
       ultimaConsulta = r;
       pintarConsulta(zonaConsulta, r);
       // Para el mapa del pasillo: solo lo que la API ya respondió.
-      if (r.permitido) registrar({ tipo: 'consulta', tx_hash: r.tx_hash, url: r.url, semaforo: r.semaforo });
-      else registrar({ tipo: 'consulta_sin_permiso', motivo: r.motivo });
+      registrar({ tipo: codigo.toLowerCase() === codigoDeMary ? 'consulta' : 'consulta_otro', tx_hash: r.tx_hash, url: r.url, semaforo: r.semaforo });
     } catch (e) {
       zonaConsulta.replaceChildren(aviso(e.message));
     }
@@ -29,7 +71,7 @@ export function render(raiz) {
   raiz.append(
     rotuloDemo(),
     el('h1', null, 'Consultar el historial de un cliente'),
-    boton,
+    formulario,
     zonaConsulta,
     zonaEjemplo,
   );
@@ -39,21 +81,11 @@ export function render(raiz) {
 }
 
 function pintarConsulta(zona, r) {
-  if (!r.permitido) {
-    const principal = r.motivo === 'sin_permiso' || !r.mensaje
-      ? 'Doña Mary no te ha dado permiso. Sin permiso no se entrega su resumen. Pídeselo en el mostrador.'
-      : r.mensaje;
-    zona.replaceChildren(el('div', { class: 'tarjeta sin-permiso' },
-      el('p', { class: 'sin-permiso-texto' }, principal),
-      el('p', { class: 'apoyo' }, 'No se envió ninguna transacción.'),
-    ));
-    return;
-  }
-
   zona.replaceChildren(el('div', { class: 'tarjeta consulta' },
     semaforo(r.semaforo),
     contadores(r.stats || {}),
-    el('p', { class: 'registrada' }, 'Esta consulta quedó registrada · ', comprobante(r.url)),
+    el('p', { class: 'registrada' }, 'Esta consulta queda registrada en la cadena, con la bodega que preguntó.'),
+    el('p', null, comprobante(r.url)),
     el('p', { class: 'apoyo' }, 'La decisión de fiar es tuya; el semáforo solo resume lo firmado.'),
   ));
 }

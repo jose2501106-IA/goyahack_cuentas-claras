@@ -63,10 +63,11 @@ async function levantar(t, opts = {}) {
 }
 
 const JSON_CT = { 'content-type': 'application/json' };
+const CONSULTA = JSON.stringify({ codigo: config.subjectId });
 
 test('B1 · POST con Origin ajeno: 403 y no llama a la cadena', async (t) => {
   const { pedir, stellar } = await levantar(t);
-  const r = await pedir('POST', '/api/permisos', { headers: { ...JSON_CT, origin: 'https://malicioso.example' }, cuerpo: '{"dias":30}' });
+  const r = await pedir('POST', '/api/consultas', { headers: { ...JSON_CT, origin: 'https://malicioso.example' }, cuerpo: CONSULTA });
   assert.equal(r.status, 403);
   assert.equal(r.json.error, 'Origen no permitido');
   assert.equal(stellar.llamadas.length, 0);
@@ -75,25 +76,25 @@ test('B1 · POST con Origin ajeno: 403 y no llama a la cadena', async (t) => {
 
 test('B1 · Origin "null" también se rechaza; Origin local se permite', async (t) => {
   const { pedir, port } = await levantar(t);
-  assert.equal((await pedir('POST', '/api/permisos', { headers: { ...JSON_CT, origin: 'null' }, cuerpo: '{"dias":30}' })).status, 403);
-  const ok = await pedir('POST', '/api/permisos', { headers: { ...JSON_CT, origin: `http://127.0.0.1:${port}` }, cuerpo: '{"dias":30}' });
+  assert.equal((await pedir('POST', '/api/consultas', { headers: { ...JSON_CT, origin: 'null' }, cuerpo: CONSULTA })).status, 403);
+  const ok = await pedir('POST', '/api/consultas', { headers: { ...JSON_CT, origin: `http://127.0.0.1:${port}` }, cuerpo: CONSULTA });
   assert.equal(ok.status, 200);
 });
 
 test('B1 · POST sin JSON: 415, también el de formulario', async (t) => {
   const { pedir, stellar } = await levantar(t);
   assert.equal((await pedir('POST', '/api/consultas')).status, 415);
-  const form = await pedir('POST', '/api/permisos', { headers: { 'content-type': 'application/x-www-form-urlencoded' }, cuerpo: 'dias=30' });
+  const form = await pedir('POST', '/api/consultas', { headers: { 'content-type': 'application/x-www-form-urlencoded' }, cuerpo: `codigo=${config.subjectId}` });
   assert.equal(form.status, 415);
-  assert.equal((await pedir('DELETE', '/api/permisos', { headers: { 'content-type': 'text/plain' } })).status, 415);
+  assert.equal((await pedir('POST', '/api/notas', { headers: { 'content-type': 'text/plain' }, cuerpo: '{"monto_mxn":8500,"plazo_dias":15}' })).status, 415);
   assert.equal(stellar.llamadas.length, 0);
 });
 
 test('B1 · sin Origin (curl, pruebas) y con JSON, se atiende', async (t) => {
   const { pedir } = await levantar(t);
-  const r = await pedir('POST', '/api/consultas', { headers: { 'content-type': 'application/json; charset=utf-8' }, cuerpo: '{}' });
+  const r = await pedir('POST', '/api/consultas', { headers: { 'content-type': 'application/json; charset=utf-8' }, cuerpo: CONSULTA });
   assert.equal(r.status, 200);
-  assert.equal(r.json.permitido, true);
+  assert.equal(r.json.tx_hash, H);
 });
 
 test('B2 · Host ajeno: 421 en la API y en los estáticos', async (t) => {
@@ -108,7 +109,7 @@ test('B2 · Host ajeno: 421 en la API y en los estáticos', async (t) => {
 test('B2 · Host de Codespaces pasa; localhost en otro puerto no, si se fijó el puerto', async (t) => {
   const { pedir, port } = await levantar(t, { puerto: null });
   assert.equal((await pedir('GET', '/', { headers: { host: 'mi-codespace-8080.app.github.dev' } })).status, 200);
-  assert.equal((await pedir('GET', '/api/permisos', { headers: { host: `localhost:${port}` } })).status, 200);
+  assert.equal((await pedir('GET', '/api/cliente/codigo', { headers: { host: `localhost:${port}` } })).status, 200);
   assert.ok(!hostPermitido('localhost:9999', 8080));
   assert.ok(hostPermitido('localhost:8080', 8080));
   assert.ok(hostPermitido('127.0.0.1:8080', 8080));
@@ -126,12 +127,9 @@ test('B3 · acción sin hash: 502, nada registrado y nada guardado fuera de la c
   assert.equal(nota.status, 502);
   assert.equal(nota.json.error, esperado);
   assert.equal(almacen.listarNotas().length, 0);
-  const permiso = await pedir('POST', '/api/permisos', { headers: JSON_CT, cuerpo: '{"dias":30}' });
-  assert.equal(permiso.status, 502);
-  assert.equal(almacen.leerPermiso(), null);
-  const consulta = await pedir('POST', '/api/consultas', { headers: JSON_CT, cuerpo: '{}' });
+  const consulta = await pedir('POST', '/api/consultas', { headers: JSON_CT, cuerpo: CONSULTA });
   assert.equal(consulta.status, 502);
-  assert.equal(almacen.leerPermiso(), null);
+  assert.equal(consulta.json.error, esperado);
   const tx = await pedir('GET', '/api/transacciones');
   assert.deepEqual(tx.json.transacciones, []);
 });

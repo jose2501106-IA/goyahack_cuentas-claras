@@ -1,4 +1,5 @@
-// Vista: Teléfono de Doña Mary — aceptar notas y administrar permisos.
+// Vista: Teléfono de Doña Mary — aceptar notas y ver «Mi código» (contrato v5, decisión #57:
+// la lectura es pública; ya no hay permisos que administrar).
 
 import {
   el, api, conBoton, comprobante, rotuloDemo, cargando, aviso, sello,
@@ -10,7 +11,7 @@ let ultimo = null;
 export function render(raiz) {
   const zonaResultado = el('div', { class: 'resultado', 'aria-live': 'polite' });
   const zonaNota = el('div', { class: 'tel-nota' });
-  const zonaPermiso = el('div', { class: 'tel-permiso' });
+  const zonaCodigo = el('div', { class: 'tel-codigo' });
 
   const telefono = el('div', { class: 'telefono' },
     el('div', { class: 'telefono-barra', 'aria-hidden': 'true' }),
@@ -18,19 +19,19 @@ export function render(raiz) {
       el('p', { class: 'tel-encabezado' }, 'Tu palabra vale.'),
       zonaNota,
       zonaResultado,
-      el('h2', { class: 'tel-subtitulo' }, 'Permisos'),
-      zonaPermiso,
+      el('h2', { class: 'tel-subtitulo' }, 'Mi código'),
+      zonaCodigo,
       el('p', { class: 'tel-privacidad' },
-        'En la cadena no va tu nombre, tu teléfono ni el monto exacto. Tú decides a qué bodega le das permiso de pedir tu resumen; cada consulta queda registrada.'),
+        'En la cadena no va tu nombre, tu teléfono ni el monto exacto. Cada consulta formal queda registrada, con la bodega que preguntó.'),
     ),
   );
 
   raiz.append(rotuloDemo(), telefono);
 
-  const ctx = { zonaResultado, zonaNota, zonaPermiso };
+  const ctx = { zonaResultado, zonaNota, zonaCodigo };
   if (ultimo) mostrar(zonaResultado, ultimo);
   cargarNota(ctx);
-  cargarPermiso(ctx);
+  cargarCodigo(ctx);
 }
 
 function mostrar(zona, { texto, url, error }) {
@@ -93,51 +94,21 @@ async function cargarNota(ctx) {
   zona.replaceChildren(el('p', { class: 'vacio' }, 'No tienes notas pendientes.'));
 }
 
-async function cargarPermiso(ctx) {
-  const zona = ctx.zonaPermiso;
-  zona.replaceChildren(cargando('Revisando tus permisos…'));
-  let p;
+async function cargarCodigo(ctx) {
+  const zona = ctx.zonaCodigo;
+  zona.replaceChildren(cargando('Buscando tu código…'));
+  let r;
   try {
-    p = await api('/api/permisos');
+    r = await api('/api/cliente/codigo');
   } catch (e) {
     zona.replaceChildren(aviso(e.message));
     return;
   }
-
-  if (p.vigente) {
-    const boton = el('button', { type: 'button', class: 'boton boton-secundario boton-ancho' }, 'Quitar permiso');
-    boton.addEventListener('click', async () => {
-      try {
-        const r = await conBoton(boton, () => api('/api/permisos', { metodo: 'DELETE' }));
-        ultimo = { texto: 'Quitaste el permiso a Bodega B-40.', url: r.url };
-        mostrar(ctx.zonaResultado, ultimo);
-        cargarPermiso(ctx);
-      } catch (e) {
-        mostrar(ctx.zonaResultado, { error: e.message });
-      }
-    });
-    zona.replaceChildren(
-      el('p', null, p.exp_ts
-        ? `Bodega B-40 puede pedir tu resumen hasta el ${fecha(p.exp_ts)}`
-        : 'Bodega B-40 puede pedir tu resumen.'),
-      boton,
-    );
-    return;
-  }
-
-  const boton = el('button', { type: 'button', class: 'boton boton-primario boton-ancho' }, 'Dar permiso a Bodega B-40 por 30 días');
-  boton.addEventListener('click', async () => {
-    try {
-      const r = await conBoton(boton, () => api('/api/permisos', { metodo: 'POST', cuerpo: { dias: 30 } }));
-      ultimo = { texto: `Diste permiso a Bodega B-40 hasta el ${fecha(r.exp_ts)}.`, url: r.url };
-      mostrar(ctx.zonaResultado, ultimo);
-      cargarPermiso(ctx);
-    } catch (e) {
-      mostrar(ctx.zonaResultado, { error: e.message });
-    }
-  });
-  zona.replaceChildren(
-    el('p', null, 'Bodega B-40 no tiene permiso de pedir tu resumen.'),
-    boton,
-  );
+  const codigo = String(r.codigo || '');
+  // En grupos de 8 para leerlo en voz alta en el mostrador.
+  const grupos = codigo.match(/.{1,8}/g) || [];
+  zona.replaceChildren(el('div', { class: 'tarjeta tel-tarjeta' },
+    el('p', { class: 'mono codigo-grande', 'aria-label': `Tu código: ${codigo}` }, grupos.join(' ')),
+    el('p', null, 'Enséñalo en la bodega que tú quieras. Con él ven tu historial, sin tu nombre ni tus montos exactos.'),
+  ));
 }

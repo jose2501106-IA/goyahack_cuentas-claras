@@ -1,5 +1,6 @@
 'use strict';
-// Datos fuera de cadena (monto exacto, aleatoriedad del documento, permiso local).
+// Datos fuera de cadena (monto exacto y aleatoriedad del documento). Desde la v5
+// (decisión #57) ya no se guarda estado local de consulta: la lectura es pública.
 // Archivo JSON en backend/datos/notas.json (ignorado por git). Escritura atómica:
 // archivo temporal + rename. Las escrituras se serializan dentro del proceso.
 
@@ -7,7 +8,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 
-const VACIO = () => ({ notas: [], permiso: null });
+const VACIO = () => ({ notas: [] });
 
 function crearAlmacen(ruta) {
   const dir = path.dirname(ruta);
@@ -16,10 +17,7 @@ function crearAlmacen(ruta) {
   function leer() {
     try {
       const d = JSON.parse(fs.readFileSync(ruta, 'utf8'));
-      return {
-        notas: Array.isArray(d.notas) ? d.notas : [],
-        permiso: d.permiso && typeof d.permiso === 'object' ? d.permiso : null,
-      };
+      return { notas: Array.isArray(d.notas) ? d.notas : [] };
     } catch (e) {
       if (e.code === 'ENOENT') return VACIO();
       throw e;
@@ -56,15 +54,6 @@ function crearAlmacen(ruta) {
     },
     agregarNota(nota) {
       return modificar((d) => { d.notas.push(nota); });
-    },
-    leerPermiso() {
-      return leer().permiso;
-    },
-    guardarPermiso(permiso) {
-      return modificar((d) => { d.permiso = permiso; });
-    },
-    borrarPermiso() {
-      return modificar((d) => { d.permiso = null; });
     },
   };
 }

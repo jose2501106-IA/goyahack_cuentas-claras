@@ -27,10 +27,9 @@ const TEXTOS = {
   nota_creada: 'Bodega A-17 registró una nota para Doña Mary. Esperando firma.',
   nota_aceptada: 'Doña Mary firmó la nota: firmada por los dos.',
   pago_confirmado: 'Bodega A-17 confirmó el pago: nota cumplida.',
-  permiso_dado: 'Doña Mary dio permiso a Bodega B-40 por 30 días.',
-  permiso_quitado: 'Doña Mary quitó el permiso a Bodega B-40.',
-  consulta_sin_permiso: 'Bodega B-40 pidió el resumen sin permiso: no se entregó. No hubo transacción.',
-  consulta: 'Bodega B-40 consultó el historial de Doña Mary con permiso. La consulta quedó registrada.',
+  codigo_mostrado: 'Doña Mary le enseñó su código a Bodega B-40 en el mostrador. No es una transacción.',
+  consulta: 'Bodega B-40 consultó el historial de Doña Mary con su código. La consulta quedó registrada.',
+  consulta_otro: 'Bodega B-40 consultó el historial de otro código. La consulta quedó registrada.',
 };
 
 let vistaPlana = false;
@@ -60,7 +59,7 @@ export function render(raiz) {
     rotuloDemo(),
     el('h1', null, 'Pasillo A-B'),
     el('p', { class: 'apoyo' },
-      'Gemelo digital del pasillo: cada nota firmada, cada permiso y cada consulta se ven moverse entre bodegas en cuanto quedan registrados.'),
+      'Gemelo digital del pasillo: cada nota firmada y cada consulta se ven moverse entre bodegas en cuanto quedan registradas.'),
     pestanasPasillos(),
   );
   montarMapa(raiz);
@@ -182,11 +181,7 @@ export function montarMapa(raiz, { compacto = false } = {}) {
 }
 
 async function estadoInicial(estado) {
-  const [permisos, notas] = await Promise.all([
-    api('/api/permisos').catch(() => null),
-    api('/api/notas').catch(() => null),
-  ]);
-  if (permisos && permisos.vigente) ponerPuente(estado.mapa, permisos.exp_ts, false);
+  const notas = await api('/api/notas').catch(() => null);
   if (notas && Array.isArray(notas.notas)) {
     contar(estado, notas.notas);
     const ultima = notas.notas[0];
@@ -228,7 +223,6 @@ async function aplicar(estado, ev, animar) {
   const dur = anim ? TRAZO_MS : 0;
   const emisor = ev.emisor || 'bodega_a';
 
-  quitarSinPermiso(m);
   switch (ev.tipo) {
     case 'nota_creada':
       quitarSello(m);
@@ -248,23 +242,10 @@ async function aplicar(estado, ev, animar) {
       ponerSello(m, emisor, ev.ts, anim);
       await esperar(dur);
       break;
-    case 'permiso_dado': {
-      let exp = ev.exp_ts;
-      if (!exp) {
-        try { exp = (await api('/api/permisos')).exp_ts; } catch { exp = null; }
-      }
-      ponerPuente(m, exp, anim);
+    case 'codigo_mostrado':
+      // Paso 4: sucede en el mostrador, sin transacción (contrato v5, decisión #57).
+      ponerPuente(m, anim);
       await esperar(dur);
-      break;
-    }
-    case 'permiso_quitado':
-      quitarPuente(m);
-      break;
-    case 'consulta_sin_permiso':
-      // El contrato acaba de decir que no hay permiso vigente: si había puente, se borra.
-      quitarPuente(m);
-      ponerSinPermiso(m, anim);
-      await esperar(anim ? 1200 : 0);
       break;
     case 'consulta':
       pulso(m, anim);
@@ -276,18 +257,12 @@ async function aplicar(estado, ev, animar) {
   if (anim) await esperar(PAUSA_MS);
 }
 
-// Semáforo real de la última consulta con permiso, con su hash.
+// Semáforo real de la última consulta con el código de Doña Mary, con su hash.
 function pintarPanel(estado) {
-  const ultima = bitacora.listar().filter((e) => e.visto && (e.tipo === 'consulta' || e.tipo === 'consulta_sin_permiso')).pop();
+  const ultima = bitacora.listar().filter((e) => e.visto && e.tipo === 'consulta').pop();
   if (!ultima) { estado.panel.replaceChildren(); return; }
-  if (ultima.tipo === 'consulta_sin_permiso') {
-    estado.panel.replaceChildren(el('div', { class: 'tarjeta sin-permiso' },
-      el('p', { class: 'sin-permiso-texto' }, 'Sin permiso: no se entrega el resumen.'),
-      el('p', { class: 'apoyo' }, 'No se envió ninguna transacción.')));
-    return;
-  }
   const sem = ultima.semaforo || null;
-  const hijos = [el('p', { class: 'panel-titulo' }, 'Consulta de Bodega B-40, con permiso de Doña Mary')];
+  const hijos = [el('p', { class: 'panel-titulo' }, 'Consulta de Bodega B-40 con el código de Doña Mary')];
   if (sem) {
     const color = ['verde', 'amarillo', 'rojo', 'insuficiente'].includes(sem.color) ? sem.color : 'insuficiente';
     hijos.push(el('p', { class: `semaforo-senal semaforo-${color}` },
@@ -458,7 +433,7 @@ function ponerSello(m, cuenta, ts, animar) {
 
 function quitarSello(m) { m.capaSello.replaceChildren(); }
 
-function ponerPuente(m, exp, animar) {
+function ponerPuente(m, animar) {
   const a = anclas(m, 'bodega_b');
   const b = m.bodegas.bodega_b;
   const d = camino(a.fx, a.fy, a.bx, a.by, 1.5);
@@ -466,27 +441,7 @@ function ponerPuente(m, exp, animar) {
   m.capaPuente.replaceChildren(s('g', { class: `puente${animar ? ' aparecer' : ''}` },
     s('path', { d, class: 'puente-linea' }),
     s('text', { x: b.x + b.w / 2, y: b.y + b.h + CARA + b.eleva + 8.5, 'text-anchor': 'middle', class: 'puente-texto' },
-      exp ? `Permiso hasta ${fechaCorta(exp)}` : 'Permiso vigente')));
-}
-
-function quitarPuente(m) { m.capaPuente.replaceChildren(); }
-
-function ponerSinPermiso(m, animar) {
-  const b = m.bodegas.bodega_b;
-  b.g.classList.remove('parpadeo');
-  // Reinicia la animación si se repite.
-  void b.g.getBBox();
-  b.g.classList.add('sin-permiso');
-  if (animar) b.g.classList.add('parpadeo');
-  m.capaNotas.append(s('text', {
-    x: b.x + b.w / 2, y: b.y - 1.6, 'text-anchor': 'middle', class: 'texto-sin-permiso',
-  }, 'Sin permiso: no se entrega el resumen'));
-}
-
-function quitarSinPermiso(m) {
-  const b = m.bodegas.bodega_b;
-  b.g.classList.remove('sin-permiso', 'parpadeo');
-  for (const t of m.capaNotas.querySelectorAll('.texto-sin-permiso')) t.remove();
+      'Le enseñó su código')));
 }
 
 function pulso(m, animar) {

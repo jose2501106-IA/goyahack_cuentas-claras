@@ -8,27 +8,23 @@ const os = require('node:os');
 const path = require('node:path');
 const { crearApp, calcularNoteId, canonico, subjectIdDe } = require('../server');
 const { crearAlmacen } = require('../datos');
-const { ErrorStellar, ERRORES_CONTRATO } = require('../stellar');
 
 const H = 'cd'.repeat(32);
 const G = (c) => 'G' + c.repeat(55);
 const config = { contractId: 'C' + 'A'.repeat(55), cuentas: { bodega_a: G('A'), bodega_b: G('B'), dona_mary: G('C') }, subjectId: 'fe'.repeat(32) };
 const silencio = { log() {}, warn() {}, error() {} };
 
-function fakeStellar({ permiso = false } = {}) {
+function fakeStellar() {
   const llamadas = [];
-  const errC = (n) => new ErrorStellar({ ...ERRORES_CONTRATO[n], codigoContrato: n });
   return {
     llamadas,
     async simular(alias, fn, args) {
       llamadas.push({ send: false, alias, fn, args });
-      if (fn === 'read_stats' && !permiso) throw errC(10);
       if (fn === 'get_note') return { valor: { status: 'Accepted', paid_ts: null } };
       return { valor: undefined };
     },
     async enviar(alias, fn, args) {
       llamadas.push({ send: true, alias, fn, args });
-      if (fn === 'revoke_consent' && !permiso) throw errC(10);
       if (fn === 'read_stats') return { valor: { accepted: 2, paid_on_time: 2, paid_late: 0, defaulted: 0, overdue_open: 0, disputes_open: 0, issuers_count: 1, first_ts: 1 }, txHash: H, url: `u/${H}` };
       return { valor: undefined, txHash: H, url: `u/${H}` };
     },
@@ -83,7 +79,11 @@ test('validaciones sin tocar la cadena', async (t) => {
   assert.equal((await pedir('POST', '/api/notas', undefined, '{malo')).status, 400);
   assert.equal((await pedir('POST', '/api/notas', undefined, '[1]')).status, 400);
   assert.equal((await pedir('POST', '/api/notas', undefined, JSON.stringify({ x: 'a'.repeat(11000) }))).status, 413);
-  assert.equal((await pedir('POST', '/api/permisos', { dias: 15 })).status, 400);
+  for (const codigo of [undefined, '', 'fe'.repeat(31), 'fe'.repeat(33), 'zz'.repeat(32), 12, ['fe'.repeat(32)]]) {
+    assert.equal((await pedir('POST', '/api/consultas', { codigo })).status, 400, JSON.stringify(codigo));
+  }
+  // v5 (#57): las rutas de permiso ya no existen.
+  for (const m of ['GET', 'POST', 'DELETE']) assert.equal((await pedir(m, '/api/permisos', m === 'GET' ? undefined : {})).status, 404, m);
   assert.equal((await pedir('POST', '/api/notas/zzz/aceptar')).status, 400);
   assert.equal((await pedir('POST', `/api/notas/${H}/aceptar`)).status, 404);
   assert.equal((await pedir('GET', '/api/nada')).status, 404);
@@ -115,39 +115,34 @@ test('flujo completo con Stellar falso', async (t) => {
   assert.equal(p.json.estado, 'Paid');
   assert.equal(stellar.llamadas.at(-1).fn, 'confirm_paid');
 
-  // Consulta sin permiso: ninguna transacción enviada.
-  const antes = stellar.llamadas.filter((x) => x.send).length;
-  const q = await pedir('POST', '/api/consultas');
-  assert.equal(q.status, 200);
-  assert.equal(q.json.permitido, false);
-  assert.equal(q.json.motivo, 'sin_permiso');
-  assert.equal(stellar.llamadas.filter((x) => x.send).length, antes);
-
   const tx = await pedir('GET', '/api/transacciones');
   assert.deepEqual(tx.json.transacciones.map((x) => x.accion), ['Bodega A-17 confirmó el pago', 'Doña Mary firmó la nota', 'Bodega A-17 creó una nota']);
-
-  // Revocar sin permiso: error claro y registro local limpio.
-  await almacen.guardarPermiso({ exp_ts: 1 });
-  const d = await pedir('DELETE', '/api/permisos');
-  assert.equal(d.status, 409);
-  assert.equal(almacen.leerPermiso(), null);
 });
 
-test('consulta con permiso: stats, semáforo sin p, transacción enviada', async (t) => {
-  const { pedir, stellar, almacen } = await levantar(t, { permiso: true });
-  const g = await pedir('POST', '/api/permisos', { dias: 30 });
-  assert.equal(g.status, 200);
-  assert.ok(g.json.exp_ts > Date.now() / 1000 + 29 * 86400);
-  assert.equal((await pedir('GET', '/api/permisos')).json.vigente, true);
-  const q = await pedir('POST', '/api/consultas');
-  assert.equal(q.json.permitido, true);
+test('v5 · el cliente ve su código completo y abreviado', async (t) => {
+  const { pedir, stellar } = await levantar(t);
+  const r = await pedir('GET', '/api/cliente/codigo');
+  assert.equal(r.status, 200);
+  assert.deepEqual(r.json, { codigo: config.subjectId, abreviado: 'fefefefe…' });
+  assert.equal(stellar.llamadas.length, 0);
+});
+
+test('v5 · consulta con el código: read_stats enviado, stats, semáforo sin p, queda registrada', async (t) => {
+  const { pedir, stellar } = await levantar(t);
+  const q = await pedir('POST', '/api/consultas', { codigo: config.subjectId.toUpperCase() });
+  assert.equal(q.status, 200);
   assert.equal(q.json.semaforo.color, 'insuficiente');
+  assert.equal(q.json.stats.accepted, 2);
   assert.equal(q.json.tx_hash, H);
   assert.ok(!/"p"/.test(q.txt));
-  assert.deepEqual(stellar.llamadas.slice(-2).map((x) => [x.fn, x.send, x.alias]), [['read_stats', false, 'bodega_b'], ['read_stats', true, 'bodega_b']]);
-  const r = await pedir('DELETE', '/api/permisos');
-  assert.equal(r.status, 200);
-  assert.equal(almacen.leerPermiso(), null);
+  assert.ok(!('permitido' in q.json));
+  // Una sola llamada: read_stats enviado por Bodega B-40 con el código en minúsculas.
+  assert.deepEqual(stellar.llamadas.map((x) => [x.fn, x.send, x.alias, x.args]), [['read_stats', true, 'bodega_b', ['--reader', config.cuentas.bodega_b, '--subject_id', config.subjectId]]]);
+  const otro = 'ab'.repeat(32);
+  assert.equal((await pedir('POST', '/api/consultas', { codigo: otro })).status, 200);
+  assert.equal(stellar.llamadas.at(-1).args[3], otro);
+  const tx = await pedir('GET', '/api/transacciones');
+  assert.deepEqual(tx.json.transacciones.map((x) => x.accion), ['Bodega B-40 consultó el historial de un código', 'Bodega B-40 consultó el historial de Doña Mary']);
 });
 
 test('config, ejemplo y estáticos seguros', async (t) => {

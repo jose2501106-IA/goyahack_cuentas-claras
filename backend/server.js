@@ -271,63 +271,22 @@ function crearApp({ config, stellar, almacen, frontendDir = path.join(RAIZ, 'fro
       return { notas };
     },
 
-    'GET /api/permisos': async () => {
-      const p = almacen.leerPermiso();
-      const vigente = !!p && (p.exp_ts === null || p.exp_ts === undefined || p.exp_ts > ahora());
-      return { vigente, exp_ts: p && typeof p.exp_ts === 'number' ? p.exp_ts : null };
-    },
+    // Contrato v5 (decisión #57): la lectura es pública. El código de Doña Mary es su
+    // subject_id; ella lo enseña en la bodega que quiera y Bodega B-40 consulta con él.
+    'GET /api/cliente/codigo': async () => ({ codigo: subjectId, abreviado: `${subjectId.slice(0, 8)}…` }),
 
-    'POST /api/permisos': async (req) => {
+    'POST /api/consultas': async (req) => {
       const b = await leerCuerpo(req);
-      if (b.dias !== 30) throw new ErrorHttp(400, 'dias_invalido', 'El permiso solo se puede dar por 30 días.');
-      const t = ahora();
-      const exp_ts = t + b.dias * 86400 - 3600; // igual que demo.sh: bajo el tope consent_ttl
-      const r = await stellar.enviar('dona_mary', 'grant_consent', [
-        '--subject', cuentas.dona_mary, '--reader', cuentas.bodega_b, '--exp_ts', exp_ts, '--nonce', t,
-      ]);
-      exigirComprobante(r);
-      await almacen.guardarPermiso({ exp_ts });
-      registrarTx('Doña Mary dio permiso a Bodega B-40 por 30 días', r);
-      return { tx_hash: r.txHash, url: r.url, exp_ts };
-    },
-
-    'DELETE /api/permisos': async () => {
-      try {
-        const r = exigirComprobante(await stellar.enviar('dona_mary', 'revoke_consent', ['--subject', cuentas.dona_mary, '--reader', cuentas.bodega_b]));
-        await almacen.borrarPermiso();
-        registrarTx('Doña Mary retiró el permiso a Bodega B-40', r);
-        return { tx_hash: r.txHash, url: r.url };
-      } catch (e) {
-        if (e instanceof ErrorStellar && e.codigoContrato !== null) {
-          await almacen.borrarPermiso();
-          throw new ErrorHttp(409, 'sin_permiso', 'Bodega B-40 no tenía un permiso vigente; no había nada que retirar.');
-        }
-        throw e;
+      if (typeof b.codigo !== 'string' || !/^[0-9a-fA-F]{64}$/.test(b.codigo)) {
+        throw new ErrorHttp(400, 'codigo_invalido', 'El código del cliente debe tener 64 caracteres (0–9 y a–f).');
       }
-    },
-
-    'POST /api/consultas': async () => {
-      const args = ['--reader', cuentas.bodega_b, '--subject_id', subjectId];
-      try {
-        await stellar.simular('bodega_b', 'read_stats', args);
-      } catch (e) {
-        if (e instanceof ErrorStellar && (e.codigoContrato === 10 || e.codigoContrato === 11)) {
-          if (almacen.leerPermiso()) await almacen.borrarPermiso();
-          const motivo = e.codigoContrato === 10 ? 'sin_permiso' : 'permiso_vencido';
-          const mensaje = motivo === 'sin_permiso'
-            ? 'Doña Mary no ha dado permiso a Bodega B-40. No se hizo la consulta y no se envió ninguna transacción.'
-            : 'El permiso de Doña Mary ya venció. No se hizo la consulta y no se envió ninguna transacción.';
-          return { permitido: false, motivo, mensaje };
-        }
-        throw e;
-      }
-      const r = exigirComprobante(await stellar.enviar('bodega_b', 'read_stats', args));
+      const codigo = b.codigo.toLowerCase();
+      const r = exigirComprobante(await stellar.enviar('bodega_b', 'read_stats', ['--reader', cuentas.bodega_b, '--subject_id', codigo]));
       if (!r.valor || typeof r.valor !== 'object') {
         throw new ErrorHttp(502, 'respuesta_invalida', 'La red respondió, pero no pudimos leer el resumen.');
       }
-      if (!almacen.leerPermiso()) await almacen.guardarPermiso({ exp_ts: null });
-      registrarTx('Bodega B-40 consultó el historial de Doña Mary', r);
-      return { permitido: true, stats: r.valor, semaforo: semaforo(r.valor, ahora()), tx_hash: r.txHash, url: r.url };
+      registrarTx(codigo === subjectId ? 'Bodega B-40 consultó el historial de Doña Mary' : 'Bodega B-40 consultó el historial de un código', r);
+      return { stats: r.valor, semaforo: semaforo(r.valor, ahora()), tx_hash: r.txHash, url: r.url };
     },
 
     'GET /api/semaforo/ejemplo': async () => {

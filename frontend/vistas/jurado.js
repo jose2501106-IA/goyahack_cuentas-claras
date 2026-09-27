@@ -22,9 +22,11 @@ export function render(raiz) {
     zonaMapa,
     el('h2', null, 'Transacciones de esta sesión'),
     zonaTx,
+    el('h2', null, 'La demo en 5 pasos'),
+    pasosDemo(),
     el('h2', null, 'En la cadena / Fuera de la cadena'),
     tablaCadena(),
-    el('p', { class: 'frase-3b' }, 'La cadena es pública: el permiso controla la consulta oficial y deja constancia; no hace secreto el estado.'),
+    el('p', { class: 'frase-3b' }, 'La cadena es pública: cualquiera con el código de Doña Mary ve su historial, sin su nombre ni el monto exacto. Cada consulta formal queda registrada.'),
     el('p', { class: 'frase-dinero' }, 'No mueve dinero ni emite token.'),
   );
 
@@ -80,8 +82,21 @@ async function cargarTransacciones(zona) {
   zona.replaceChildren(ol);
 }
 
+// Guion de la demo con el contrato v5 (decisión #57): 5 pasos, 4 transacciones.
+function pasosDemo() {
+  const pasos = [
+    ['Bodega A-17 crea la nota.', true],
+    ['Doña Mary la acepta.', true],
+    ['Bodega A-17 confirma el pago.', true],
+    ['Doña Mary le muestra su código a Bodega B-40, en el mostrador.', false],
+    ['Bodega B-40 consulta con ese código: ve el historial y el semáforo, y la consulta queda registrada.', true],
+  ];
+  return el('ol', { class: 'pasos-demo' }, pasos.map(([texto, tx]) => el('li', null,
+    texto, ' ', el('span', { class: 'mono apoyo' }, tx ? '· transacción' : '· no es una transacción'))));
+}
+
 function tablaCadena() {
-  const en = ['Seudónimo del cliente (HMAC)', 'Rango del monto', 'Fechas', 'Estados', 'Contadores', 'Permisos', 'Bodegas que emiten'];
+  const en = ['Seudónimo del cliente (HMAC), su «código»', 'Rango del monto', 'Fechas', 'Estados', 'Contadores', 'Constancia de cada consulta', 'Bodegas que emiten'];
   const fuera = ['Nombre', 'Teléfono', 'Monto exacto', 'Documentos'];
   const filas = Math.max(en.length, fuera.length);
   const tbody = el('tbody');

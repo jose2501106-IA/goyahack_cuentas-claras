@@ -79,7 +79,7 @@ _link() {  # imprime "   ↳ <url>" a partir del stderr de la CLI
 # Cuántas bodegas distintas tiene hoy Doña Mary. Lectura del propio sujeto,
 # simulada (--send=no): no envía transacción.
 issuers_count() {
-  # Sin vínculo todavía (contrato v4), read_stats falla: cuenta como 0.
+  # En la v5 (#57) un código sin notas devuelve ceros; el "|| true" cubre fallas de red.
   { stellar contract invoke --id "$CONTRACT_ID" --source dona_mary --network "$NET" --send=no -- \
     read_stats --reader "$DONA_MARY" --subject_id "$SUBJECT_ID" 2>/dev/null || true; } \
     | python3 -c 'import json,sys

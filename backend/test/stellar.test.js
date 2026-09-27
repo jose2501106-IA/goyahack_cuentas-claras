@@ -42,9 +42,11 @@ test('execFile con arreglo, alias y funciones en lista cerrada, errores traducid
   assert.ok(Array.isArray(llamadas[0].args));
   assert.ok(llamadas[0].args.includes('--send=yes'));
   assert.equal(llamadas[0].opts.timeout, 90000);
-  await assert.rejects(st.simular('bodega_b', 'read_stats', []), (e) => e.codigoContrato === 10 && e.error === 'sin_permiso' && !/Contract/.test(e.mensaje));
+  await assert.rejects(st.simular('bodega_b', 'read_stats', []), (e) => e.codigoContrato === 10 && e.error === 'error_contrato' && !/Contract/.test(e.mensaje));
   await assert.rejects(st.simular('plataforma', 'get_note', []), /alias/);
   await assert.rejects(st.simular('bodega_a', 'add_issuer', []), /función/);
+  // v5 (#57): las funciones de permiso salieron del contrato y de la lista cerrada.
+  for (const fn of ['grant_consent', 'revoke_consent']) await assert.rejects(st.enviar('dona_mary', fn, []), /función/);
 });
 
 test('cola: una transacción a la vez', async () => {

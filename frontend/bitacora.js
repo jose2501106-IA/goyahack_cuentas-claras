@@ -1,7 +1,8 @@
 // Bitácora de eventos del pasillo: lo que la API ya confirmó, en orden de llegada.
 // Fuente principal: GET /api/transacciones (cada entrada trae tx_hash). Las vistas
-// agregan lo que no deja transacción (la consulta sin permiso) y el semáforo de la
-// consulta con permiso. Nada entra aquí antes de que la API responda.
+// agregan lo que no deja transacción (Doña Mary enseña su código en el mostrador) y el
+// semáforo de la consulta. Nada entra aquí antes de que la API responda.
+// Contrato v5 (decisión #57): ya no hay eventos de permiso.
 
 import { api } from './app.js';
 
@@ -10,9 +11,8 @@ const TIPOS = {
   'Bodega A-17 creó una nota': { tipo: 'nota_creada', emisor: 'bodega_a' },
   'Doña Mary firmó la nota': { tipo: 'nota_aceptada', emisor: 'bodega_a' },
   'Bodega A-17 confirmó el pago': { tipo: 'pago_confirmado', emisor: 'bodega_a' },
-  'Doña Mary dio permiso a Bodega B-40 por 30 días': { tipo: 'permiso_dado' },
-  'Doña Mary retiró el permiso a Bodega B-40': { tipo: 'permiso_quitado' },
   'Bodega B-40 consultó el historial de Doña Mary': { tipo: 'consulta' },
+  'Bodega B-40 consultó el historial de un código': { tipo: 'consulta_otro' },
 };
 
 const eventos = [];            // en orden cronológico de llegada

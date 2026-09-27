@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 #
-# Cuentas Claras — demo del camino feliz + el paso negativo, contra el contrato
-# ya desplegado en Stellar testnet. Plan B del pitch (spec v2, §10).
+# Cuentas Claras — demo del camino feliz contra el contrato ya desplegado en
+# Stellar testnet. Plan B del pitch (spec v2, §10; contrato v5, decisión #57).
 #
 # Qué muestra, paso a paso:
 #   0) Solo la primera vez (contrato v4, #55): Doña Mary se vincula a su seudónimo.
 #   1) Bodega A-17 crea una nota de fiado para Doña Mary (15 días, rango 5k–20k).
 #   2) Doña Mary la acepta (co-firma): la deuda no existe sin su firma.
 #   3) Bodega A-17 confirma el pago.
-#   4) Bodega B-40 pide el resumen SIN permiso -> el contrato lo rechaza (NoConsent).
-#   5) Doña Mary autoriza a Bodega B-40 por 30 días.
-#   6) Bodega B-40 consulta con permiso y ve el resumen.
+#   4) Doña Mary le muestra su código a Bodega B-40 (en el mostrador; no es
+#      una transacción).
+#   5) Bodega B-40 consulta el historial con ese código; la consulta queda
+#      registrada (evento aggregate_read).
 #
-# Idempotente: cada corrida usa un note_id nuevo y revoca el permiso de Bodega B-40
-# antes del paso 4, así el paso negativo siempre falla como se espera. El
-# subject_id (seudónimo) es determinista: HMAC-SHA256 del teléfono con
+# Desde la v5 (decisión #57) la lectura es pública: ya no hay paso de permiso.
+#
+# Idempotente: cada corrida usa un note_id nuevo. El subject_id (seudónimo, el
+# «código» de Doña Mary) es determinista: HMAC-SHA256 del teléfono con
 # DEMO_HMAC_KEY, de modo que el historial de Doña Mary se acumula bajo un mismo id.
 #
 # Requisitos: stellar CLI 28, identidades locales plataforma/bodega_a/bodega_b/
@@ -71,7 +73,6 @@ SUBJECT_ID="$(printf '%s' "$DONA_MARY_PHONE" | openssl dgst -sha256 -hmac "$DEMO
 NOTE_ID="$(openssl rand -hex 32)"          # note_id nuevo por corrida (idempotencia)
 NOW="$(date -u +%s)"
 DUE_TS="$(( NOW + 15 * 86400 ))"           # plazo de 15 días (perfil de Doña Mary)
-EXP_TS="$(( NOW + 30 * 86400 - 3600 ))"    # permiso ~30 días (bajo el tope consent_ttl)
 
 # --- Utilidades --------------------------------------------------------------
 
@@ -161,38 +162,17 @@ paso 3 "Doña Mary paga y Bodega A-17 confirma el pago."
 call bodega_a confirm_paid --issuer "$BODEGA_A" --note_id "$NOTE_ID"
 echo
 
-# --- 4) Bodega B-40 consulta SIN permiso (debe fallar) --------------------------
+# --- 4) Doña Mary muestra su código (fuera de cadena) --------------------------
 
-# Idempotencia: garantizar que Bodega B-40 no tenga un permiso de una corrida previa.
-stellar contract invoke --id "$CONTRACT_ID" --source dona_mary --network "$NET" --send=yes -- \
-  revoke_consent --subject "$DONA_MARY" --reader "$BODEGA_B" >/dev/null 2>&1 || true
-
-paso 4 "Bodega B-40 pide el resumen de Doña Mary SIN permiso."
-errf="$(mktemp)"
-if stellar contract invoke --id "$CONTRACT_ID" --source bodega_b --network "$NET" --send=yes -- \
-     read_stats --reader "$BODEGA_B" --subject_id "$SUBJECT_ID" >/dev/null 2>"$errf"; then
-  echo "   ⚠️ INESPERADO: el contrato entregó el resumen sin permiso."
-  cat "$errf"; rm -f "$errf"; exit 1
-elif grep -qiE 'NoConsent|Contract, #10|#10\b' "$errf"; then
-  echo "   ✅ esperado: NoConsent — el contrato no entrega el resumen sin permiso (no se envía transacción)"
-else
-  echo "   ⚠️ Falló por otra razón:"; cat "$errf"; rm -f "$errf"; exit 1
-fi
-rm -f "$errf"
+paso 4 "Doña Mary le muestra su código a Bodega B-40 (en el mostrador; no es una transacción)."
+echo "   Código de Doña Mary: ${SUBJECT_ID:0:8}…"
 echo
 
-# --- 5) Doña Mary autoriza a Bodega B-40 ----------------------------------------
+# --- 5) Bodega B-40 consulta con el código ----------------------------------------
 
-paso 5 "Doña Mary autoriza a Bodega B-40 a leer su resumen por 30 días."
-call dona_mary grant_consent \
-  --subject "$DONA_MARY" --reader "$BODEGA_B" --exp_ts "$EXP_TS" --nonce "$NOW"
-echo
-
-# --- 6) Bodega B-40 consulta con permiso ----------------------------------------
-
-paso 6 "Bodega B-40 consulta con permiso vigente y ve el resumen de cumplimiento."
+paso 5 "Bodega B-40 consulta el historial de Doña Mary con su código."
 call bodega_b read_stats --reader "$BODEGA_B" --subject_id "$SUBJECT_ID"
-echo "   Esta consulta queda registrada (evento aggregate_read)."
+echo "   Esta consulta queda registrada en la cadena, con la bodega que preguntó (evento aggregate_read)."
 STATS_JSON="$RET"
 python3 - <<PY
 import json
@@ -207,8 +187,8 @@ print(f"   Emisores distintos:   {s['issuers_count']}")
 print(f"   Rango máximo visto:   {s['max_bucket']}")
 PY
 echo
-echo "✅ Demo completa. Las transacciones enviadas (pasos 1, 2, 3, 5 y 6) quedaron"
-echo "   registradas en la cadena (enlaces arriba). El paso 4 se rechazó en"
-echo "   simulación: no se envió transacción."
-echo "   La cadena es pública; el permiso controla la consulta oficial y deja"
-echo "   constancia. En cadena no van nombre, teléfono ni monto exacto (spec v2, §3b)."
+echo "✅ Demo completa. Las transacciones enviadas (pasos 1, 2, 3 y 5) quedaron"
+echo "   registradas en la cadena (enlaces arriba). El paso 4 ocurre en el"
+echo "   mostrador: no es una transacción."
+echo "   La cadena es pública: cualquiera con el código de Doña Mary ve su historial,"
+echo "   sin su nombre ni el monto exacto. Cada consulta formal queda registrada."

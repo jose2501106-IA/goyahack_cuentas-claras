@@ -9,7 +9,7 @@ const { esAlias } = require('./validar');
 
 const TIMEOUT_MS = 90000;
 const FN_PERMITIDAS = new Set([
-  'create_note', 'accept_note', 'confirm_paid', 'grant_consent', 'revoke_consent', 'read_stats', 'get_note',
+  'create_note', 'accept_note', 'confirm_paid', 'read_stats', 'get_note',
 ]);
 
 // Errores del contrato (spec v2 §7) → mensaje en español para la persona usuaria.
@@ -21,8 +21,9 @@ const ERRORES_CONTRATO = Object.freeze({
   7: { error: 'no_es_parte', mensaje: 'Esta cuenta no es parte de la nota.', status: 403 },
   8: { error: 'muy_pronto', mensaje: 'Todavía no se puede hacer este paso.', status: 409 },
   9: { error: 'plazo_cerrado', mensaje: 'Ya pasó el plazo para hacer este paso.', status: 409 },
-  10: { error: 'sin_permiso', mensaje: 'Doña Mary no ha dado permiso a Bodega B-40 para consultar su historial.', status: 403 },
-  11: { error: 'permiso_vencido', mensaje: 'El permiso de Doña Mary para Bodega B-40 ya venció.', status: 403 },
+  // 10 y 11 siguen en el contrato, sin uso desde la v5 (decisión #57): la lectura es pública.
+  10: { error: 'error_contrato', mensaje: 'El registro rechazó la consulta.', status: 409 },
+  11: { error: 'error_contrato', mensaje: 'El registro rechazó la consulta.', status: 409 },
   12: { error: 'datos_invalidos', mensaje: 'Los datos de la nota no son válidos.', status: 400 },
   13: { error: 'ya_vinculado', mensaje: 'Este cliente ya está vinculado.', status: 409 },
   14: { error: 'sin_vincular', mensaje: 'Primero hay que registrar a este cliente.', status: 409 },
