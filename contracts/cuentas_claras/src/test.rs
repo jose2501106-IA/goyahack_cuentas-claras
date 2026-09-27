@@ -268,15 +268,35 @@ fn disputa_y_resolucion_mutua() {
     assert_eq!(s.disputes_resolved, 1);
 }
 
-// --- Lectura sin consentimiento falla; con consentimiento funciona;
-//     solo el propio sujeto lee sin consentimiento (invariantes 6, 11) -----
+// --- Lectura pública con el código del cliente (v5, decisión #57) ---------
+// Sustituyen a las pruebas de permiso de la v3/v4 (lectura_sin_consentimiento_falla,
+// emisor_con_notas_necesita_permiso, lectura_con_consentimiento_y_vencido y
+// consentimiento_excede_ttl_falla): en la v5 no hay permiso que dar, vencer ni revocar.
+
+/// Evento esperado de una consulta formal: `("cclaras", "aggregate_read")` con `(subject_id, reader)`.
+fn evento_lectura(
+    env: &Env,
+    contrato: &Address,
+    subj: &BytesN<32>,
+    lector: &Address,
+) -> soroban_sdk::Vec<(Address, soroban_sdk::Vec<soroban_sdk::Val>, soroban_sdk::Val)> {
+    use soroban_sdk::IntoVal;
+    soroban_sdk::vec![
+        env,
+        (
+            contrato.clone(),
+            (symbol_short!("cclaras"), Symbol::new(env, "aggregate_read")).into_val(env),
+            (subj.clone(), lector.clone()).into_val(env),
+        ),
+    ]
+}
 
 #[test]
-fn lectura_sin_consentimiento_falla() {
+fn v5_cualquier_bodega_lee_y_queda_constancia() {
     let (env, client, admin) = setup();
     let issuer = Address::generate(&env);
     let mary = Address::generate(&env);
-    let tercero = Address::generate(&env);
+    let bodega_b = Address::generate(&env); // sin ninguna nota de Doña Mary
     client.add_issuer(&admin, &issuer);
 
     let note = id(&env, 1);
@@ -284,107 +304,87 @@ fn lectura_sin_consentimiento_falla() {
     vincular(&client, &admin, &subj, &mary);
     client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &note);
+    client.confirm_paid(&issuer, &note);
 
-    // Tercero sin consentimiento: NoConsent (invariante 11).
-    assert_eq!(
-        client.try_read_stats(&tercero, &subj),
-        Err(Ok(Error::NoConsent))
-    );
+    // Con el código de Doña Mary, una bodega que no le ha fiado lee el agregado correcto…
+    let s = client.read_stats(&bodega_b, &subj);
+    assert_eq!((s.accepted, s.paid_on_time, s.issuers_count), (1, 1, 1));
+    assert_eq!(s.max_bucket, AmountBucket::B5k_20k);
+    // …y la consulta queda registrada con la dirección de quien preguntó.
+    assert_eq!(env.events().all(), evento_lectura(&env, &client.address, &subj, &bodega_b));
 
-    // El propio sujeto lee su agregado sin consentimiento.
-    let evs_antes = env.events().all().events().len();
-    let s = client.read_stats(&mary, &subj);
-    assert_eq!(s.accepted, 1);
-    // read_stats deja constancia: emite evento en cada éxito (invariante 6).
-    assert!(env.events().all().events().len() > evs_antes);
+    // Igual para la bodega que le fió y para el propio cliente.
+    assert_eq!(client.read_stats(&issuer, &subj), s);
+    assert_eq!(env.events().all(), evento_lectura(&env, &client.address, &subj, &issuer));
+    assert_eq!(client.read_stats(&mary, &subj), s);
+    assert_eq!(env.events().all(), evento_lectura(&env, &client.address, &subj, &mary));
+
+    // Leer sigue exigiendo la firma de quien lee (la constancia es de alguien).
+    let pidio_firma = env.auths().iter().any(|(quien, inv)| {
+        *quien == mary
+            && matches!(
+                &inv.function,
+                soroban_sdk::testutils::AuthorizedFunction::Contract((_, f, _))
+                    if *f == Symbol::new(&env, "read_stats")
+            )
+    });
+    assert!(pidio_firma, "read_stats debe pedir la firma de quien lee");
+
+    // Las funciones de permiso ya no existen.
+    for f in ["grant_consent", "revoke_consent"] {
+        let args: soroban_sdk::Vec<soroban_sdk::Val> =
+            soroban_sdk::vec![&env, mary.to_val(), bodega_b.to_val()];
+        let r = env.try_invoke_contract::<(), Error>(&client.address, &Symbol::new(&env, f), args);
+        assert!(r.is_err(), "{f} no debe existir en la v5");
+    }
 }
 
 #[test]
-fn emisor_con_notas_necesita_permiso() {
-    // Decisión #46 (c): tener notas aceptadas del sujeto no abre su agregado.
+fn v5_leer_no_cambia_nada() {
     let (env, client, admin) = setup();
     let issuer = Address::generate(&env);
     let mary = Address::generate(&env);
+    let bodega_b = Address::generate(&env);
     client.add_issuer(&admin, &issuer);
 
-    let note = id(&env, 1);
     let subj = id(&env, 100);
     vincular(&client, &admin, &subj, &mary);
-    client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
-    client.accept_note(&mary, &note);
+    let (n1, n2) = (id(&env, 1), id(&env, 2));
+    client.create_note(&issuer, &n1, &subj, &AmountBucket::B1k_5k, &(T0 + 7 * DAY));
+    client.accept_note(&mary, &n1);
+    client.create_note(&issuer, &n2, &subj, &AmountBucket::B5k_20k, &(T0 + 15 * DAY));
+    client.accept_note(&mary, &n2);
+    client.confirm_paid(&issuer, &n1);
 
-    // Sin permiso: NoConsent, aunque sea emisor de una nota aceptada.
-    assert_eq!(
-        client.try_read_stats(&issuer, &subj),
-        Err(Ok(Error::NoConsent))
-    );
-    // Su propia nota sí la ve con get_note.
-    assert_eq!(client.get_note(&note).unwrap().status, Status::Accepted);
-
-    // Con permiso del sujeto, lee.
-    client.grant_consent(&mary, &issuer, &(T0 + 10 * DAY), &1u64);
-    assert_eq!(client.read_stats(&issuer, &subj).accepted, 1);
+    let antes = client.read_stats(&mary, &subj);
+    let (a1, a2) = (client.get_note(&n1).unwrap(), client.get_note(&n2).unwrap());
+    for _ in 0..3 {
+        client.read_stats(&bodega_b, &subj);
+        client.read_stats(&issuer, &subj);
+    }
+    set_time(&env, T0 + 40 * DAY); // también mucho después: no hay permiso que venza
+    assert_eq!(client.read_stats(&bodega_b, &subj), antes);
+    let (d1, d2) = (client.get_note(&n1).unwrap(), client.get_note(&n2).unwrap());
+    assert_eq!((d1.status, d1.paid_ts), (a1.status, a1.paid_ts));
+    assert_eq!((d2.status, d2.paid_ts), (a2.status, a2.paid_ts));
+    assert_eq!(client.subject_of(&subj), Some(mary.clone()));
 }
 
 #[test]
-fn lectura_con_consentimiento_y_vencido() {
-    let (env, client, admin) = setup();
-    let issuer = Address::generate(&env);
-    let mary = Address::generate(&env);
-    let banco = Address::generate(&env);
-    client.add_issuer(&admin, &issuer);
-
-    let note = id(&env, 1);
-    let subj = id(&env, 100);
-    vincular(&client, &admin, &subj, &mary);
-    client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
-    client.accept_note(&mary, &note);
-
-    // El sujeto autoriza al banco por 10 días.
-    let exp = T0 + 10 * DAY;
-    client.grant_consent(&mary, &banco, &exp, &1u64);
-
-    // Dentro de vigencia: lee.
-    let s = client.read_stats(&banco, &subj);
-    assert_eq!(s.accepted, 1);
-
-    // Vencido: ConsentExpired.
-    set_time(&env, exp + 1);
+fn v5_codigo_desconocido() {
+    let (env, client, _admin) = setup();
+    let bodega_b = Address::generate(&env);
+    let desconocido = id(&env, 250); // nadie lo vinculó ni tiene notas
+    let s = client.read_stats(&bodega_b, &desconocido);
     assert_eq!(
-        client.try_read_stats(&banco, &subj),
-        Err(Ok(Error::ConsentExpired))
+        (s.accepted, s.paid_on_time, s.paid_late, s.overdue_open, s.defaulted),
+        (0, 0, 0, 0, 0)
     );
-
-    // Revocado: NoConsent.
-    set_time(&env, T0);
-    client.revoke_consent(&mary, &banco);
-    assert_eq!(
-        client.try_read_stats(&banco, &subj),
-        Err(Ok(Error::NoConsent))
-    );
-}
-
-// --- Consentimiento fuera del tope de vigencia falla (spec §4, consent_ttl) -
-
-#[test]
-fn consentimiento_excede_ttl_falla() {
-    let (env, client, admin) = setup();
-    let issuer = Address::generate(&env);
-    let mary = Address::generate(&env);
-    let banco = Address::generate(&env);
-    client.add_issuer(&admin, &issuer);
-
-    let note = id(&env, 1);
-    let subj = id(&env, 100);
-    vincular(&client, &admin, &subj, &mary);
-    client.create_note(&issuer, &note, &subj, &AmountBucket::B1k_5k, &(T0 + 7 * DAY));
-    client.accept_note(&mary, &note);
-
-    // consent_ttl = 30 d; pedir 40 d excede el tope.
-    assert_eq!(
-        client.try_grant_consent(&mary, &banco, &(T0 + 40 * DAY), &1u64),
-        Err(Ok(Error::BadParams))
-    );
+    assert_eq!((s.disputes_open, s.disputes_resolved, s.issuers_count), (0, 0, 0));
+    assert_eq!((s.first_ts, s.last_ts), (0, 0));
+    assert_eq!(s.max_bucket, AmountBucket::B0_1k);
+    // También queda constancia de una consulta a un código sin historial.
+    assert_eq!(env.events().all(), evento_lectura(&env, &client.address, &desconocido, &bodega_b));
 }
 
 // --- No se puede reinicializar; params inválidos fallan ----------------------
@@ -425,8 +425,7 @@ fn no_hay_get_stats_publico() {
     client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &note);
 
-    // `get_stats` ya no existe: invocarla por nombre falla (antes entregaba el agregado
-    // a cualquiera, sin consentimiento ni constancia).
+    // `get_stats` ya no existe: invocarla por nombre falla (entregaba el agregado sin constancia).
     let args: soroban_sdk::Vec<soroban_sdk::Val> = soroban_sdk::vec![&env, subj.to_val()];
     let r = env.try_invoke_contract::<SubjectStats, Error>(
         &client.address,
@@ -435,11 +434,10 @@ fn no_hay_get_stats_publico() {
     );
     assert!(r.is_err());
 
-    // La única vía pública al agregado sigue exigiendo permiso a un tercero.
-    assert_eq!(
-        client.try_read_stats(&tercero, &subj),
-        Err(Ok(Error::NoConsent))
-    );
+    // La única vía al agregado es read_stats: desde la v5 (#57) no pide permiso, pero exige la
+    // firma de quien lee y deja constancia con su dirección.
+    assert_eq!(client.read_stats(&tercero, &subj).accepted, 1);
+    assert_eq!(env.events().all(), evento_lectura(&env, &client.address, &subj, &tercero));
 }
 
 // ===========================================================================

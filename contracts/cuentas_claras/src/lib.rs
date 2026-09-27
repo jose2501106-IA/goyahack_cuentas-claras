@@ -9,9 +9,9 @@
 //!
 //! Principio (spec v2, §3): en la cadena no hay nombres, teléfonos ni montos exactos, solo un
 //! seudónimo por cliente (`subject_id` = HMAC del teléfono, calculado fuera de cadena), rangos de
-//! monto, fechas, estados y contadores. Lo que sí queda en la cadena es público (spec v2, §3b): el
-//! consentimiento controla la CONSULTA OFICIAL (`read_stats`) y deja constancia, no vuelve secreto
-//! el estado. Sin función de actualización del contrato (spec v2, §5): "nadie puede cambiar lo que
+//! monto, fechas, estados y contadores. Lo que queda en la cadena es público (spec v2, §3b), y desde
+//! la v5 (decisión #57) la consulta formal (`read_stats`) tampoco pide permiso: cualquiera con el
+//! código del cliente (su seudónimo) lee el agregado, y cada consulta deja constancia. Sin función de actualización del contrato (spec v2, §5): "nadie puede cambiar lo que
 //! firmaron los dos, ni nosotros".
 
 use soroban_sdk::{
@@ -93,25 +93,15 @@ pub struct SubjectStats {
     pub max_bucket: AmountBucket,
 }
 
-#[contracttype]
-#[derive(Clone)]
-pub struct Consent {
-    pub subject_id: BytesN<32>,
-    pub reader: Address,
-    pub scope: u32, // 0 = agregado (único en el MVP)
-    pub exp_ts: u64,
-    pub nonce: u64,
-}
-
 /// Ventanas del sistema en SEGUNDOS (spec v2, §4). El plazo (`due_ts`) NO va aquí: lo fija la
-/// bodega por nota. En la demo: accept 72 h, gracia 30 d, disputa 15 d, consentimiento 30 d.
+/// bodega por nota. En la demo: accept 72 h, gracia 30 d, disputa 15 d (y consent_ttl 30 d, sin uso).
 #[contracttype]
 #[derive(Clone)]
 pub struct Params {
     pub accept_window: u64,
     pub grace_period: u64,
     pub dispute_window: u64,
-    pub consent_ttl: u64,
+    pub consent_ttl: u64, // sin uso desde la v5 (decisión #57); se queda para no cambiar init ni los scripts
 }
 
 /// Propuesta de resolución mutua pendiente (spec v2, §5, `resolve_mutual`).
@@ -131,8 +121,7 @@ pub enum DataKey {
     Stats(BytesN<32>),                  // SubjectStats
     SubjectIssuer(BytesN<32>, Address), // bool: este emisor ya cuenta para issuers_count
     SubjectAddr(BytesN<32>),            // Address vinculada al seudónimo (spec v2, §5.1)
-    AddrSubject(Address),               // BytesN<32>: seudónimo de una Address (inverso, para consent)
-    Consent(BytesN<32>, Address),       // Consent
+    AddrSubject(Address),               // BytesN<32>: seudónimo de una Address (inverso)
     CancelProp(BytesN<32>),             // ResolveProposal: cancelar una nota Accepted (C7)
     ResolveProp(BytesN<32>),            // ResolveProposal: cerrar una nota Disputed (C7)
     PendingBind(BytesN<32>),            // Address invitada por la plataforma, aún sin firmar (C1)
@@ -155,8 +144,8 @@ pub enum Error {
     NotParty = 7,
     TooEarly = 8,     // gracia o ventana no cumplida
     WindowClosed = 9, // ventana de aceptación / disputa vencida
-    NoConsent = 10,
-    ConsentExpired = 11,
+    NoConsent = 10,      // sin uso desde la v5 (decisión #57)
+    ConsentExpired = 11, // sin uso desde la v5 (decisión #57)
     BadParams = 12,
     // Contrato v4 (decisión #55): al final, sin renumerar los anteriores.
     AlreadyBound = 13, // el seudónimo o la dirección ya están vinculados
@@ -652,83 +641,18 @@ impl CuentasClaras {
         }
     }
 
-    // --- Consentimiento y lectura ---
+    // --- Lectura (v5, decisión #57) ---
 
-    pub fn grant_consent(
-        env: Env,
-        subject: Address,
-        reader: Address,
-        exp_ts: u64,
-        nonce: u64,
-    ) -> Result<(), Error> {
-        subject.require_auth();
-        let subject_id = Self::subject_id_of(&env, &subject)?;
-        let now = env.ledger().timestamp();
-        let params = Self::params(&env);
-        if exp_ts <= now || exp_ts > now + params.consent_ttl {
-            return Err(Error::BadParams);
-        }
-        let consent = Consent {
-            subject_id: subject_id.clone(),
-            reader: reader.clone(),
-            scope: 0,
-            exp_ts,
-            nonce,
-        };
-        let key = DataKey::Consent(subject_id.clone(), reader.clone());
-        env.storage().persistent().set(&key, &consent);
-        bump(&env, &key);
-        env.events().publish(
-            (cclaras(), name(&env, "consent_granted")),
-            (subject_id, reader, exp_ts),
-        );
-        Ok(())
-    }
-
-    pub fn revoke_consent(env: Env, subject: Address, reader: Address) -> Result<(), Error> {
-        subject.require_auth();
-        let subject_id = Self::subject_id_of(&env, &subject)?;
-        env.storage()
-            .persistent()
-            .remove(&DataKey::Consent(subject_id.clone(), reader.clone()));
-        env.events().publish(
-            (cclaras(), name(&env, "consent_revoked")),
-            (subject_id, reader),
-        );
-        Ok(())
-    }
-
-    /// Consulta oficial del agregado. Falla sin consentimiento vigente (invariantes 6 y 11); solo el
-    /// propio sujeto lee sin consentimiento. Un emisor con notas del sujeto también necesita permiso:
-    /// sus propias notas las ve con `get_note` (decisión #46, opción c).
-    /// Emite `aggregate_read` en cada éxito: deja constancia (spec v2, §3b).
+    /// Consulta formal del agregado de un cliente. Desde la v5 no pide permiso: la cadena es
+    /// pública y quien tiene el código del cliente (su seudónimo) lee su historial; el cliente
+    /// decide a qué bodega le enseña su código. Quien lee firma, y cada consulta deja constancia
+    /// con el evento `aggregate_read(subject_id, reader)` (spec v2, §3b). No cambia nada.
     pub fn read_stats(
         env: Env,
         reader: Address,
         subject_id: BytesN<32>,
     ) -> Result<SubjectStats, Error> {
         reader.require_auth();
-
-        let is_self = env
-            .storage()
-            .persistent()
-            .get::<DataKey, BytesN<32>>(&DataKey::AddrSubject(reader.clone()))
-            .map(|s| s == subject_id)
-            .unwrap_or(false);
-
-        if !is_self {
-            // Tercero: exige consentimiento vigente.
-            let key = DataKey::Consent(subject_id.clone(), reader.clone());
-            let consent: Consent = env
-                .storage()
-                .persistent()
-                .get(&key)
-                .ok_or(Error::NoConsent)?;
-            if consent.exp_ts <= env.ledger().timestamp() {
-                return Err(Error::ConsentExpired);
-            }
-        }
-
         let stats = Self::load_stats(&env, &subject_id);
         env.events().publish(
             (cclaras(), name(&env, "aggregate_read")),
@@ -754,8 +678,8 @@ impl CuentasClaras {
         Self::params(&env)
     }
 
-    // Sin `get_stats`: el agregado (`SubjectStats`) solo sale por `read_stats`, que exige
-    // permiso vigente o ser parte y deja constancia (decisión #42; spec v2, §3b e invariante 11).
+    // Sin `get_stats`: el agregado (`SubjectStats`) solo sale por `read_stats`, que exige la firma
+    // de quien lee y deja constancia (decisión #42; desde la v5, sin permiso: decisión #57).
 
     // -----------------------------------------------------------------------
     // Ayudantes internos
@@ -849,13 +773,6 @@ impl CuentasClaras {
         Self::save_stats(env, &note.subject_id, &stats);
         env.events()
             .publish((cclaras(), name(env, "overdue")), note_id.clone());
-    }
-
-    fn subject_id_of(env: &Env, subject: &Address) -> Result<BytesN<32>, Error> {
-        env.storage()
-            .persistent()
-            .get(&DataKey::AddrSubject(subject.clone()))
-            .ok_or(Error::NotParty)
     }
 
     fn is_subject(env: &Env, note: &Note, who: &Address) -> bool {
