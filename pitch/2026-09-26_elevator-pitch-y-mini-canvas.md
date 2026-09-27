@@ -72,7 +72,7 @@
 
 - **◆ «Si es público, ¿para qué el permiso?»**
   - Lo que está en la cadena es público y verificable; esa es la idea.
-  - El permiso no esconde nada: es la consulta oficial, la que deja constancia de quién preguntó, y es nuestra base para no operar como sociedad de información crediticia.
+  - El permiso no esconde nada: es la consulta oficial, la que deja constancia de quién preguntó, y es la base de nuestro argumento para no operar como sociedad de información crediticia (pendiente del dictamen legal).
   - Sin el seudónimo no hay forma de ligar ese historial con una persona: sale de una llave que no está en la cadena.
   - *(Si se aprueba la #57, la respuesta cambia a: «el cliente decide a quién le da su código».)*
 - **«¿Esto es un buró?»**
