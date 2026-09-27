@@ -50,3 +50,12 @@ test('texto de 16 px o más: ningún font-size menor a 1rem fuera del dibujo SVG
     assert.ok(Number(n) >= 1, `font-size ${n}${u}`);
   }
 });
+
+test('v5 (#57): el sitio enlaza al contrato vigente de demo/deploy.json y a ninguno anterior', () => {
+  const RAIZ = path.join(__dirname, '..', '..');
+  const deploy = JSON.parse(fs.readFileSync(path.join(RAIZ, 'demo', 'deploy.json'), 'utf8'));
+  const index = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const ids = new Set([...index.matchAll(/\bC[A-Z2-7]{55}\b/g)].map((m) => m[0]));
+  assert.deepEqual([...ids], [deploy.contract_id]);
+  for (const c of deploy.contratos_anteriores) assert.ok(!index.includes(c.contract_id.slice(0, 8)), c.contract_id);
+});

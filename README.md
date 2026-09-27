@@ -12,8 +12,8 @@ Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de In
 
 | | |
 |---|---|
-| Contrato | [`CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ`](https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ) |
-| Estado | Contrato v4, desplegado e inicializado el 26-sep-2026 (20:22 CDMX) · 23 pruebas en verde (`cargo test`) · contratos anteriores obsoletos en `demo/deploy.json` |
+| Contrato | [`CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL`](https://stellar.expert/explorer/testnet/contract/CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL) |
+| Estado | Contrato v5 (decisión #57), desplegado e inicializado el 26-sep-2026 (22:47 CDMX) · 22 pruebas en verde (`cargo test`) · contratos anteriores obsoletos en `demo/deploy.json` |
 | Sitio público | [cuentas-claras-lemon.vercel.app](https://cuentas-claras-lemon.vercel.app) · estático, sin llaves; repite la corrida real con enlaces a cada transacción |
 | Toolchain | Stellar CLI 28.0.0 · soroban-sdk 28.0.0 · `wasm32v1-none` (decisión #41) |
 | Datos | Solo claves públicas y datos ficticios de demo en [`demo/deploy.json`](demo/deploy.json) |

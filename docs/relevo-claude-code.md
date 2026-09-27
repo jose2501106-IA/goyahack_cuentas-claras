@@ -5,11 +5,11 @@
 ## 1. Dónde estamos
 
 - **Entrega:** domingo 27-sep, antes de las 20:00 (meta interna). **Código congelado el domingo a las 15:00.** Decisión #43; plan en `docs/plan-maestro.md` §4b.
-- **Contrato vigente en testnet (v4, decisión #55):** `CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ` (`demo/deploy.json`), desplegado el 26-sep a las 20:22 (CDMX).
-  - 23 pruebas en verde (`cd contracts/cuentas_claras && cargo test`).
+- **Contrato vigente en testnet (v5, decisión #57):** `CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL` (`demo/deploy.json`), desplegado el 26-sep a las 22:47 (CDMX). Lectura pública con el código del cliente: `read_stats` sin permiso, deja constancia (`aggregate_read`); sin `grant_consent` ni `revoke_consent`.
+  - 22 pruebas en verde (`cd contracts/cuentas_claras && cargo test`).
   - Sin función de actualización (#30).
-  - Contratos anteriores, obsoletos, en `contratos_anteriores`: el primero se retiró por `get_stats` (#42), el segundo por la excepción del emisor (#46), el tercero por el hueco C1 del vínculo (#55).
-- **Vínculo previo (v4):** el cliente se vincula a su seudónimo antes de su primera nota: la plataforma invita (`invite_subject`) y el cliente firma (`bind_subject`). `create_note` falla si el seudónimo no está vinculado o si está vinculado al propio emisor, y solo la dirección vinculada acepta. `demo.sh` y `sembrar.sh` vinculan solo si `subject_of` está vacío. Doña Mary ya está vinculada en el contrato v4.
+  - Contratos anteriores, obsoletos, en `contratos_anteriores`: el primero se retiró por `get_stats` (#42), el segundo por la excepción del emisor (#46), el tercero por el hueco C1 del vínculo (#55), el cuarto (v4) por la #57.
+- **Vínculo previo (v4):** el cliente se vincula a su seudónimo antes de su primera nota: la plataforma invita (`invite_subject`) y el cliente firma (`bind_subject`). `create_note` falla si el seudónimo no está vinculado o si está vinculado al propio emisor, y solo la dirección vinculada acepta. `demo.sh` y `sembrar.sh` vinculan solo si `subject_of` está vacío. Doña Mary ya está vinculada en el contrato v5.
 - **Regla de lectura actual:** el resumen (`read_stats`) solo lo lee sin permiso el propio cliente. Cualquier bodega, incluso la que le fió, necesita su permiso vigente.
 - **App local** (`node backend/server.js`, puerto 8080, sin `npm install`):
   - servidor Node sin dependencias que llama al Stellar CLI (#45);

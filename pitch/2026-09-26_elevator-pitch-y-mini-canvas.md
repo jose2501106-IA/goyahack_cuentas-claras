@@ -2,7 +2,7 @@
 
 > **Borrador v1, pendiente de aprobación de José** · sáb 26-sep-2026, 20:45 · Equipo **Palabra**
 > **Funciona con las dos salidas de la decisión #57** (retroalimentación del mentor sobre el permiso). Las líneas marcadas con ◆ no dependen del permiso: dicen lo que es cierto en los dos casos.
-> **Contrato vigente:** v4, `CB3TLO33…5Q7AJ`, desplegado en testnet el 26-sep a las 20:26, con 23 pruebas en verde.
+> **Contrato vigente:** v5 (#57), `CD4DJQC4…Q37WL`, desplegado en testnet el 26-sep a las 22:47, con 22 pruebas en verde.
 > Datos con su ID de `docs/hoja-de-hechos.md` o la etiqueta *experiencia de José*. Nada inventado; lo que no está medido dice *por validar*.
 
 ## 1. Mini canvas (la guía que tienes a la vista mientras presentas)

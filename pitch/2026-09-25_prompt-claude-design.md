@@ -83,7 +83,7 @@ DIAPOSITIVAS
    "Cliente da permiso" → "Otra bodega consulta".
    En Sello, una sola línea: "Sin permiso, el contrato no entrega el resumen."
    Pie: "Stellar testnet · datos ficticios · posiciones ilustrativas · forma del
-   pasillo sin escala · Contract ID CB3TLO…5Q7AJ".
+   pasillo sin escala · Contract ID CD4DJQ…Q37WL".
 6. ¿Por qué blockchain y no una base de datos?
    Título: "No hay un custodio en quien confíen bodegas que compiten."
    Tres viñetas: "Dos firmas o no hay deuda." / "Nadie edita ni borra, ni nosotros." /
