@@ -18,9 +18,8 @@
     1: 'Bodega A-17 registró una nota para Doña Mary. Esperando su firma.',
     2: 'Doña Mary firmó la nota: firmada por los dos.',
     3: 'Bodega A-17 confirmó el pago: nota cumplida.',
-    4: 'Bodega B-40 pidió el resumen sin permiso: el contrato no lo entregó. No hubo transacción.',
-    5: 'Doña Mary dio permiso a Bodega B-40 por 30 días.',
-    6: 'Bodega B-40 consultó el resumen con permiso. La consulta quedó registrada.',
+    4: 'Doña Mary le enseñó su código a Bodega B-40 en el mostrador. No es una transacción.',
+    5: 'Bodega B-40 consultó su historial con ese código. La consulta quedó registrada, con la bodega que preguntó.',
   };
 
   function rango(accion) {
@@ -52,7 +51,6 @@
 
     function limpiar() {
       for (const c of ['puente', 'trazos', 'pulso', 'notas', 'sello']) mapa.capas[c].replaceChildren();
-      mapa.bodegas[idB].g.classList.remove('sin-permiso', 'parpadeo');
     }
 
     function papelito(texto, animar) {
@@ -73,22 +71,14 @@
         mapa.capas.sello.replaceChildren();
         CC.Gemelo.sello(mapa, mapa.centro(idA), { animar });
       } else if (n === 4) {
+        // Contrato v5 (decisión #57): sucede en el mostrador, sin transacción.
         const b = mapa.bodegas[idB];
-        b.g.classList.add('sin-permiso');
-        if (animar) b.g.classList.add('parpadeo');
-        mapa.capas.notas.append(S('text', {
-          x: b.x + b.w / 2, y: b.y - 1.6, 'text-anchor': 'middle', class: 'texto-sin-permiso paso4',
-        }, 'Sin permiso: no se entrega el resumen'));
-      } else if (n === 5) {
-        const b = mapa.bodegas[idB];
-        b.g.classList.remove('sin-permiso', 'parpadeo');
-        mapa.capas.notas.querySelectorAll('.paso4').forEach((t) => t.remove());
         const a = mapa.ancla(idB);
         const f = bordeFicha(idB);
         mapa.capas.puente.append(S('g', { class: `puente${animar ? ' aparecer' : ''}` },
           S('path', { d: mapa.camino(f.x, f.y, a.x, a.y, 1.5), class: 'puente-linea' }),
-          S('text', { x: b.x + b.w / 2, y: b.y + b.h + CC.Gemelo.CARA + b.eleva + 8.5, 'text-anchor': 'middle', class: 'puente-texto' }, 'Permiso por 30 días')));
-      } else if (n === 6) {
+          S('text', { x: b.x + b.w / 2, y: b.y + b.h + CC.Gemelo.CARA + b.eleva + 8.5, 'text-anchor': 'middle', class: 'puente-texto' }, 'Le enseñó su código')));
+      } else if (n === 5) {
         mapa.capas.pulso.replaceChildren();
         const a = mapa.ancla(idB);
         const f = bordeFicha(idB);
@@ -138,8 +128,8 @@
       tarjeta,
     );
 
-    function resumenPaso6() {
-      const r = datos.resumen_paso_6 || {};
+    function resumenPaso5() {
+      const r = datos.resumen_paso_5 || {};
       const n = (k) => Number(r[k]) || 0;
       const cerradas = n('Pagadas a tiempo') + n('Pagadas tarde') + n('Incumplidas');
       const bodegas = n('Emisores distintos');
@@ -148,7 +138,7 @@
         el('p', { class: 'resumen-titulo' }, 'Lo que devolvió el contrato (tal cual la salida de la corrida):'),
         el('dl', { class: 'resumen-lista' }, filas),
         el('p', { class: 'sem sem-insuficiente semaforo-grande' }, '○ Historial insuficiente'),
-        el('p', null, `Tiene ${cerradas} nota cerrada de 3 y ${bodegas} bodega de 2, y le faltan días de historial: el semáforo no juzga todavía, a propósito.`));
+        el('p', null, `Tiene ${cerradas} ${cerradas === 1 ? 'nota cerrada' : 'notas cerradas'} de 3 y ${bodegas} ${bodegas === 1 ? 'bodega' : 'bodegas'} de 2, y le faltan días de historial: el semáforo no juzga todavía, a propósito.`));
     }
 
     let actual = 0;
@@ -166,21 +156,21 @@
 
       {
         const p = pasos[n - 1];
-        tarjeta.replaceChildren(
+        tarjeta.replaceChildren(...[
           el('p', { class: 'paso-num mono' }, `Paso ${p.numero}`),
           el('p', { class: 'paso-accion' }, rango(p.accion)),
           el('p', { class: 'apoyo' }, TEXTO_MAPA[p.numero] || ''),
           p.firma
             ? el('p', null, 'Firma: ', el('strong', null, p.firma), ' · función ', el('code', null, p.funcion))
-            : el('p', null, 'Nadie firma: la consulta se simuló y el contrato la rechazó.'),
+            : el('p', null, 'Nadie firma: sucede en el mostrador, fuera de la cadena.'),
           p.url
             ? el('p', { class: 'paso-enlace' },
               CC.enlaceExterno('Verlo en la cadena', p.url, 'boton boton-primario boton-chico'),
               el('span', { class: 'mono hash' }, hashCorto(p.hash)))
             : el('p', { class: 'sin-enlace' }, p.sin_transaccion,
               p.detalle_salida ? el('span', { class: 'mono detalle' }, ` (${p.detalle_salida})`) : null),
-          p.numero === 6 ? resumenPaso6() : null,
-        );
+          p.numero === 5 ? resumenPaso5() : null,
+        ].filter(Boolean));
       }
       sincronizarTelefono(n);
       document.querySelectorAll('.registro-tabla tbody tr').forEach((tr) => {
@@ -203,7 +193,7 @@
       });
     }
 
-    // «Siguiente» junto al mapa y «Acepto» / «Dar permiso» en el teléfono: la misma acción.
+    // «Siguiente» junto al mapa y los botones del teléfono («Acepto», «Enseñar mi código»): la misma acción.
     function avanzar() { mostrar(actual + 1, true); }
 
     // «La app en tu mano» (docs/diseno-web-movil.md §2): las pantallas están en el HTML;
@@ -231,7 +221,7 @@
     anterior.addEventListener('click', () => mostrar(actual - 1, false));
     siguiente.addEventListener('click', avanzar);
     reiniciar.addEventListener('click', () => mostrar(PRIMERO, false));
-    // «Acepto», «Dar permiso» y «Siguiente» hacen lo mismo: avanzar un paso.
+    // «Acepto», «Enseñar mi código» y «Siguiente» hacen lo mismo: avanzar un paso.
     mostrar(PRIMERO, false);
     CC.repeticion = { mostrar, TRAZO_MS };
   };

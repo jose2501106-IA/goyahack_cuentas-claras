@@ -1,4 +1,4 @@
-// Portada «Historia en seis pasos» (docs/diseno-web-movil.md §3). El texto de cada paso
+// Portada «Historia en cinco pasos» (docs/diseno-web-movil.md §3). El texto de cada paso
 // está en el HTML; aquí solo se monta un mini mapa fijo arriba (un recorte del gemelo
 // entre Bodega A-17 y Doña Mary) que dibuja el paso del bloque que se está leyendo.
 'use strict';
@@ -36,7 +36,7 @@
       for (const li of pasos) li.classList.toggle('activo', Number(li.dataset.paso) === n);
     }
 
-    if (typeof IntersectionObserver !== 'function') { activar(6); return; }
+    if (typeof IntersectionObserver !== 'function') { activar(5); return; }
     // El bloque activo es el que cruza la franja central de la pantalla.
     const obs = new IntersectionObserver((entradas) => {
       for (const e of entradas) if (e.isIntersecting) activar(Number(e.target.dataset.paso));

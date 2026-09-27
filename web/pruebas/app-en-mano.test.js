@@ -1,4 +1,4 @@
-// «La app en tu mano» (docs/diseno-web-movil.md §2, cola tarea 9): las 6 pantallas están
+// «La app en tu mano» (docs/diseno-web-movil.md §2, cola tarea 9; v5, #57): las 5 pantallas están
 // en el HTML y en orden, cada hash coincide con repeticion.json, el paso 4 va sin hash y
 // nada pide llaves, sesión ni datos reales.
 'use strict';
@@ -25,8 +25,8 @@ function pantallas(vista) {
 const hashes = (t) => [...t.matchAll(/[0-9a-f]{64}/g)].map((m) => m[0]);
 
 for (const vista of ['cliente', 'bodega']) {
-  test(`vista ${vista}: seis pantallas en el HTML, en orden`, () => {
-    assert.deepEqual(pantallas(vista).map((p) => p.paso), [1, 2, 3, 4, 5, 6]);
+  test(`vista ${vista}: cinco pantallas en el HTML, en orden`, () => {
+    assert.deepEqual(pantallas(vista).map((p) => p.paso), [1, 2, 3, 4, 5]);
   });
 
   test(`vista ${vista}: cada hash es el de su paso en repeticion.json; el paso 4 sin hash`, () => {
@@ -34,7 +34,7 @@ for (const vista of ['cliente', 'bodega']) {
       const hs = hashes(p.html);
       if (p.paso === 4) {
         assert.deepEqual(hs, []);
-        assert.match(p.html, /Sin hash: no se envió transacción/);
+        assert.match(p.html, /Sin hash: no es una transacción; sucede en el mostrador\./);
         continue;
       }
       for (const h of hs) assert.equal(h, hashDe[p.paso], `paso ${p.paso}`);
@@ -64,4 +64,10 @@ test('sin JavaScript todo se lee: solo .con-js oculta pantallas o vistas', () =>
     if (!/display:\s*none/.test(cuerpo)) continue;
     if (/tel-pantalla|tel-vista/.test(selector)) assert.match(selector, /\.con-js/, selector.trim());
   }
+});
+
+test('v5 (#57): el paso 4 del cliente es «Enseñaste tu código a Bodega B-40»; nada de permisos', () => {
+  const p4 = pantallas('cliente').find((p) => p.paso === 4);
+  assert.match(p4.html, /Enseñaste tu código a Bodega B-40\./);
+  assert.doesNotMatch(app, /permiso/i);
 });

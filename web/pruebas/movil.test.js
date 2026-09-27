@@ -1,4 +1,4 @@
-// Experiencia móvil (docs/diseno-web-movil.md §3, cola tarea 10): historia en seis pasos,
+// Experiencia móvil (docs/diseno-web-movil.md §3, cola tarea 10): historia en cinco pasos,
 // «Ver como registro» y tamaño táctil. El alto del Pasillo vivo y el desplazamiento
 // horizontal se miden en el navegador (ver la cola); aquí va lo que se comprueba sin él.
 'use strict';
@@ -18,18 +18,18 @@ function bloques(re) {
   return [...html.matchAll(re)].map((m) => ({ paso: Number(m[1]), html: m[2] }));
 }
 
-test('portada: seis bloques en orden, cada uno con el hash de su paso (el 4 sin hash)', () => {
+test('portada: cinco bloques en orden, cada uno con el hash de su paso (el 4 sin hash)', () => {
   const b = bloques(/<li class="historia-paso" data-paso="(\d)">([\s\S]*?)<\/li>/g);
-  assert.deepEqual(b.map((x) => x.paso), [1, 2, 3, 4, 5, 6]);
+  assert.deepEqual(b.map((x) => x.paso), [1, 2, 3, 4, 5]);
   for (const x of b) assert.deepEqual(hashes(x.html), x.paso === 4 ? [] : [hashDe[x.paso]], `paso ${x.paso}`);
   const historia = html.slice(html.indexOf('<section class="historia"'), html.indexOf('</section>', html.indexOf('<section class="historia"')));
   assert.match(historia, /Ver la demo real/);
   assert.match(historia, /Entrar al Pasillo vivo/);
 });
 
-test('registro: seis renglones con seudónimo, rango, hash y sello, iguales a repeticion.json', () => {
+test('registro: cinco renglones con seudónimo, rango, hash y sello, iguales a repeticion.json', () => {
   const b = bloques(/<tr data-paso="(\d)">([\s\S]*?)<\/tr>/g);
-  assert.deepEqual(b.map((x) => x.paso), [1, 2, 3, 4, 5, 6]);
+  assert.deepEqual(b.map((x) => x.paso), [1, 2, 3, 4, 5]);
   for (const x of b) {
     assert.deepEqual(hashes(x.html), x.paso === 4 ? [] : [hashDe[x.paso]], `paso ${x.paso}`);
     assert.ok(x.html.includes(rep.seudonimo_cliente), `seudónimo en el paso ${x.paso}`);

@@ -464,6 +464,7 @@ main:focus { outline: none; }
 .tel-acciones .boton { width: 100%; }
 .tel-nota { color: var(--texto-2); }
 .tel-sin-hash { font-family: var(--f-mono); font-size: 1rem; color: var(--texto-2); }
+.tel-codigo { font-family: var(--f-mono); font-size: 1.35rem; font-weight: 600; color: var(--firma); margin: 0.25rem 0; }
 .tel-cadena { margin-bottom: 0 !important; }
 .tel-semaforo { font-family: var(--f-titulo); font-size: 1.3rem; }
 .tel-sello {
