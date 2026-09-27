@@ -153,17 +153,18 @@
 
     let actual = 0;
 
+    // La repetición nunca queda vacía: arranca en el paso 1 (cola, tarea 11).
+    const PRIMERO = 1;
     function mostrar(n, animar) {
+      n = Math.min(pasos.length, Math.max(PRIMERO, n));
       actual = n;
       pintar(n, animar);
-      contador.textContent = n === 0 ? 'Listo para empezar' : `Paso ${n} de ${pasos.length}`;
-      anterior.disabled = n === 0;
+      contador.textContent = `Paso ${n} de ${pasos.length}`;
+      anterior.disabled = n === PRIMERO;
       siguiente.disabled = n === pasos.length;
-      siguiente.textContent = n === 0 ? 'Empezar' : 'Siguiente';
+      siguiente.textContent = 'Siguiente';
 
-      if (n === 0) {
-        tarjeta.replaceChildren(el('p', null, 'Toca «Empezar» para ver la corrida paso a paso. Cada paso con transacción trae su enlace a stellar.expert para que lo verifiques tú.'));
-      } else {
+      {
         const p = pasos[n - 1];
         tarjeta.replaceChildren(
           el('p', { class: 'paso-num mono' }, `Paso ${p.numero}`),
@@ -202,6 +203,9 @@
       });
     }
 
+    // «Siguiente» junto al mapa y «Acepto» / «Dar permiso» en el teléfono: la misma acción.
+    function avanzar() { mostrar(actual + 1, true); }
+
     // «La app en tu mano» (docs/diseno-web-movil.md §2): las pantallas están en el HTML;
     // aquí solo se muestra la del paso actual y se elige la vista (cliente o Bodega B-40).
     const app = document.querySelector('.app-en-mano');
@@ -221,13 +225,14 @@
         app.dataset.ver = b.dataset.ver;
         app.querySelectorAll('[data-ver]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
       }));
-      app.querySelectorAll('.tel-avanza').forEach((b) => b.addEventListener('click', () => mostrar(Number(b.dataset.a), true)));
+      app.querySelectorAll('.tel-avanza').forEach((b) => b.addEventListener('click', avanzar));
     }
 
-    anterior.addEventListener('click', () => mostrar(Math.max(0, actual - 1), false));
-    siguiente.addEventListener('click', () => mostrar(Math.min(pasos.length, actual + 1), true));
-    reiniciar.addEventListener('click', () => mostrar(0, false));
-    mostrar(0, false);
+    anterior.addEventListener('click', () => mostrar(actual - 1, false));
+    siguiente.addEventListener('click', avanzar);
+    reiniciar.addEventListener('click', () => mostrar(PRIMERO, false));
+    // «Acepto», «Dar permiso» y «Siguiente» hacen lo mismo: avanzar un paso.
+    mostrar(PRIMERO, false);
     CC.repeticion = { mostrar, TRAZO_MS };
   };
 })(window);
