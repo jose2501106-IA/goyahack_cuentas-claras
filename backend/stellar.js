@@ -24,6 +24,9 @@ const ERRORES_CONTRATO = Object.freeze({
   10: { error: 'sin_permiso', mensaje: 'Doña Mary no ha dado permiso a Bodega B-40 para consultar su historial.', status: 403 },
   11: { error: 'permiso_vencido', mensaje: 'El permiso de Doña Mary para Bodega B-40 ya venció.', status: 403 },
   12: { error: 'datos_invalidos', mensaje: 'Los datos de la nota no son válidos.', status: 400 },
+  13: { error: 'ya_vinculado', mensaje: 'Este cliente ya está vinculado.', status: 409 },
+  14: { error: 'sin_vincular', mensaje: 'Primero hay que registrar a este cliente.', status: 409 },
+  15: { error: 'nota_propia', mensaje: 'Una bodega no puede firmar como su propio cliente.', status: 403 },
 });
 
 class ErrorStellar extends Error {

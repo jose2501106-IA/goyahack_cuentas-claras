@@ -5,14 +5,14 @@
   "red": "testnet",
   "network_passphrase": "Test SDF Network ; September 2015",
   "rpc_url": "https://soroban-testnet.stellar.org",
-  "desplegado_utc": "2026-09-26T13:44:00Z",
+  "desplegado_utc": "2026-09-27T02:22:45Z",
   "toolchain": {
     "stellar_cli": "28.0.0",
     "soroban_sdk": "=28.0.0",
     "target": "wasm32v1-none"
   },
-  "contract_id": "CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
-  "wasm_hash": "ad3d2264a83cfdb3457d52fa97f2775a376a8c859cb8362c59338cb28a0cf148",
+  "contract_id": "CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
+  "wasm_hash": "3f4fdb0bbc81aba4a7995ae8c61e8e4f71c61653a98367c186d52280fa1c9883",
   "cuentas_publicas": {
     "plataforma": "GCUHYSD6KDDZQQZPH7BBVDB3FXRNV5VRYCSEQVFF5MYCYTJK4T4QH3DD",
     "bodega_a": "GCGL3DROM7TTKNGK3NCCIMKA5EGVAAGAVGNDNAFQBKLJBAG4D26VL54W",
@@ -34,18 +34,33 @@
     "unidades": "segundos (72 h / 30 d / 15 d / 30 d)"
   },
   "transacciones": {
-    "upload_wasm": "a51c0233039313b971d54739ca5194f9c22ca3355b200ad8cd9b6de8d6a1fa58",
-    "deploy": "a9e7e563087dde47a1ef2df811f1dbd7fdc5e6c14c47d054bcb6dbafd9f8d386",
-    "init": "d642e7f5cfb9e2b969829bea69225e30eabfafd5425266f9c1b6bbbf59d6a1af",
-    "add_issuer_bodega_a": "bfa731fbeb360b4555656e5ac76f28357722fe370d0f368bfee14a910caafa69",
-    "add_issuer_bodega_b": "6dfb4f3099946164c28ddf1f6634b9c7a5cbee82e5777ae6b5664f1048d2f417",
-    "add_issuer_bodega_c": "b19d827d9c578d0816df20810b7816a70dfdca0f2ec2d7720f50544a9d87b5ad"
+    "upload_wasm": "70ff191eb77f9411c8e8eb8d91a500049c932b088b15c1c952dfd763c5d3241b",
+    "deploy": "4ccf97e365408f755d172646980728f078ae9a674b1d9b477c018898143b72be",
+    "init": "fc4ce4783a8bbd5d26895c84f7bca5a3bfd449a50800dae03d16514dd93767a6",
+    "add_issuer_bodega_a": "505f5a745ba20130b1bbb4742d7ca136eeb04e17958f4b844415af229d6807d6",
+    "add_issuer_bodega_b": "dfa3ee8b683e5e43511f3ebbe04ce74a37425888a4d1e70e627e0fee390602dc",
+    "add_issuer_bodega_c": "94bcd29980b6f4e0b83de1c17b857001bfe6563185b7c82a7d2376d0f5897ab2"
   },
   "exploradores": {
-    "contrato": "https://stellar.expert/explorer/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
-    "lab": "https://lab.stellar.org/r/testnet/contract/CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW"
+    "contrato": "https://stellar.expert/explorer/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ",
+    "lab": "https://lab.stellar.org/r/testnet/contract/CB3TLO33QKEPEZ5UWBK6NT2EG3GEH4VF3Q3CA7VBQICC6LYKZBI5Q7AJ"
   },
   "contratos_anteriores": [
+    {
+      "contract_id": "CDPFZNYZEBTEBB3GLOW62I32CV3LD3QI7KV4YQPFVMZXWC2XRFIGBDTW",
+      "wasm_hash": "ad3d2264a83cfdb3457d52fa97f2775a376a8c859cb8362c59338cb28a0cf148",
+      "desplegado_utc": "2026-09-26T13:44:00Z",
+      "transacciones": {
+        "upload_wasm": "a51c0233039313b971d54739ca5194f9c22ca3355b200ad8cd9b6de8d6a1fa58",
+        "deploy": "a9e7e563087dde47a1ef2df811f1dbd7fdc5e6c14c47d054bcb6dbafd9f8d386",
+        "init": "d642e7f5cfb9e2b969829bea69225e30eabfafd5425266f9c1b6bbbf59d6a1af",
+        "add_issuer_bodega_a": "bfa731fbeb360b4555656e5ac76f28357722fe370d0f368bfee14a910caafa69",
+        "add_issuer_bodega_b": "6dfb4f3099946164c28ddf1f6634b9c7a5cbee82e5777ae6b5664f1048d2f417",
+        "add_issuer_bodega_c": "b19d827d9c578d0816df20810b7816a70dfdca0f2ec2d7720f50544a9d87b5ad"
+      },
+      "obsoleto_desde_utc": "2026-09-27T02:22:45Z",
+      "razon": "C1: el seudónimo se ligaba a quien aceptara primero (#55). Una bodega podía aceptar su propia nota y un tercero podía ganarle la aceptación al cliente. Se redespliega sin upgrade (#30). No usar."
+    },
     {
       "contract_id": "CBNBVFY2BXFC7GGMCK7SWXSWHMWWNXS5U4XRNBSX6FRFIVZBZDYBCCD3",
       "wasm_hash": "f17be7343cbde3b620b86e542ea827f54735dabd6bfef195e5f931c326171f97",
@@ -70,5 +85,6 @@
       "obsoleto_desde_utc": "2026-09-26T06:35:00Z",
       "razon": "Exponía get_stats: función pública que entregaba el agregado (SubjectStats) sin consentimiento ni constancia, en contra de read_stats (spec v2 §3b, invariante 11). Sin upgrade a propósito: se retira y se redespliega (decisión #42). No usar."
     }
-  ]
+  ],
+  "version_contrato": "v4 (decisión #55): vínculo previo del cliente (invite_subject + bind_subject)"
 }

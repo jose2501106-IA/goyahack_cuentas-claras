@@ -4,6 +4,7 @@
 # ya desplegado en Stellar testnet. Plan B del pitch (spec v2, §10).
 #
 # Qué muestra, paso a paso:
+#   0) Solo la primera vez (contrato v4, #55): Doña Mary se vincula a su seudónimo.
 #   1) Bodega A-17 crea una nota de fiado para Doña Mary (15 días, rango 5k–20k).
 #   2) Doña Mary la acepta (co-firma): la deuda no existe sin su firma.
 #   3) Bodega A-17 confirma el pago.
@@ -58,6 +59,7 @@ c = d["cuentas_publicas"]
 print(f'CONTRACT_ID={d["contract_id"]}')
 print(f'BODEGA_A={c["bodega_a"]}')
 print(f'BODEGA_B={c["bodega_b"]}')
+print(f'PLATAFORMA={c["plataforma"]}')
 print(f'DONA_MARY={c["dona_mary"]}')
 PY
 )"
@@ -123,7 +125,23 @@ echo "   Nota de esta corrida (note_id):      ${NOTE_ID:0:16}…"
 echo "════════════════════════════════════════════════════════════════════"
 echo
 
+# Contrato v4 (#55): el cliente se vincula a su seudónimo antes de su primera
+# nota. Si subject_of devuelve vacío, la plataforma invita y Doña Mary firma.
+vincular_si_falta() {
+  local actual
+  actual="$(stellar contract invoke --id "$CONTRACT_ID" --source plataforma --network "$NET" --send=no -- \
+    subject_of --subject_id "$SUBJECT_ID" 2>/dev/null || true)"
+  if [ -z "$actual" ] || [ "$actual" = "null" ]; then
+    echo "0) Doña Mary se vincula a su seudónimo (invita la plataforma, firma ella)."
+    call plataforma invite_subject --admin "$PLATAFORMA" --subject_id "$SUBJECT_ID" --subject "$DONA_MARY"
+    call dona_mary bind_subject --subject "$DONA_MARY" --subject_id "$SUBJECT_ID"
+    echo
+  fi
+}
+
 # --- 1) Bodega A-17 crea la nota ------------------------------------------------
+
+vincular_si_falta
 
 paso 1 "Bodega A-17 registra una nota de fiado para Doña Mary (15 días, rango 5k–20k)."
 call bodega_a create_note \

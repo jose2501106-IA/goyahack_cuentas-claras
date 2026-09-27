@@ -36,6 +36,7 @@ d = json.load(open(sys.argv[1]))
 c = d["cuentas_publicas"]
 print(f'CONTRACT_ID={d["contract_id"]}')
 print(f'BODEGA_C={c["bodega_c"]}')
+print(f'PLATAFORMA={c["plataforma"]}')
 print(f'DONA_MARY={c["dona_mary"]}')
 PY
 )"
@@ -78,14 +79,29 @@ _link() {  # imprime "   ↳ <url>" a partir del stderr de la CLI
 # Cuántas bodegas distintas tiene hoy Doña Mary. Lectura del propio sujeto,
 # simulada (--send=no): no envía transacción.
 issuers_count() {
-  stellar contract invoke --id "$CONTRACT_ID" --source dona_mary --network "$NET" --send=no -- \
-    read_stats --reader "$DONA_MARY" --subject_id "$SUBJECT_ID" 2>/dev/null \
+  # Sin vínculo todavía (contrato v4), read_stats falla: cuenta como 0.
+  { stellar contract invoke --id "$CONTRACT_ID" --source dona_mary --network "$NET" --send=no -- \
+    read_stats --reader "$DONA_MARY" --subject_id "$SUBJECT_ID" 2>/dev/null || true; } \
     | python3 -c 'import json,sys
 v=0
 for l in sys.stdin:
     try: v=json.loads(l)["issuers_count"]
     except Exception: pass
 print(v)'
+}
+
+# Contrato v4 (#55): el cliente se vincula a su seudónimo antes de su primera
+# nota. Si subject_of devuelve vacío, la plataforma invita y Doña Mary firma.
+vincular_si_falta() {
+  local actual
+  actual="$(stellar contract invoke --id "$CONTRACT_ID" --source plataforma --network "$NET" --send=no -- \
+    subject_of --subject_id "$SUBJECT_ID" 2>/dev/null || true)"
+  if [ -z "$actual" ] || [ "$actual" = "null" ]; then
+    echo "0) Doña Mary se vincula a su seudónimo (invita la plataforma, firma ella)."
+    call plataforma invite_subject --admin "$PLATAFORMA" --subject_id "$SUBJECT_ID" --subject "$DONA_MARY"
+    call dona_mary bind_subject --subject "$DONA_MARY" --subject_id "$SUBJECT_ID"
+    echo
+  fi
 }
 
 # --- Sembrar -----------------------------------------------------------------
@@ -97,6 +113,8 @@ if [ "$ANTES" -ge 2 ]; then
   exit 0
 fi
 echo
+
+vincular_si_falta
 
 echo "1) Bodega A-73 registra una nota de fiado para Doña Mary (7 días, rango 1k–5k)."
 call bodega_c create_note \
