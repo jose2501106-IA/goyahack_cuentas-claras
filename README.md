@@ -159,7 +159,7 @@ Siguiente paso (no bloquea la entrega de hoy):
 
 - ⏳ Backend mínimo: HMAC del teléfono → `subject_id`, datos fuera de cadena y semáforo (spec §8).
 - ⏳ Frontend con el flujo 1–5 y enlaces al explorador (spec §9).
-- ✅ Video de la demo (2:18): `demo/video/2026-09-27_cuentas-claras-video-demo.mp4`. Deck: https://gamma.app/docs/xo6lgd07eii2eea
+- ✅ Presentación Lean Canvas: https://gamma.app/docs/vp76udbb9wp1jns · Video de la demo: lo graba José (respaldo sin voz en `demo/video/`).
 
 ## Licencia
 

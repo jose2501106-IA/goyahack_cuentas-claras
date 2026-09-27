@@ -13,16 +13,16 @@
 
 ## 2. Ruta crítica (unos 45 minutos, en este orden)
 
-1. **Subir el video (10 min).**
-   - Archivo: `demo/video/2026-09-27_cuentas-claras-video-demo.mp4`. Dura 2:18: tarjetas con la historia, la corrida real de 5 pasos en el sitio y el cierre. Es un video sin voz.
+1. **Grabar y subir el video (máximo 3:00).** Lo graba José: la demo mostrando cómo funciona, más un elevator pitch guiado por el Lean Canvas.
    - Súbelo a YouTube como **«No listado»** (o a Google Drive con «Cualquier persona con el enlace»).
    - Título: `Cuentas Claras — GOYA HACK 2026 (Equipo Palabra)`.
    - Ábrelo en una ventana de incógnito para comprobar que se ve.
+   - Hay un respaldo sin voz en `demo/video/2026-09-27_cuentas-claras-video-demo.mp4` (2:18), solo por si no alcanza el tiempo.
 2. **Panel de CriptoUNAM (10 min).** Entra a criptounam.xyz/hackathon. Si falta, registra el equipo. Pega los campos de la sección 3, elige el track **Blockchain** y envía.
 3. **Stellar Apex (15–20 min).**
    - Mira el video instructivo del correo.
    - Crea el proyecto con los campos de la sección 4.
-   - Adjunta el deck (PDF o enlace de Gamma).
+   - Adjunta la presentación Lean Canvas (PDF o enlace de Gamma).
    - Súbelo al hackathon GOYA HACK desde la página del evento.
 4. **Comprobación final (5 min).**
    - Abre el repositorio, el sitio y el video en incógnito.
@@ -63,7 +63,7 @@
 - Repositorio: https://github.com/jose2501106-IA/goyahack_cuentas-claras
 - Sitio (demo verificable): https://cuentas-claras-lemon.vercel.app
 - Contrato v5 en el explorador: https://stellar.expert/explorer/testnet/contract/CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL
-- Deck (Gamma): https://gamma.app/docs/xo6lgd07eii2eea
+- Presentación Lean Canvas (Gamma): https://gamma.app/docs/vp76udbb9wp1jns
 - Video: *(el enlace de YouTube o Drive del paso 1)*
 
 ## 4. Textos para Stellar Apex
