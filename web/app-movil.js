@@ -1,5 +1,5 @@
 // Prototipo de la app de Cuentas Claras para celular (web/app.html; decisión #53).
-// Recorre los 6 pasos de la corrida real (web/datos/repeticion.json) como los vería Doña Mary
+// Recorre los 5 pasos de la corrida real (contrato v5, decisión #57) (web/datos/repeticion.json) como los vería Doña Mary
 // en su teléfono o Bodega B-40 en el mostrador. No firma ni envía nada: cada paso con
 // transacción enlaza a su comprobante real. Todo el texto de estado sale de aquí; los hashes,
 // del JSON (nunca escritos a mano). Microcopy: docs/campana-marketing.md §8.6.
@@ -17,20 +17,18 @@
       1: 'Tienes una nota de Bodega A-17 por aceptar: $5,000–$20,000, vence en 15 días.',
       2: 'Listo: la nota quedó firmada por los dos.',
       3: 'Cumpliste tu palabra. Bodega A-17 confirmó tu pago.',
-      4: 'Bodega B-40 pidió tu resumen sin permiso y no se le entregó.',
-      5: 'Diste permiso a Bodega B-40 por 30 días. Puedes quitarlo cuando quieras.',
-      6: 'Bodega B-40 consultó tu resumen hoy. Quedó registrado.',
+      4: 'Le enseñaste tu código a Bodega B-40 en el mostrador.',
+      5: 'Bodega B-40 consultó tu historial hoy. Quedó registrado.',
     },
     bodega: {
       1: 'Doña Mary todavía no llega a tu mostrador.',
       2: 'Doña Mary todavía no llega a tu mostrador.',
       3: 'Doña Mary llega a pedir fiado. No la conoces.',
-      4: 'No tienes permiso de este cliente. Pídeselo en el mostrador.',
-      5: 'Doña Mary te dio permiso por 30 días.',
-      6: 'Tu consulta quedó registrada.',
+      4: 'Doña Mary te enseñó su código.',
+      5: 'Tu consulta quedó registrada, con tu bodega.',
     },
   };
-  const PESTANA_DEL_PASO = { 1: 'notas', 2: 'notas', 3: 'notas', 4: 'permisos', 5: 'permisos', 6: 'historial' };
+  const PESTANA_DEL_PASO = { 1: 'notas', 2: 'notas', 3: 'notas', 4: 'codigo', 5: 'historial' };
 
   CC.secciones['app-montaje'] = function montarApp(destino) {
     const datos = raiz.CC_DATOS && raiz.CC_DATOS.repeticion;
@@ -46,7 +44,7 @@
     // ---------- Piezas ----------
     function comprobante(n, texto = 'Ver comprobante') {
       const p = paso(n);
-      if (!p || !p.url) return el('p', { class: 'app-sin-tx' }, 'Sin comprobante: no se envió transacción.');
+      if (!p || !p.url) return el('p', { class: 'app-sin-tx' }, 'Sin comprobante: no es una transacción; sucede en el mostrador.');
       return el('p', { class: 'app-comprobante' },
         CC.enlaceExterno(`${texto} · ${p.hash.slice(0, 8)}…${p.hash.slice(-6)}`, p.url, 'hash'));
     }
@@ -56,6 +54,20 @@
       type: 'button', class: `boton ${secundaria ? 'boton-secundario' : 'boton-primario'} app-accion`,
       onclick: () => ir(a, true),
     }, texto);
+
+    // Conteos del historial en el paso n. La consulta del paso 5 trae el total; esta
+    // corrida aporta una sola nota de Bodega A-17 (firmada en el paso 2 y pagada en el 3),
+    // así que lo anterior es el total menos esa nota (la de Bodega A-73, de sembrar.sh).
+    const R = datos.resumen_paso_5 || {};
+    const num = (k) => Number(R[k]) || 0;
+    function conteos(n) {
+      return {
+        firmadas: num('Notas aceptadas') - 1 + (n >= 2 ? 1 : 0),
+        cumplidas: num('Pagadas a tiempo') - 1 + (n >= 3 ? 1 : 0),
+        cerradas: num('Pagadas a tiempo') + num('Pagadas tarde') + num('Incumplidas') - 1 + (n >= 3 ? 1 : 0),
+        bodegas: num('Emisores distintos') - 1 + (n >= 2 ? 1 : 0),
+      };
+    }
 
     // ---------- Doña Mary ----------
     function pantallaNotas(n) {
@@ -78,41 +90,25 @@
       return [el('h2', { class: 'app-h' }, 'Mis notas'), nota, el('h3', { class: 'app-h3' }, 'Lo que quedó firmado'), lista];
     }
 
-    function pantallaPermisos(n) {
-      const partes = [el('h2', { class: 'app-h' }, 'Permisos')];
-      if (n < 4) {
-        partes.push(tarjeta(
-          el('p', { class: 'app-titulo' }, 'Nadie tiene permiso de pedir tu resumen.'),
-          el('p', null, 'Tu historial es tuyo. Tú decides a qué bodega le das permiso de consultarlo, y por cuánto tiempo.')));
-      }
+    function pantallaCodigo(n) {
+      const partes = [el('h2', { class: 'app-h' }, 'Mi código'),
+        tarjeta(
+          el('p', { class: 'app-codigo mono', 'aria-label': `Tu código empieza con ${datos.seudonimo_cliente}` }, datos.seudonimo_cliente),
+          el('p', null, 'Enséñalo en la bodega que tú quieras. Con él ven tu historial, sin tu nombre ni tus montos exactos.'),
+          n === 3 ? accion('Enseñar mi código a Bodega B-40', 4) : null)];
       if (n >= 4) {
-        partes.push(el('section', { class: 'app-tarjeta app-alerta' },
-          el('p', { class: 'app-titulo' }, 'Bodega B-40 pidió tu resumen sin permiso y no se le entregó.'),
-          el('p', { class: 'apoyo' }, 'El contrato lo rechazó. No se envió ninguna transacción.'),
-          comprobante(4)));
-      }
-      if (n === 4) {
         partes.push(tarjeta(
-          el('p', { class: 'app-titulo' }, '¿Das permiso a Bodega B-40 por 30 días?'),
-          el('ul', { class: 'app-ve' },
-            el('li', null, 'Verá cuántas notas cumpliste y en cuántas bodegas.'),
-            el('li', null, 'No verá montos exactos, productos ni tus datos.'),
-            el('li', null, 'Cada consulta te llegará como aviso y quedará registrada.')),
-          accion('Dar permiso', 5)));
+          el('div', { class: 'app-tarjeta-cabeza' }, el('p', { class: 'app-de' }, 'Bodega B-40'), chip('Le enseñaste tu código', 'firmada')),
+          el('p', null, 'Se lo enseñaste en el mostrador. No es una transacción.')));
       }
       if (n >= 5) {
-        partes.push(tarjeta(
-          el('div', { class: 'app-tarjeta-cabeza' }, el('p', { class: 'app-de' }, 'Bodega B-40'), chip('Vigente', 'firmada')),
-          el('p', null, 'Puede pedir tu resumen durante 30 días. Puedes quitar el permiso cuando quieras.'),
-          comprobante(5, 'Ver comprobante del permiso')));
+        partes.push(tarjeta(el('p', { class: 'app-titulo' }, 'Bodega B-40 consultó tu historial. Quedó registrado.'), comprobante(5, 'Ver comprobante de la consulta')));
       }
       return partes;
     }
 
     function pantallaHistorial(n) {
-      const firmadas = n >= 2 ? 1 : 0;
-      const cumplidas = n >= 3 ? 1 : 0;
-      const bodegas = n >= 2 ? 1 : 0;
+      const { firmadas, cumplidas, cerradas, bodegas } = conteos(n);
       const dato = (dt, dd) => el('div', null, el('dt', null, dt), el('dd', { class: 'mono' }, String(dd)));
       const partes = [
         el('h2', { class: 'app-h' }, 'Mi historial'),
@@ -121,17 +117,17 @@
           el('p', { class: 'sem sem-insuficiente app-semaforo' }, '○ Historial insuficiente'),
           el('p', null, 'Todavía no hay suficiente historial. Cada nota que cumples lo construye.'),
           el('ul', { class: 'app-condiciones' },
-            el('li', null, `3 notas cerradas (tienes ${cumplidas})`),
+            el('li', null, `3 notas cerradas (tienes ${cerradas})`),
             el('li', null, `2 bodegas distintas (tienes ${bodegas})`),
             el('li', null, '60 días de historial'))),
       ];
-      if (n >= 6) {
-        partes.push(el('h3', { class: 'app-h3' }, 'Consultas a tu resumen'),
-          tarjeta(el('p', { class: 'app-titulo' }, 'Bodega B-40 consultó tu resumen. Quedó registrado.'), comprobante(6)));
+      if (n >= 5) {
+        partes.push(el('h3', { class: 'app-h3' }, 'Consultas a tu historial'),
+          tarjeta(el('p', { class: 'app-titulo' }, 'Bodega B-40 consultó tu historial. Quedó registrado, con la bodega que preguntó.'), comprobante(5)));
       }
       partes.push(el('p', { class: 'app-privacidad' },
         'En la cadena no va tu nombre, tu teléfono ni el monto exacto: un seudónimo (',
-        el('span', { class: 'hash' }, datos.seudonimo_cliente), ') y un rango. La cadena es pública; el permiso decide quién puede pedir tu resumen de forma oficial y deja constancia.'));
+        el('span', { class: 'hash' }, datos.seudonimo_cliente), ') y un rango. La cadena es pública: cualquiera con tu código ve tu historial, sin tu nombre ni el monto exacto. Cada consulta formal queda registrada.'));
       return partes;
     }
 
@@ -140,34 +136,31 @@
       const cliente = tarjeta(
         el('div', { class: 'app-tarjeta-cabeza' },
           el('p', { class: 'app-de' }, 'Doña Mary'),
-          n <= 4 ? chip('Sin permiso', 'pendiente') : chip('Permiso vigente', 'firmada')),
-        el('p', { class: 'apoyo' }, 'Su nombre lo sabes tú, en el mostrador. En la cadena solo está su seudónimo: ',
-          el('span', { class: 'hash' }, datos.seudonimo_cliente)));
+          n >= 4 ? chip('Te enseñó su código', 'firmada') : chip('Cliente nueva', 'pendiente')),
+        el('p', { class: 'apoyo' }, 'Su nombre lo sabes tú, en el mostrador. En la cadena solo está su seudónimo, su código.'));
       const partes = [el('h2', { class: 'app-h' }, 'Mostrador · Bodega B-40'), cliente];
       if (n <= 2) partes.push(tarjeta(el('p', null, 'Todavía no llega. La nota de Doña Mary es con Bodega A-17 y tú no la ves.')));
-      if (n === 3) partes.push(tarjeta(el('p', { class: 'app-titulo' }, 'Doña Mary te pide fiado.'), el('p', null, 'No la conoces. Puedes pedir su resumen.'), accion('Pedir su resumen', 4)));
+      if (n === 3) partes.push(tarjeta(el('p', { class: 'app-titulo' }, 'Doña Mary te pide fiado.'), el('p', null, 'No la conoces. Si te enseña su código, puedes consultar su historial.'), accion('Doña Mary me enseñó su código', 4)));
       if (n === 4) {
-        partes.push(el('section', { class: 'app-tarjeta app-alerta' },
-          el('p', { class: 'app-titulo' }, 'Sin permiso: no se entrega el resumen.'),
-          el('p', null, 'No se envió ninguna transacción. Pídele permiso en el mostrador.')));
+        partes.push(tarjeta(
+          el('p', { class: 'app-titulo' }, 'Código del cliente'),
+          el('p', { class: 'app-codigo mono' }, datos.seudonimo_cliente),
+          el('p', { class: 'apoyo' }, 'Te lo enseñó en el mostrador; no es una transacción.'),
+          accion('Consultar historial', 5)));
       }
       if (n === 5) {
-        partes.push(tarjeta(el('p', { class: 'app-titulo' }, 'Doña Mary te dio permiso por 30 días.'), comprobante(5, 'Ver comprobante del permiso'), accion('Consultar su resumen', 6)));
-      }
-      if (n === 6) {
-        const r = datos.resumen_paso_6 || {};
-        const num = (k) => Number(r[k]) || 0;
-        const cerradas = num('Pagadas a tiempo') + num('Pagadas tarde') + num('Incumplidas');
+        const c = conteos(5);
+        const marca = (ok) => (ok ? '✓' : '✗');
         partes.push(tarjeta(
-          el('p', { class: 'app-titulo' }, 'Resumen de Doña Mary'),
+          el('p', { class: 'app-titulo' }, 'Historial de Doña Mary'),
           el('p', { class: 'sem sem-insuficiente app-semaforo' }, '○ Historial insuficiente'),
           el('ul', { class: 'app-condiciones' },
-            el('li', null, `✗ 3 notas cerradas (tiene ${cerradas})`),
-            el('li', null, `✗ 2 bodegas distintas (tiene ${num('Emisores distintos')})`),
-            el('li', null, '✗ 60 días de historial (su nota es del mismo día)')),
+            el('li', null, `${marca(c.cerradas >= 3)} 3 notas cerradas (tiene ${c.cerradas})`),
+            el('li', null, `${marca(c.bodegas >= 2)} 2 bodegas distintas (tiene ${c.bodegas})`),
+            el('li', null, '✗ 60 días de historial (sus notas son de esta semana)')),
           el('p', null, 'Historial insuficiente: todavía no hay suficientes notas cerradas para mostrar un semáforo. La decisión es tuya.'),
-          el('p', { class: 'apoyo' }, 'Tu consulta quedó registrada, y Doña Mary recibe el aviso.'),
-          comprobante(6, 'Ver comprobante de la consulta')));
+          el('p', { class: 'apoyo' }, 'Esta consulta queda registrada en la cadena, con la bodega que preguntó.'),
+          comprobante(5, 'Ver comprobante de la consulta')));
       }
       return partes;
     }
@@ -183,7 +176,7 @@
     const pantalla = el('div', { class: 'app-pantalla', tabindex: '-1' });
     const pestanas = {};
     const nav = el('nav', { class: 'app-nav', 'aria-label': 'Secciones de la app' },
-      ...[['notas', 'Notas', '▤'], ['permisos', 'Permisos', '⚿'], ['historial', 'Mi historial', '◔']].map(([clave, texto, icono]) => {
+      ...[['notas', 'Notas', '▤'], ['codigo', 'Mi código', '⌗'], ['historial', 'Mi historial', '◔']].map(([clave, texto, icono]) => {
         pestanas[clave] = el('button', { type: 'button', class: 'app-pestana', onclick: () => { estado.pestana = clave; pintar(false); } },
           el('span', { class: 'app-icono', 'aria-hidden': 'true' }, icono), el('span', null, texto), el('span', { class: 'app-punto', 'aria-hidden': 'true' }));
         return pestanas[clave];
@@ -230,7 +223,7 @@
         b.classList.toggle('con-novedad', !activa && clave === PESTANA_DEL_PASO[n]);
       }
       const contenido = estado.rol === 'bodega' ? pantallaBodega(n)
-        : estado.pestana === 'permisos' ? pantallaPermisos(n)
+        : estado.pestana === 'codigo' ? pantallaCodigo(n)
           : estado.pestana === 'historial' ? pantallaHistorial(n) : pantallaNotas(n);
       pantalla.replaceChildren(...contenido.filter(Boolean));
       pantalla.dataset.rol = estado.rol;

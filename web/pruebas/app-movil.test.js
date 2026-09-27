@@ -38,3 +38,11 @@ test('el sitio enlaza a la app', () => {
   const index = fs.readFileSync(path.join(WEB, 'index.html'), 'utf8');
   assert.ok((index.match(/href="app\.html"/g) || []).length >= 2);
 });
+
+test('v5 (#57): la pestaña «Permisos» es «Mi código» y Bodega B-40 consulta con el código', () => {
+  assert.match(js, /\['codigo', 'Mi código', /);
+  assert.match(js, /'Doña Mary me enseñó su código'/);
+  assert.match(js, /'Consultar historial'/);
+  assert.doesNotMatch(html + js, /permiso|Pedir su resumen/i);
+  assert.doesNotMatch(js, /resumen_paso_6/);
+});
