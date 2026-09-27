@@ -1,5 +1,7 @@
 # Guion de demo — Cuentas Claras (v2: app y gemelo digital)
 
+> **Superado (26-sep, 23:55):** usa `2026-09-26_guion-demo-v3.md` (5 pasos, sin permiso, #57).
+
 > **Borrador v2 — pendiente de aprobación de José** · 26-sep-2026. Sustituye a `2026-09-25_guion-demo.md` (v1, bitácora).
 > **Demo principal (nivel 1):** la app local con el gemelo digital del Pasillo A-B como portada.
 > **Contrato:** [`CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL`](https://stellar.expert/explorer/testnet/contract/CD4DJQC4QBE7DNVBJMMVTIHUWDC76AE2JSWJCWRKDXDASJUXSH2Q37WL), en Stellar testnet.

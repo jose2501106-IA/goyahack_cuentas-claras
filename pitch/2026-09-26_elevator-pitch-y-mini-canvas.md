@@ -1,8 +1,8 @@
 # Elevator pitch, mini canvas y entrada al mercado — Cuentas Claras
 
 > **Borrador v1, pendiente de aprobación de José** · sáb 26-sep-2026, 20:45 · Equipo **Palabra**
-> **Funciona con las dos salidas de la decisión #57** (retroalimentación del mentor sobre el permiso). Las líneas marcadas con ◆ no dependen del permiso: dicen lo que es cierto en los dos casos.
-> **Contrato vigente:** v5 (#57), `CD4DJQC4…Q37WL`, desplegado en testnet el 26-sep a las 22:47, con 22 pruebas en verde.
+> **Al día con la decisión #57 (aprobada, 21:20):** ya no hay permiso; el cliente enseña su código. Las líneas marcadas con ◆ son las que tocan ese punto.
+> **Contrato vigente:** v5, `CD4DJQ…Q37WL`, en Stellar testnet, con 22 pruebas en verde.
 > Datos con su ID de `docs/hoja-de-hechos.md` o la etiqueta *experiencia de José*. Nada inventado; lo que no está medido dice *por validar*.
 
 ## 1. Mini canvas (la guía que tienes a la vista mientras presentas)
@@ -14,7 +14,7 @@
 | **Para quién** | La bodega que fía (empezamos por abarrotes) y su cliente: tienditas, fondas y locatarios. |
 | **Solución: tres reglas** | 1. Ninguna bodega escribe sola una deuda: firman los dos. 2. Nadie borra ni maquilla la nota, ni nosotros. 3. ◆ El historial es del cliente: es público y verificable, sin su nombre, y él lo lleva a la bodega que quiera. |
 | **¿Por qué blockchain?** | Bodegas que compiten no confían en una base de datos de otra. Una cadena pública es el registro que ninguna controla. Es público y verificable, sin nombre ni monto exacto. |
-| **Prueba** | Funciona hoy en Stellar testnet. El contrato no se puede actualizar. Nuestra propia auditoría encontró un hueco crítico (una bodega podía aceptar su propia nota) y lo cerramos con un contrato nuevo, la v4. |
+| **Prueba** | Funciona hoy en Stellar testnet. El contrato no se puede actualizar. Nuestra propia auditoría encontró un hueco crítico (una bodega podía aceptar su propia nota) y lo cerramos. Un mentor nos hizo ver que el permiso sobraba y lo quitamos. Cada cambio fue un contrato nuevo (hoy, la v5). |
 | **Entrada al mercado** | Una bodega ancla, primera firma en el mostrador, luego una segunda bodega. La bodega paga; el cliente nunca. |
 | **Qué pedimos** | Ayuda para un piloto con una bodega y sus clientes, y el contacto con un primer lector (un banco o una financiera). |
 
@@ -70,14 +70,16 @@
 
 ## 4. Si preguntan (para después del pitch)
 
-- **◆ «Si es público, ¿para qué el permiso?»**
+- **◆ «Si es público, ¿qué controla el cliente?»**
   - Lo que está en la cadena es público y verificable; esa es la idea.
-  - El permiso no esconde nada: es la consulta oficial, la que deja constancia de quién preguntó, y es la base de nuestro argumento para no operar como sociedad de información crediticia (pendiente del dictamen legal).
-  - Sin el seudónimo no hay forma de ligar ese historial con una persona: sale de una llave que no está en la cadena.
-  - *(Si se aprueba la #57, la respuesta cambia a: «el cliente decide a quién le da su código».)*
+  - El cliente decide a qué bodega le enseña su código. Sin ese código no hay forma de ligar el historial con una persona: el código sale de una llave que no está en la cadena, y no hay directorio de clientes.
+  - Cada consulta formal queda registrada, con la bodega que preguntó.
+- **◆ «¿Por qué quitaron el permiso?»**
+  - Un mentor nos hizo ver que era redundante, porque la cadena es pública. Tenía razón: el permiso nunca escondía nada.
+  - Como el contrato no se puede actualizar, el cambio fue un contrato nuevo, la v5, a la vista de todos.
 - **«¿Esto es un buró?»**
   - No recopilamos ni vendemos historiales, ni damos calificaciones.
-  - El cliente porta el suyo y la bodega decide.
+  - El cliente porta el suyo, decide a quién le enseña su código, y la bodega decide si le fía.
   - Antes de la segunda bodega pedimos un dictamen legal.
 - **«¿Y si una bodega inventa un cliente?»**
   - En la v4, el cliente se vincula una sola vez: la plataforma lo invita y él confirma con su firma. En el piloto, la invitación va después de verificar su teléfono.

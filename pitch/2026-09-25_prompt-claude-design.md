@@ -1,5 +1,7 @@
 # Prompt para Claude Design — presentación de Cuentas Claras
 
+> **Superado (26-sep, 23:55):** usa `2026-09-26_prompt-claude-design-v2.md` (8 diapositivas, la historia de Doña Mary, sin permiso).
+
 **Estado:** borrador del 25-sep-2026 (15:00), actualizado el 26-sep a las 13:10 con el gemelo digital, los dos huecos cerrados y el Contract ID vigente. Cópialo completo, desde «Contexto» hasta el final del bloque, en Claude Design. Si tienes capturas reales de la demo o el Contract ID, pégalos también; si no, deja los marcadores [CONFIRMAR].
 
 Base: `docs/lean-canvas.md`, `docs/identidad-visual.md`, `pitch/2026-09-25_deck.md`, `docs/hoja-de-hechos.md`.

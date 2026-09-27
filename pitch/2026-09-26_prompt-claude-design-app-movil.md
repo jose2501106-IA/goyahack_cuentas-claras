@@ -1,5 +1,7 @@
 # Prompt para Claude Design — app móvil de Cuentas Claras (tema dual)
 
+> **Aviso (26-sep, 23:55; #57):** la app ya no tiene pestaña «Permisos». Ahora es «Mi código»: Doña Mary enseña su código y la bodega consulta. La app construida está en `web/app.html`, y este prompt solo se usa si quieres una versión visual aparte.
+
 **Uso:** copia el bloque completo en Claude Design. Si quieres, sube también `demo/capturas/2026-09-26_paletas-movil.png` como referencia de color y `demo/capturas/web-inicio-390.png` como referencia del estado actual. El diseño que salga sirve de guía para la tarea 9 de `docs/cola-de-trabajo.md` («La app en tu mano») y para el deck. Base: `docs/diseno-web-movil.md` (decisiones #52 y #53).
 
 ---

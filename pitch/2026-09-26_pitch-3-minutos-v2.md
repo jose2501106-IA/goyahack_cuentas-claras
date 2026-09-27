@@ -1,5 +1,7 @@
 # Pitch de 3 minutos — Cuentas Claras (v2)
 
+> **Superado (26-sep, 23:55):** usa `2026-09-26_pitch-3-minutos-v3.md`. Esta versión todavía cuenta el flujo con permiso y «los dos huecos».
+
 > **Borrador v2 — pendiente de aprobación de José** · 26-sep-2026 · Equipo **Palabra** · GOYA HACK · track Blockchain
 > Sustituye a `2026-09-25_pitch-3-minutos.md` (v1, bitácora). Cambios: la app con el **gemelo digital del Pasillo A-B** es la demo (#47, #48); la historia de los **dos huecos que cerramos** (#42, #46) pasa a ser el argumento de «¿por qué blockchain?»; «historial insuficiente» se presenta como virtud (#44); el refrán abre y cierra.
 > Estado: contrato `CD4DJQ…Q37WL` en testnet (v5, #57), 22 pruebas en verde; app de cuatro vistas y gemelo digital funcionando en el Codespace. Lo que depende del ensayo está marcado **[CONFIRMAR]**.
