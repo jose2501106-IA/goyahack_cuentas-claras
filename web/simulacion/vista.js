@@ -64,7 +64,7 @@
         el('span', { class: 'sem sem-insuficiente' }, '○ Historial insuficiente')),
       el('p', null, el('strong', null, 'Bodegas: '), 'el tono de la bodega indica cuánto ha fiado ',
         el('span', { class: 'tonos', 'aria-hidden': 'true' }, TONOS.map((_, i) => el('span', { class: `muestra-tono-${i}` }))),
-        ' de poco a mucho. Trazo de tinta: nota firmada por los dos. Sello: cumplida. Marca gris: incumplida. Línea punteada: permiso.'));
+        ' de poco a mucho. Trazo de tinta: nota firmada por los dos. Sello: cumplida. Marca gris: incumplida. Línea punteada: le enseñó su código.'));
     if (typeof matchMedia === 'function' && matchMedia('(min-width: 900px)').matches) leyenda.open = true;
     destino.append(leyenda);
 
@@ -134,9 +134,9 @@
     const tablaParams = el('tbody');
     const detallesParams = el('details', { class: 'detalles-sim' },
       el('summary', null, 'Parámetros de la simulación (inventados, editables)'),
-      el('p', { class: 'apoyo' }, 'Probabilidades por perfil. Se normalizan para que pagar a tiempo, tarde y no pagar sumen 1. «Da permiso» es la probabilidad de aceptar cuando una bodega nueva se lo pide. Se aplican al reiniciar.'),
+      el('p', { class: 'apoyo' }, 'Probabilidades por perfil. Se normalizan para que pagar a tiempo, tarde y no pagar sumen 1. «Enseña su código» es la probabilidad de enseñarlo cuando una bodega nueva le pide historial. Se aplican al reiniciar.'),
       el('div', { class: 'tabla-marco' }, el('table', { class: 'tabla tabla-params' },
-        el('thead', null, el('tr', null, ['Perfil', 'Clientes', 'Paga a tiempo', 'Paga tarde', 'No paga', 'Da permiso'].map((t) => el('th', { scope: 'col' }, t)))),
+        el('thead', null, el('tr', null, ['Perfil', 'Clientes', 'Paga a tiempo', 'Paga tarde', 'No paga', 'Enseña su código'].map((t) => el('th', { scope: 'col' }, t)))),
         tablaParams)),
       el('button', { type: 'button', class: 'boton boton-secundario boton-chico', onclick: () => { leerParams(); reiniciar(); } }, 'Aplicar y reiniciar'));
     destino.append(detallesParams);
@@ -145,10 +145,10 @@
       tablaParams.replaceChildren(...Object.entries(perfiles).map(([k, v]) => el('tr', null,
         el('th', { scope: 'row' }, v.nombre),
         el('td', { class: 'mono' }, String(A.REPARTO[k] || 0)),
-        ['aTiempo', 'tarde', 'noPaga', 'permiso'].map((campo) => el('td', null,
+        ['aTiempo', 'tarde', 'noPaga', 'codigo'].map((campo) => el('td', null,
           el('input', {
             type: 'number', min: '0', max: '1', step: '0.01', value: String(+Number(v[campo]).toFixed(2)),
-            'data-perfil': k, 'data-campo': campo, 'aria-label': `${v.nombre}: ${campo === 'aTiempo' ? 'paga a tiempo' : campo === 'tarde' ? 'paga tarde' : campo === 'noPaga' ? 'no paga' : 'da permiso'}`,
+            'data-perfil': k, 'data-campo': campo, 'aria-label': `${v.nombre}: ${campo === 'aTiempo' ? 'paga a tiempo' : campo === 'tarde' ? 'paga tarde' : campo === 'noPaga' ? 'no paga' : 'enseña su código'}`,
           }))))));
     }
     function leerParams() {
@@ -236,7 +236,7 @@
       const b = p.bodegas.find((x) => x.id === e.bodega);
       const lugar = b && b.lugar;
       if (!lugar) return;
-      if (e.tipo === 'fio' || e.tipo === 'permiso' || e.tipo === 'sin_permiso' || e.tipo === 'no_fio') {
+      if (e.tipo === 'fio' || e.tipo === 'codigo' || e.tipo === 'sin_codigo' || e.tipo === 'no_fio') {
         const fr = frente(e.bodega);
         moverFicha(e.cliente, fr.x, fr.y);
         if (e.tipo === 'fio') {
@@ -244,14 +244,14 @@
           const t1 = CC.Gemelo.trazo(mapa, 'trazos', fr.a, f, { animar: anim, curva: 1.2, clase: 'trazo-sim' });
           const t2 = CC.Gemelo.trazo(mapa, 'trazos', f, fr.a, { animar: anim, curva: -1.2, clase: `trazo-sim${anim ? ' dibujar-despues' : ''}` });
           quitarDespues([t1, t2], Math.max(1600, dur * 1.2));
-        } else if (e.tipo === 'permiso') {
+        } else if (e.tipo === 'codigo') {
           const pu = S('path', { d: mapa.camino(fr.x, fr.y, fr.a.x, fr.a.y, 0.8), class: `puente-linea${anim ? ' aparecer' : ''}` });
           mapa.capas.puente.append(pu);
           quitarDespues([pu], Math.max(1600, dur * 1.2));
         } else {
           const caja = mapa.bodegas[lugar];
-          caja.g.classList.add('sin-permiso-sim');
-          setTimeout(() => caja.g.classList.remove('sin-permiso-sim'), Math.max(900, dur));
+          caja.g.classList.add('sin-codigo-sim');
+          setTimeout(() => caja.g.classList.remove('sin-codigo-sim'), Math.max(900, dur));
         }
       } else if (e.tipo === 'pago') {
         mapa.capas.sello.replaceChildren(); // un solo sello a la vez
@@ -325,7 +325,7 @@
         const ult = b.ultima;
         tarjeta.replaceChildren(
           el('p', { class: 'pensamiento-titulo' }, b.nombre),
-          el('p', { class: 'apoyo' }, 'Bodega ficticia. Regla: verde, fía lo pedido; amarillo, la mitad; rojo, no fía; sin permiso o con historial insuficiente, fía poco ($1k–$5k) para conocerlo.'),
+          el('p', { class: 'apoyo' }, 'Bodega ficticia. Regla: verde, fía lo pedido; amarillo, la mitad; rojo, no fía; sin su código o con historial insuficiente, fía poco ($1k–$5k) para conocerlo.'),
           el('dl', { class: 'datos-sim' },
             el('div', null, el('dt', null, 'Notas firmadas'), el('dd', { class: 'mono' }, String(b.notas))),
             el('div', null, el('dt', null, 'Ha fiado en total'), el('dd', { class: 'mono' }, A.pesos(b.fiado)))),

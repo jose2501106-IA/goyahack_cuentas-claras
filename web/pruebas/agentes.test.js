@@ -39,23 +39,23 @@ test('misma semilla, misma historia', () => {
   assert.deepEqual(a.eventos, b.eventos);
 });
 
-test('las bodegas siguen la regla: rojo no fía; con permiso y verde fía lo pedido; sin permiso, $1k–$5k', () => {
+test('las bodegas siguen la regla: rojo no fía; con código y verde fía lo pedido; sin código, $1k–$5k', () => {
   const p = correr(120);
   for (const e of p.eventos.filter((x) => x.tipo === 'fio')) {
     const n = p.mundo.notas.find((x) => x.id === e.nota);
-    if (e.decision === 'sin_permiso' || e.decision === 'insuficiente') assert.ok(n.monto >= 500 && n.monto <= 5000, `${n.monto}`);
+    if (e.decision === 'sin_codigo' || e.decision === 'insuficiente') assert.ok(n.monto >= 500 && n.monto <= 5000, `${n.monto}`);
     assert.notEqual(e.decision, 'rojo');
   }
   assert.ok(p.eventos.some((e) => e.tipo === 'no_fio' && e.decision === 'rojo'));
 });
 
-test('ninguna bodega lee un resumen sin permiso vigente (constancia de lecturas)', () => {
+test('ninguna bodega lee un historial sin que le enseñen el código (constancia de lecturas)', () => {
   const p = correr(90);
   assert.ok(p.mundo.lecturas.length > 0);
-  // Reconstruye los permisos a partir de los eventos: cada lectura tuvo permiso dado en los 30 días previos.
-  const dados = p.eventos.filter((e) => e.tipo === 'permiso');
+  // Reconstruye a partir de los eventos: cada lectura tuvo un código enseñado en los 30 días previos.
+  const dados = p.eventos.filter((e) => e.tipo === 'codigo');
   for (const l of p.mundo.lecturas) {
-    assert.ok(dados.some((d) => d.cliente === l.cliente && d.bodega === l.lector && d.dia <= l.dia && l.dia < d.dia + M.PERMISO_DIAS));
+    assert.ok(dados.some((d) => d.cliente === l.cliente && d.bodega === l.lector && d.dia <= l.dia && l.dia < d.dia + M.CODIGO_DIAS));
   }
 });
 
@@ -65,5 +65,5 @@ test('las frases son de plantilla y usan el vocabulario permitido', () => {
   assert.ok(frases.length > 20);
   const vetado = new RegExp(['sco' + 're', 'calific' + 'aci', 'bur' + 'ó', 'anó' + 'nim'].join('|'), 'i');
   for (const f of frases) assert.ok(!vetado.test(f), f);
-  assert.equal(A.frase('sin_permiso', 3000), 'Sin su permiso no veo su resumen; le fío poco, $3,000, para empezar.');
+  assert.equal(A.frase('sin_codigo', 3000), 'Sin su código no veo su historial; le fío poco, $3,000, para empezar.');
 });

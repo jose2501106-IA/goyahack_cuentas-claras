@@ -298,14 +298,10 @@ main:focus { outline: none; }
 .bodega-num { font-family: var(--f-mono); font-size: 2.3px; fill: var(--texto); }
 .bodega-marcada .bodega-tapa { stroke-width: 2px; fill: var(--bodega-marcada); }
 .bodega-marcada .bodega-num { font-weight: 600; fill: var(--firma); }
-.bodega-etiqueta, .ficha .ficha-nombre, .corredor-rotulo, .texto-sin-permiso, .puente-texto {
+.bodega-etiqueta, .ficha .ficha-nombre, .corredor-rotulo, .puente-texto {
   paint-order: stroke; stroke: var(--fondo); stroke-width: 0.9px; stroke-linejoin: round;
 }
 .bodega-etiqueta { font-family: var(--f-titulo); font-weight: 800; font-size: 3.4px; fill: var(--firma); }
-.bodega-marcada.sin-permiso .bodega-tapa { fill: var(--sin-permiso); stroke: var(--texto-2); }
-.bodega-marcada.sin-permiso .bodega-cara { fill: var(--sin-permiso-cara); }
-.bodega.parpadeo { animation: parpadeo 400ms steps(2, jump-none) 3; }
-.texto-sin-permiso { font-family: var(--f-texto); font-weight: 700; font-size: 2.5px; fill: var(--texto); }
 
 .ficha circle { fill: var(--superficie); stroke: var(--firma); stroke-width: 2px; vector-effect: non-scaling-stroke; }
 .ficha-iniciales { font-family: var(--f-mono); font-weight: 600; font-size: 2.5px; fill: var(--firma); }
@@ -329,7 +325,6 @@ main:focus { outline: none; }
 
 @keyframes dibujar { to { stroke-dashoffset: 0; } }
 @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
-@keyframes parpadeo { 0% { opacity: 1; } 100% { opacity: 0.35; } }
 @keyframes caer {
   from { opacity: 0; transform: translateY(-7px) rotate(-22deg) scale(1.3); }
   to { opacity: 1; transform: translateY(0) rotate(-12deg) scale(1); }
@@ -338,7 +333,7 @@ main:focus { outline: none; }
 .rotulos-mapa { margin: 0; display: flex; flex-wrap: wrap; gap: 0.2rem 1.5rem; font-family: var(--f-mono); font-size: 1rem; color: var(--texto-2); }
 
 @media (prefers-reduced-motion: reduce) {
-  .maqueta, .dibujar, .aparecer, .parpadeo, .sello-mapa.caer { animation: none !important; transition: none !important; }
+  .maqueta, .dibujar, .aparecer, .sello-mapa.caer { animation: none !important; transition: none !important; }
   .dibujar { stroke-dashoffset: 0; }
 }
 
@@ -375,7 +370,7 @@ main:focus { outline: none; }
 .marco-sim.noche { background-color: var(--noche); }
 .bodega-sim .bodega-tapa { stroke-width: 1.8px; }
 .bodega-sim { cursor: pointer; }
-.bodega-sim.sin-permiso-sim .bodega-tapa { fill: var(--sin-permiso) !important; stroke: var(--texto-2); }
+.bodega-sim.sin-codigo-sim .bodega-tapa { fill: var(--sin-permiso) !important; stroke: var(--texto-2); }
 .bodega.elegida .bodega-tapa { stroke: var(--sello); stroke-width: 2.5px; }
 .ficha-sim { cursor: pointer; transition: transform 700ms ease; }
 .ficha-sim circle { fill: var(--superficie); stroke: var(--firma); stroke-width: 1.2px; vector-effect: non-scaling-stroke; }

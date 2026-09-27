@@ -8,12 +8,13 @@
   const M = (typeof module !== 'undefined' && module.exports) ? require('./motor.js') : raiz.CC.Motor;
 
   // Parámetros de simulación: inventados para ilustrar las reglas; no son datos de la Central.
-  // aTiempo + tarde + noPaga = 1. permiso = probabilidad de dar permiso cuando una bodega lo pide.
+  // aTiempo + tarde + noPaga = 1. codigo = probabilidad de enseñar su código cuando una
+  // bodega nueva le pide historial (contrato v5, decisión #57).
   const PERFILES_BASE = Object.freeze({
-    cumplido: { nombre: 'Cumplido', aTiempo: 0.95, tarde: 0.05, noPaga: 0, permiso: 0.9 },
-    tarde: { nombre: 'A veces tarde', aTiempo: 0.70, tarde: 0.28, noPaga: 0.02, permiso: 0.8 },
-    olvidadizo: { nombre: 'Olvidadizo', aTiempo: 0.50, tarde: 0.40, noPaga: 0.10, permiso: 0.7 },
-    moroso: { nombre: 'Moroso', aTiempo: 0.30, tarde: 0.20, noPaga: 0.50, permiso: 0.6 },
+    cumplido: { nombre: 'Cumplido', aTiempo: 0.95, tarde: 0.05, noPaga: 0, codigo: 0.9 },
+    tarde: { nombre: 'A veces tarde', aTiempo: 0.70, tarde: 0.28, noPaga: 0.02, codigo: 0.8 },
+    olvidadizo: { nombre: 'Olvidadizo', aTiempo: 0.50, tarde: 0.40, noPaga: 0.10, codigo: 0.7 },
+    moroso: { nombre: 'Moroso', aTiempo: 0.30, tarde: 0.20, noPaga: 0.50, codigo: 0.6 },
   });
   // Cuántos clientes de cada perfil (40 en total).
   const REPARTO = Object.freeze({ cumplido: 14, tarde: 12, olvidadizo: 8, moroso: 6 });
@@ -36,8 +37,8 @@
     const t = Math.max(0, Number(perfil.tarde) || 0);
     const n = Math.max(0, Number(perfil.noPaga) || 0);
     const s = a + t + n || 1;
-    const permiso = Math.min(1, Math.max(0, Number(perfil.permiso) || 0));
-    return { ...perfil, aTiempo: a / s, tarde: t / s, noPaga: n / s, permiso };
+    const codigo = Math.min(1, Math.max(0, Number(perfil.codigo) || 0));
+    return { ...perfil, aTiempo: a / s, tarde: t / s, noPaga: n / s, codigo };
   }
 
   const pesos = (n) => `$${Math.round(n).toLocaleString('en-US')}`;
@@ -115,9 +116,9 @@
         const falta = sem.condiciones.filter((c) => !c.cumple).map((c) => c.texto).join('; ');
         return `Historial insuficiente (pide ${falta}); le fío poco, ${pesos(monto)}, para empezar a conocerlo.`;
       }
-      case 'sin_permiso':
+      case 'sin_codigo':
       default:
-        return `Sin su permiso no veo su resumen; le fío poco, ${pesos(monto)}, para empezar.`;
+        return `Sin su código no veo su historial; le fío poco, ${pesos(monto)}, para empezar.`;
     }
   }
 
@@ -127,7 +128,7 @@
     return e;
   }
 
-  // Un cliente pide fiado en una bodega: permiso, consulta, decisión y firmas.
+  // Un cliente pide fiado en una bodega: código, consulta, decisión y firmas.
   function pedirFiado(p, cliente, bodega) {
     const m = p.mundo;
     const perfil = p.perfiles[cliente.perfil];
@@ -136,16 +137,16 @@
 
     let stats = null;
     let sem = null;
-    let decision = 'sin_permiso';
-    if (!M.permisoVigente(m, cliente.id, bodega.id)) {
-      if (p.azar() < perfil.permiso) {
-        M.darPermiso(m, cliente.id, bodega.id, cliente.id);
-        salida.push(evento(p, { tipo: 'permiso', bodega: bodega.id, cliente: cliente.id, texto: `${cliente.nombre} dio permiso a ${bodega.nombre} por 30 días` }));
+    let decision = 'sin_codigo';
+    if (!M.conoceCodigo(m, cliente.id, bodega.id)) {
+      if (p.azar() < perfil.codigo) {
+        M.ensenarCodigo(m, cliente.id, bodega.id, cliente.id);
+        salida.push(evento(p, { tipo: 'codigo', bodega: bodega.id, cliente: cliente.id, texto: `${cliente.nombre} le enseñó su código a ${bodega.nombre}` }));
       } else {
-        salida.push(evento(p, { tipo: 'sin_permiso', bodega: bodega.id, cliente: cliente.id, texto: `${cliente.nombre} no dio permiso a ${bodega.nombre}: no se entrega el resumen` }));
+        salida.push(evento(p, { tipo: 'sin_codigo', bodega: bodega.id, cliente: cliente.id, texto: `${cliente.nombre} no le enseñó su código a ${bodega.nombre}: no hay consulta` }));
       }
     }
-    if (M.permisoVigente(m, cliente.id, bodega.id)) {
+    if (M.conoceCodigo(m, cliente.id, bodega.id)) {
       stats = M.leerResumen(m, bodega.id, cliente.id);
       sem = M.semaforo(stats, M.ahoraSeg(m));
       decision = sem.color;

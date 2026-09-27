@@ -82,31 +82,31 @@ test('gracia de 30 días: incumplida solo después de vencer + 30, y solo por la
   assert.deepEqual([r.defaulted, r.overdue_open], [1, 0]);
 });
 
-test('permiso obligatorio para cualquier bodega, incluida la que ya le fió (#46)', () => {
+test('sin el código ninguna bodega consulta, incluida la que ya le fió (simplificación del motor; v5 #57)', () => {
   const m = mundoCon();
   const n = M.crearNota(m, { bodega: 'b1', cliente: 'c1', monto: 3000, plazo: 7 });
   M.aceptarNota(m, n.id, 'c1');
-  falla(() => M.leerResumen(m, 'b1', 'c1'), 'SinPermiso'); // la emisora tampoco
-  falla(() => M.leerResumen(m, 'b2', 'c1'), 'SinPermiso');
+  falla(() => M.leerResumen(m, 'b1', 'c1'), 'SinCodigo'); // la emisora tampoco
+  falla(() => M.leerResumen(m, 'b2', 'c1'), 'SinCodigo');
   assert.equal(M.leerResumen(m, 'c1', 'c1').accepted, 1); // el propio cliente sí
-  falla(() => M.darPermiso(m, 'c1', 'b2', 'b2'), 'NoEsParte'); // la bodega no se lo da sola
-  M.darPermiso(m, 'c1', 'b2', 'c1');
+  falla(() => M.ensenarCodigo(m, 'c1', 'b2', 'b2'), 'NoEsParte'); // la bodega no se lo da sola
+  M.ensenarCodigo(m, 'c1', 'b2', 'c1');
   assert.equal(M.leerResumen(m, 'b2', 'c1').accepted, 1);
-  falla(() => M.leerResumen(m, 'b1', 'c1'), 'SinPermiso'); // el permiso es por bodega
+  falla(() => M.leerResumen(m, 'b1', 'c1'), 'SinCodigo'); // el código se enseña a cada bodega
   assert.equal(m.lecturas.length, 2); // cada lectura deja constancia
 });
 
-test('el permiso dura 30 días y se puede quitar', () => {
+test('la simulación vuelve a pedir el código a los 30 días', () => {
   const m = mundoCon(10);
-  M.darPermiso(m, 'c1', 'b2', 'c1');
+  M.ensenarCodigo(m, 'c1', 'b2', 'c1');
   m.dia = 39;
-  assert.ok(M.permisoVigente(m, 'c1', 'b2'));
+  assert.ok(M.conoceCodigo(m, 'c1', 'b2'));
   m.dia = 40;
-  assert.ok(!M.permisoVigente(m, 'c1', 'b2'));
-  falla(() => M.leerResumen(m, 'b2', 'c1'), 'PermisoVencido');
-  M.darPermiso(m, 'c1', 'b2', 'c1');
-  M.quitarPermiso(m, 'c1', 'b2', 'c1');
-  falla(() => M.leerResumen(m, 'b2', 'c1'), 'SinPermiso');
+  assert.ok(!M.conoceCodigo(m, 'c1', 'b2'));
+  falla(() => M.leerResumen(m, 'b2', 'c1'), 'CodigoVencido');
+  M.ensenarCodigo(m, 'c1', 'b2', 'c1');
+  M.olvidarCodigo(m, 'c1', 'b2', 'c1');
+  falla(() => M.leerResumen(m, 'b2', 'c1'), 'SinCodigo');
 });
 
 test('azar con semilla: misma semilla, misma secuencia', () => {

@@ -9,9 +9,12 @@
 // - Pago: lo confirma la bodega emisora; a tiempo si el día ≤ vencimiento, si no, tarde.
 // - Vencida: aceptada y sin pagar después del vencimiento.
 // - Incumplida: solo la bodega emisora, y solo si el día > vencimiento + 30 días de gracia.
-// - Permiso: lo da el cliente a una bodega y dura 30 días. Sin permiso vigente nadie lee
-//   el resumen, TAMPOCO la bodega que ya le fió (decisión #46). El cliente lee el suyo.
-//   Cada lectura queda registrada (constancia).
+// - Código (contrato v5, decisión #57): el cliente enseña su código (su seudónimo) a la
+//   bodega que quiera, y con él la bodega consulta su historial. Cada lectura queda
+//   registrada (constancia). El cliente lee el suyo.
+//   Simplificación declarada: la simulación conserva la regla anterior (la #57 pidió no
+//   cambiar el motor): la bodega usa el código 30 días y después se lo vuelve a pedir, y
+//   la que ya le fió también se lo pide. En el contrato v5, quien tiene el código lee.
 // - Semáforo: el mismo de backend/semaforo.js (spec frontend §4); una prueba los compara.
 //
 // Simplificación declarada: en el contrato, una nota marcada «vencida» con `touch` ya no
@@ -24,7 +27,7 @@
   const TS_BASE = 1_800_000_000;  // origen arbitrario del reloj simulado, en segundos
   const VENTANA_ACEPTAR_DIAS = 3; // accept_window: 72 h
   const GRACIA_DIAS = 30;         // grace_period
-  const PERMISO_DIAS = 30;        // consent_ttl
+  const CODIGO_DIAS = 30;        // simplificación: la simulación vuelve a pedir el código a los 30 días
   const PLAZOS = Object.freeze([7, 15, 30]);
 
   // --- Semáforo: copia de la fórmula de backend/semaforo.js. Cambiar en los dos. ---
@@ -129,12 +132,12 @@
   // ---------- Mundo simulado ----------
 
   function crearMundo() {
-    return { dia: 0, notas: [], permisos: new Map(), lecturas: [], siguienteId: 1 };
+    return { dia: 0, notas: [], codigos: new Map(), lecturas: [], siguienteId: 1 };
   }
 
   const ts = (dia) => TS_BASE + dia * DIA;
   function ahoraSeg(m) { return ts(m.dia); }
-  const clavePermiso = (cliente, bodega) => `${cliente}|${bodega}`;
+  const claveCodigo = (cliente, bodega) => `${cliente}|${bodega}`;
 
   function buscar(m, id) {
     const n = m.notas.find((x) => x.id === id);
@@ -204,18 +207,18 @@
     return canceladas;
   }
 
-  function darPermiso(m, cliente, bodega, quien) {
-    if (quien !== cliente) throw new ErrorMotor('NoEsParte', 'Solo el cliente da permiso sobre su resumen.');
-    const exp = m.dia + PERMISO_DIAS;
-    m.permisos.set(clavePermiso(cliente, bodega), exp);
+  function ensenarCodigo(m, cliente, bodega, quien) {
+    if (quien !== cliente) throw new ErrorMotor('NoEsParte', 'Solo el cliente enseña su código.');
+    const exp = m.dia + CODIGO_DIAS;
+    m.codigos.set(claveCodigo(cliente, bodega), exp);
     return exp;
   }
-  function quitarPermiso(m, cliente, bodega, quien) {
+  function olvidarCodigo(m, cliente, bodega, quien) {
     if (quien !== cliente) throw new ErrorMotor('NoEsParte');
-    m.permisos.delete(clavePermiso(cliente, bodega));
+    m.codigos.delete(claveCodigo(cliente, bodega));
   }
-  function permisoVigente(m, cliente, bodega) {
-    const exp = m.permisos.get(clavePermiso(cliente, bodega));
+  function conoceCodigo(m, cliente, bodega) {
+    const exp = m.codigos.get(claveCodigo(cliente, bodega));
     return exp !== undefined && exp > m.dia;
   }
 
@@ -244,24 +247,24 @@
     return s;
   }
 
-  // Consulta oficial (read_stats): el propio cliente, o una bodega con permiso vigente.
-  // Ninguna excepción para la bodega que ya le fió (#46). Cada lectura deja constancia.
+  // Consulta oficial (read_stats): el propio cliente, o una bodega a la que le enseñó su
+  // código en los últimos 30 días (simplificación de arriba). Cada lectura deja constancia.
   function leerResumen(m, lector, cliente) {
     if (lector !== cliente) {
-      const exp = m.permisos.get(clavePermiso(cliente, lector));
-      if (exp === undefined) throw new ErrorMotor('SinPermiso', 'Sin permiso no se entrega el resumen.');
-      if (exp <= m.dia) throw new ErrorMotor('PermisoVencido', 'El permiso ya venció.');
+      const exp = m.codigos.get(claveCodigo(cliente, lector));
+      if (exp === undefined) throw new ErrorMotor('SinCodigo', 'Sin el código no se consulta el historial.');
+      if (exp <= m.dia) throw new ErrorMotor('CodigoVencido', 'La simulación ya pide el código otra vez.');
     }
     m.lecturas.push({ dia: m.dia, lector, cliente });
     return resumen(m, cliente);
   }
 
   const Motor = {
-    DIA, TS_BASE, VENTANA_ACEPTAR_DIAS, GRACIA_DIAS, PERMISO_DIAS, PLAZOS, RANGOS, COLORES,
+    DIA, TS_BASE, VENTANA_ACEPTAR_DIAS, GRACIA_DIAS, CODIGO_DIAS, PLAZOS, RANGOS, COLORES,
     UMBRAL_VERDE, UMBRAL_AMARILLO, MIN_CERRADAS, MIN_BODEGAS, MIN_DIAS,
     ErrorMotor, crearAzar, rangoDeMonto, textoRango, semaforo,
     crearMundo, ahoraSeg, crearNota, aceptarNota, confirmarPago, marcarIncumplida,
-    estadoVisible, avanzarDia, darPermiso, quitarPermiso, permisoVigente, resumen, leerResumen,
+    estadoVisible, avanzarDia, ensenarCodigo, olvidarCodigo, conoceCodigo, resumen, leerResumen,
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = Motor;
   else (raiz.CC = raiz.CC || {}).Motor = Motor;
