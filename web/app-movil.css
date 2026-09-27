@@ -1,0 +1,121 @@
+/* Prototipo de la app para celular (web/app.html). Usa los tokens de estilos.css (tema dual).
+   Celular: la app ocupa la pantalla, barra de secciones fija abajo. Desde 900 px: silueta
+   genérica de teléfono junto al contexto. Todo lo táctil mide 48 px o más. */
+
+.pagina-app { min-height: 100vh; }
+/* En el celular la app va primero y la explicación después. */
+.app-escritorio { max-width: 72rem; margin: 0 auto; display: flex; flex-direction: column; }
+.app { order: 1; }
+.app-contexto { order: 2; padding: 1rem 1rem 7rem; }
+.app-contexto h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); margin: 0.6rem 0 0.8rem; }
+.app-volver { display: inline-flex; align-items: center; min-height: 48px; font-weight: 700; }
+
+.app { display: flex; flex-direction: column; background: var(--fondo); }
+.app-barra {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.9rem;
+  background: var(--superficie); border-bottom: 1px solid var(--borde);
+}
+.app-logo { margin: 0; font-family: var(--f-titulo); font-weight: 800; font-size: 1.3rem; color: var(--firma); }
+.app-red { font-family: var(--f-mono); font-size: 1rem; color: var(--hash); margin-right: auto; }
+.app-barra .interruptor-tema { order: 0; }
+.app-montaje { padding: 0.8rem 0.9rem 6.5rem; display: grid; gap: 0.8rem; grid-auto-rows: max-content; align-content: start; }
+.app-prototipo { margin: 0; padding: 0.35rem 0.9rem; font-family: var(--f-texto); font-size: 1rem; color: var(--texto-2); background: var(--fondo-alterno); border-bottom: 1px dashed var(--texto-2); }
+.app-sin-js { padding: 1rem; }
+
+/* Ver como */
+.app-roles { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--firma); border-radius: 12px; overflow: hidden; }
+.app-rol {
+  min-height: 48px; border: 0; background: transparent; color: var(--firma);
+  font: 700 1rem var(--f-texto); cursor: pointer;
+}
+.app-rol[aria-pressed="true"] { background: var(--firma); color: var(--sobre-firma); }
+
+/* Corrida real: paso N de 6 */
+.app-corrida { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; gap: 0.5rem; }
+.app-flecha {
+  width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--firma);
+  background: var(--superficie); color: var(--firma); font: 700 1.6rem/1 var(--f-texto); cursor: pointer;
+}
+.app-flecha:disabled { opacity: 0.4; cursor: not-allowed; }
+.app-corrida-texto { text-align: center; }
+.app-contador { margin: 0; color: var(--texto-2); font-size: 1rem; }
+.app-paso-titulo { margin: 0; font-weight: 700; color: var(--texto); line-height: 1.3; }
+
+/* Aviso (la notificación del paso) */
+.app-aviso {
+  margin: 0; padding: 0.7rem 0.9rem; border-radius: 12px;
+  background: var(--resalte); color: var(--texto); border-left: 4px solid var(--firma);
+}
+.app-aviso.entra { animation: aviso-entra 350ms ease-out both; }
+@keyframes aviso-entra { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* Pantallas */
+.app-pantalla { display: grid; gap: 0.8rem; }
+.app-pantalla:focus { outline: none; }
+.app-h { margin: 0.3rem 0 0; font-size: 1.4rem; }
+.app-h3 { margin: 0.4rem 0 0; font-size: 1.1rem; }
+.app-tarjeta { background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px; padding: 0.9rem 1rem; display: grid; gap: 0.5rem; }
+.app-tarjeta p { margin: 0; }
+.app-tarjeta-cabeza { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.app-de { font-family: var(--f-titulo); font-weight: 800; color: var(--firma); font-size: 1.15rem; }
+.app-titulo { font-weight: 700; font-size: 1.1rem; }
+.app-monto { font-family: var(--f-mono); font-weight: 600; font-size: 1.5rem; color: var(--texto); }
+.app-chip { font-size: 1rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; border: 2px solid currentColor; }
+.app-chip.pendiente { color: var(--texto-2); }
+.app-chip.firmada { color: var(--firma); }
+.app-chip.cumplida { color: var(--sello); }
+.app-accion { width: 100%; }
+.app-sello {
+  justify-self: start; transform: rotate(-8deg); margin: 0.3rem 0 !important;
+  border: 4px double var(--sello); color: var(--sello); border-radius: 8px; padding: 0.1rem 0.8rem;
+  font-family: var(--f-titulo); font-weight: 800; font-size: 1.5rem; letter-spacing: 0.08em;
+}
+.app-palabra { font-weight: 700; color: var(--texto); }
+.app-alerta { border-left: 4px solid var(--texto-2); }
+.app-ve, .app-condiciones { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.25rem; }
+.app-semaforo { font-family: var(--f-titulo); font-size: 1.3rem; margin: 0.2rem 0 0 !important; }
+.app-datos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin: 0; }
+.app-datos dt { color: var(--texto-2); font-size: 1rem; }
+.app-datos dd { margin: 0; font-size: 1.4rem; font-weight: 600; color: var(--firma); }
+.app-linea { list-style: none; margin: 0; padding: 0 0 0 1rem; border-left: 2px solid var(--firma); display: grid; gap: 0.7rem; }
+.app-linea li p { margin: 0; }
+.app-comprobante, .app-sin-tx { font-size: 1rem; }
+.app-comprobante a { display: inline-flex; align-items: center; min-height: 48px; }
+.app-sin-tx { font-family: var(--f-mono); color: var(--texto-2); }
+.app-privacidad { color: var(--texto-2); font-size: 1rem; margin: 0.2rem 0 0; }
+
+/* Secciones de la app: fijas abajo, al alcance del pulgar */
+.app-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  background: var(--superficie); border-top: 1px solid var(--borde);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.app-nav[hidden] { display: none; }
+.app-pestana {
+  position: relative; min-height: 60px; border: 0; background: transparent; cursor: pointer;
+  display: grid; justify-items: center; align-content: center; gap: 0.1rem;
+  font: 700 1rem var(--f-texto); color: var(--texto-2);
+}
+.app-pestana[aria-current="page"] { color: var(--firma); box-shadow: inset 0 3px 0 var(--firma); }
+.app-icono { font-size: 1.2rem; line-height: 1; }
+.app-punto { display: none; position: absolute; top: 8px; right: calc(50% - 1.6rem); width: 10px; height: 10px; border-radius: 50%; background: var(--sello); }
+.app-pestana.con-novedad .app-punto { display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .app-aviso.entra { animation: none; }
+}
+
+/* Desde 900 px: contexto a la izquierda, teléfono genérico a la derecha. */
+@media (min-width: 900px) {
+  .app-escritorio { display: grid; grid-template-columns: minmax(0, 1fr) 25rem; gap: 3rem; align-items: center; min-height: 100vh; padding: 2rem; }
+  .app-contexto { order: 0; padding: 0; }
+  .app { order: 1; }
+  .app {
+    position: relative; height: 50rem; max-height: calc(100vh - 4rem); overflow: hidden;
+    border: 12px solid var(--texto); border-radius: 44px; box-shadow: 0 0 0 2px var(--borde);
+  }
+  .app-montaje { overflow-y: auto; flex: 1; padding-bottom: 5.5rem; }
+  .app-nav { position: absolute; }
+}

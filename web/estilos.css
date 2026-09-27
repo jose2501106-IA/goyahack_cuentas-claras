@@ -605,3 +605,8 @@ main:focus { outline: none; }
   .refran { font-size: 1.7rem; }
   .portada-accion .boton { width: 100%; }
 }
+
+/* Enlaces a la app (web/app.html) */
+.portada-accion { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.tel-abrir { margin: 0.8rem 0 0; }
+.tel-abrir .boton { width: 100%; }

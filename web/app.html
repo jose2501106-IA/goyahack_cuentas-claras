@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cuentas Claras · la app (prototipo)</title>
+  <meta name="description" content="Prototipo de la app de Cuentas Claras para celular: la nota firmada por los dos, tu historial y tus permisos. Recorre una corrida real en Stellar testnet; no firma nada.">
+  <meta name="theme-color" content="#1E3A8A">
+  <meta name="color-scheme" content="light dark">
+  <script src="tema-inicial.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="app-movil.css">
+</head>
+<body class="pagina-app">
+  <div class="app-escritorio">
+    <aside class="app-contexto">
+      <a class="app-volver" href="index.html#demo-real">← Volver al sitio</a>
+      <h1>La app, en tu mano</h1>
+      <p>Así vería Cuentas Claras Doña Mary en su teléfono, y así lo vería Bodega B-40 en el mostrador. Recorre los seis pasos de una corrida real en Stellar testnet.</p>
+      <p class="letrero-prototipo" role="note">Prototipo de la app. Datos ficticios. En este sitio no se firma nada: cada paso enlaza a su transacción real en Stellar testnet.</p>
+      <p class="apoyo">Posiciones ilustrativas; ninguna bodega real participa. Doña Mary es ficticia.</p>
+    </aside>
+
+    <main id="app" class="app" aria-labelledby="app-titulo">
+      <header class="app-barra">
+        <p id="app-titulo" class="app-logo">Cuentas Claras</p>
+        <span class="app-red">testnet</span>
+        <button type="button" class="interruptor-tema" aria-pressed="false" aria-label="Tema oscuro" title="Tema oscuro">
+          <span class="icono-tema" aria-hidden="true">☾</span>
+        </button>
+      </header>
+      <p class="app-prototipo">Prototipo · datos ficticios · no firma nada</p>
+
+      <noscript>
+        <div class="app-sin-js">
+          <p>Este prototipo necesita JavaScript para cambiar de pantalla.</p>
+          <p>Los seis pasos, con sus comprobantes, se leen completos en <a href="index.html#demo-real">La demo real</a>.</p>
+        </div>
+      </noscript>
+      <div id="app-montaje" class="app-montaje"></div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="datos/repeticion.js"></script>
+  <script src="app-movil.js"></script>
+</body>
+</html>
