@@ -23,6 +23,7 @@ Cómo leer este repositorio sin gastar de más:
 - [Cola de trabajo](docs/cola-de-trabajo.md): tareas que Claude Code recorre sola, con paradas
 - [Auditoría del 26-sep](docs/auditoria-2026-09-26.md): seguridad del contrato, la app y el sitio; plan de corrección
 - [Elevator pitch y mini canvas](pitch/2026-09-26_elevator-pitch-y-mini-canvas.md): 30 y 60 s, entrada al mercado (borrador)
+- [Contrato v5](spec/2026-09-26_especificacion-contrato-v5.md): lectura pública con el código del cliente, sin permiso (#57)
 - [Contrato v4](spec/2026-09-26_especificacion-contrato-v4.md): vínculo previo del cliente y cierre de la auditoría (#55)
 - [Sitio público y agentes](spec/2026-09-26_especificacion-web-y-agentes.md): Vercel sin llaves y «Pasillo vivo»
 - [Especificación del frontend](spec/2026-09-26_especificacion-frontend.md): app de cuatro vistas sin dependencias, semáforo honesto y prompt para Claude Code (fin de semana)
