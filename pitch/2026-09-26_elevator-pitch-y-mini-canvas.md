@@ -1,7 +1,8 @@
 # Elevator pitch, mini canvas y entrada al mercado — Cuentas Claras
 
 > **Borrador v1, pendiente de aprobación de José** · sáb 26-sep-2026, 20:45 · Equipo **Palabra**
-> **Supone la decisión #57 (propuesta):** el historial se lee con el código del cliente, sin el paso de «dar permiso» (retroalimentación del mentor, 26-sep). Si José la rechaza, solo cambian las líneas marcadas con ◆.
+> **Funciona con las dos salidas de la decisión #57** (retroalimentación del mentor sobre el permiso). Las líneas marcadas con ◆ no dependen del permiso: dicen lo que es cierto en los dos casos.
+> **Contrato vigente:** v4, `CB3TLO33…5Q7AJ`, desplegado en testnet el 26-sep a las 20:26, con 23 pruebas en verde.
 > Datos con su ID de `docs/hoja-de-hechos.md` o la etiqueta *experiencia de José*. Nada inventado; lo que no está medido dice *por validar*.
 
 ## 1. Mini canvas (la guía que tienes a la vista mientras presentas)
@@ -11,9 +12,9 @@
 | **Problema** | En la Central el fiado se da de palabra, y la palabra no viaja: quien paga puntual no lo puede demostrar en la bodega de enfrente. |
 | **Dato** | Más de 2,300 bodegas (H-01). 18.4 % de los rechazos de crédito a empresas son por falta de historial (H-05). |
 | **Para quién** | La bodega que fía (empezamos por abarrotes) y su cliente: tienditas, fondas y locatarios. |
-| **Solución: tres reglas** | 1. Ninguna bodega escribe sola una deuda: firman los dos. 2. Nadie borra ni maquilla la nota, ni nosotros. 3. ◆ El historial es del cliente: lo muestra con su código donde quiera. |
+| **Solución: tres reglas** | 1. Ninguna bodega escribe sola una deuda: firman los dos. 2. Nadie borra ni maquilla la nota, ni nosotros. 3. ◆ El historial es del cliente: es público y verificable, sin su nombre, y él lo lleva a la bodega que quiera. |
 | **¿Por qué blockchain?** | Bodegas que compiten no confían en una base de datos de otra. Una cadena pública es el registro que ninguna controla. Es público y verificable, sin nombre ni monto exacto. |
-| **Prueba** | Funciona hoy en Stellar testnet. El contrato no se puede actualizar. Nuestra propia auditoría encontró huecos y los cerramos con un contrato nuevo. |
+| **Prueba** | Funciona hoy en Stellar testnet. El contrato no se puede actualizar. Nuestra propia auditoría encontró un hueco crítico (una bodega podía aceptar su propia nota) y lo cerramos con un contrato nuevo, la v4. |
 | **Entrada al mercado** | Una bodega ancla, primera firma en el mostrador, luego una segunda bodega. La bodega paga; el cliente nunca. |
 | **Qué pedimos** | Ayuda para un piloto con una bodega y sus clientes, y el contacto con un primer lector (un banco o una financiera). |
 
@@ -21,13 +22,13 @@
 
 ### 30 segundos (unas 75 palabras)
 
-> Cuentas claras, amistades largas. ‖ En la Central de Abasto, más de 2,300 bodegas fían de palabra, y esa palabra no viaja: quien paga puntual no tiene cómo demostrarlo en la bodega de enfrente. ‖ Cuentas Claras es la libreta de fiado firmada por los dos. La bodega y el cliente firman cada nota en Stellar, nadie la puede borrar, y ◆ el historial es del cliente, que lo muestra con su código donde quiera. ‖ Somos el Equipo Palabra.
+> Cuentas claras, amistades largas. ‖ En la Central de Abasto, más de 2,300 bodegas fían de palabra, y esa palabra no viaja: quien paga puntual no tiene cómo demostrarlo en la bodega de enfrente. ‖ Cuentas Claras es la libreta de fiado firmada por los dos. La bodega y el cliente firman cada nota en Stellar, nadie la puede borrar, y ◆ el historial es del cliente, que lo lleva a la bodega que quiera. ‖ Somos el Equipo Palabra.
 
 ### 60 segundos (unas 150 palabras)
 
 > Cuentas claras, amistades largas. ‖ En la Central de Abasto, más de 2,300 bodegas fían de palabra. La palabra se cumple, pero no viaja: quien paga puntual no puede demostrarlo en la bodega de enfrente, y en el crédito formal 18.4 % de los rechazos son por falta de historial. ‖
 >
-> Cuentas Claras es la libreta de fiado firmada por los dos. Tiene tres reglas: ninguna bodega escribe sola una deuda; nadie borra ni maquilla la nota, ni nosotros; y ◆ el historial es del cliente, que lo muestra con su código. ‖
+> Cuentas Claras es la libreta de fiado firmada por los dos. Tiene tres reglas: ninguna bodega escribe sola una deuda; nadie borra ni maquilla la nota, ni nosotros; y ◆ el historial es del cliente, que lo lleva a donde quiera. ‖
 >
 > ¿Por qué blockchain? Porque bodegas que compiten no le confían sus cuentas a la base de datos de otra. La cadena es pública y verificable, y en ella no va ni el nombre ni el monto exacto. ‖
 >
@@ -64,15 +65,16 @@
 - **El riesgo que más importa:** la bodega teme que un historial portable le «robe» clientes. Lo enfrentamos así:
   - primero, herramienta para la propia bodega;
   - solo viaja el cumplimiento, nunca precios ni surtido;
-  - ◆ no hay directorio de clientes: sin el código del cliente, nadie lo encuentra;
+  - ◆ no hay directorio de clientes: en la cadena solo hay seudónimos, sin nombres;
   - quien consulta también fía y firma.
 
 ## 4. Si preguntan (para después del pitch)
 
-- **◆ «Si es público, ¿qué decide el cliente?»**
+- **◆ «Si es público, ¿para qué el permiso?»**
   - Lo que está en la cadena es público y verificable; esa es la idea.
-  - Lo que el cliente decide es a quién le da su código.
-  - Sin el código no hay forma de ligar ese historial con una persona: el seudónimo sale de una llave que no está en la cadena.
+  - El permiso no esconde nada: es la consulta oficial, la que deja constancia de quién preguntó, y es nuestra base para no operar como sociedad de información crediticia.
+  - Sin el seudónimo no hay forma de ligar ese historial con una persona: sale de una llave que no está en la cadena.
+  - *(Si se aprueba la #57, la respuesta cambia a: «el cliente decide a quién le da su código».)*
 - **«¿Esto es un buró?»**
   - No recopilamos ni vendemos historiales, ni damos calificaciones.
   - El cliente porta el suyo y la bodega decide.
