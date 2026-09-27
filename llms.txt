@@ -22,6 +22,7 @@ Cómo leer este repositorio sin gastar de más:
 - [Relevo para Claude Code](docs/relevo-claude-code.md): estado actual y prompt para retomar en una sesión nueva
 - [Cola de trabajo](docs/cola-de-trabajo.md): tareas que Claude Code recorre sola, con paradas
 - [Auditoría del 26-sep](docs/auditoria-2026-09-26.md): seguridad del contrato, la app y el sitio; plan de corrección
+- [Entrega GOYA HACK](pitch/2026-09-27_entrega-goya-hack.md): ruta crítica y textos para el panel y Stellar Apex; video en demo/video/
 - [Pitch v3](pitch/2026-09-26_pitch-3-minutos-v3.md), [guion de demo v3](pitch/2026-09-26_guion-demo-v3.md) y [prompt del deck v2](pitch/2026-09-26_prompt-claude-design-v2.md): la historia de Doña Mary, 5 pasos, sin permiso
 - [Elevator pitch y mini canvas](pitch/2026-09-26_elevator-pitch-y-mini-canvas.md): 30 y 60 s, entrada al mercado (borrador)
 - [Contrato v5](spec/2026-09-26_especificacion-contrato-v5.md): lectura pública con el código del cliente, sin permiso (#57)
