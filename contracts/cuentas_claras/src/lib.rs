@@ -71,6 +71,10 @@ pub struct Note {
     pub paid_ts: Option<u64>,
     pub evidence_commit: Option<BytesN<32>>,
     pub prev: Option<BytesN<32>>,
+    /// Cuándo quedó incumplida (C6): la ventana de disputa de una incumplida corre desde aquí.
+    pub defaulted_ts: Option<u64>,
+    /// Una nota entra a `Disputed` una sola vez (C3, parcial; decisión #55).
+    pub disputed_once: bool,
 }
 
 #[contracttype]
@@ -129,7 +133,9 @@ pub enum DataKey {
     SubjectAddr(BytesN<32>),            // Address vinculada al seudónimo (spec v2, §5.1)
     AddrSubject(Address),               // BytesN<32>: seudónimo de una Address (inverso, para consent)
     Consent(BytesN<32>, Address),       // Consent
-    Resolve(BytesN<32>),                // ResolveProposal pendiente
+    CancelProp(BytesN<32>),             // ResolveProposal: cancelar una nota Accepted (C7)
+    ResolveProp(BytesN<32>),            // ResolveProposal: cerrar una nota Disputed (C7)
+    PendingBind(BytesN<32>),            // Address invitada por la plataforma, aún sin firmar (C1)
 }
 
 // ---------------------------------------------------------------------------
@@ -152,6 +158,10 @@ pub enum Error {
     NoConsent = 10,
     ConsentExpired = 11,
     BadParams = 12,
+    // Contrato v4 (decisión #55): al final, sin renumerar los anteriores.
+    AlreadyBound = 13, // el seudónimo o la dirección ya están vinculados
+    NotBound = 14,     // el seudónimo no tiene dirección vinculada
+    SelfNote = 15,     // la dirección vinculada es la del propio emisor
 }
 
 // ---------------------------------------------------------------------------
@@ -160,6 +170,8 @@ pub enum Error {
 // ---------------------------------------------------------------------------
 
 const LEDGERS_PER_DAY: u32 = 17_280;
+/// Tope del plazo de una nota (C9): 365 días, en segundos.
+const MAX_PLAZO: u64 = 365 * 86_400;
 const TTL_THRESHOLD: u32 = 30 * LEDGERS_PER_DAY;
 const TTL_EXTEND_TO: u32 = 90 * LEDGERS_PER_DAY;
 
@@ -184,6 +196,8 @@ impl CuentasClaras {
         if env.storage().persistent().has(&DataKey::Admin) {
             return Err(Error::AlreadyInit);
         }
+        // C8: nadie se adelanta a inicializar con otro admin.
+        admin.require_auth();
         if params.accept_window == 0
             || params.grace_period == 0
             || params.dispute_window == 0
@@ -218,6 +232,57 @@ impl CuentasClaras {
         Ok(())
     }
 
+    // --- Vínculo previo y explícito del cliente (C1, C2; decisión #55) ---
+    //
+    // Dos pasos, una firma cada uno: la plataforma invita y el cliente firma. El vínculo
+    // seudónimo <-> dirección se fija una sola vez y nunca se sobrescribe.
+
+    /// Paso 1 (plataforma): invita a `subject` a quedarse con `subject_id`. Mientras la
+    /// invitación siga pendiente, la plataforma puede reemplazarla.
+    pub fn invite_subject(
+        env: Env,
+        admin: Address,
+        subject_id: BytesN<32>,
+        subject: Address,
+    ) -> Result<(), Error> {
+        Self::require_admin(&env, &admin)?;
+        Self::require_unbound(&env, &subject_id, &subject)?;
+        let key = DataKey::PendingBind(subject_id.clone());
+        env.storage().persistent().set(&key, &subject);
+        bump(&env, &key);
+        env.events()
+            .publish((cclaras(), name(&env, "subject_invited")), subject_id);
+        Ok(())
+    }
+
+    /// Paso 2 (cliente): acepta la invitación con su firma. Sin invitación a su nombre, `NotParty`.
+    pub fn bind_subject(env: Env, subject: Address, subject_id: BytesN<32>) -> Result<(), Error> {
+        subject.require_auth();
+        let key = DataKey::PendingBind(subject_id.clone());
+        let invitado: Option<Address> = env.storage().persistent().get(&key);
+        if invitado != Some(subject.clone()) {
+            return Err(Error::NotParty);
+        }
+        Self::require_unbound(&env, &subject_id, &subject)?;
+        let fwd = DataKey::SubjectAddr(subject_id.clone());
+        env.storage().persistent().set(&fwd, &subject);
+        bump(&env, &fwd);
+        let rev = DataKey::AddrSubject(subject.clone());
+        env.storage().persistent().set(&rev, &subject_id);
+        bump(&env, &rev);
+        env.storage().persistent().remove(&key);
+        env.events()
+            .publish((cclaras(), name(&env, "subject_bound")), subject_id);
+        Ok(())
+    }
+
+    /// Dirección vinculada a un seudónimo, si la hay (la usan `demo.sh` y `sembrar.sh`).
+    pub fn subject_of(env: Env, subject_id: BytesN<32>) -> Option<Address> {
+        env.storage()
+            .persistent()
+            .get(&DataKey::SubjectAddr(subject_id))
+    }
+
     // --- Ciclo de vida de la nota ---
 
     pub fn create_note(
@@ -240,8 +305,18 @@ impl CuentasClaras {
             return Err(Error::NoteExists);
         }
         let now = env.ledger().timestamp();
-        if due_ts <= now {
+        // C9: plazo en el futuro y con tope de 365 días.
+        if due_ts <= now || due_ts > now + MAX_PLAZO {
             return Err(Error::BadParams);
+        }
+        // C1: el seudónimo ya debe estar vinculado, y no a la bodega que emite.
+        let vinculado: Address = env
+            .storage()
+            .persistent()
+            .get(&DataKey::SubjectAddr(subject_id.clone()))
+            .ok_or(Error::NotBound)?;
+        if vinculado == issuer {
+            return Err(Error::SelfNote);
         }
         let note = Note {
             note_id: note_id.clone(),
@@ -254,6 +329,8 @@ impl CuentasClaras {
             paid_ts: None,
             evidence_commit: None,
             prev: None,
+            defaulted_ts: None,
+            disputed_once: false,
         };
         Self::save_note(&env, &note);
         env.events().publish(
@@ -266,6 +343,8 @@ impl CuentasClaras {
     pub fn accept_note(env: Env, subject: Address, note_id: BytesN<32>) -> Result<(), Error> {
         subject.require_auth();
         let mut note = Self::load_note(&env, &note_id)?;
+        // C1: solo la dirección vinculada al seudónimo acepta (nunca la bodega ni un tercero).
+        Self::require_subject(&env, &note, &subject)?;
         if note.status != Status::Created {
             return Err(Error::InvalidTransition);
         }
@@ -274,10 +353,8 @@ impl CuentasClaras {
         if now > note.created_ts + Self::params(&env).accept_window {
             return Err(Error::WindowClosed);
         }
-        // Vínculo seudónimo <-> Address (spec v2, §5.1): se fija en la primera aceptación.
-        Self::bind_subject(&env, &note.subject_id, &subject)?;
-
         note.status = Status::Accepted;
+        Self::clear_props(&env, &note_id);
         Self::save_note(&env, &note);
 
         // Contadores del sujeto.
@@ -314,17 +391,18 @@ impl CuentasClaras {
                     return Err(Error::NotParty);
                 }
                 note.status = Status::Cancelled;
+                Self::clear_props(&env, &note_id);
                 Self::save_note(&env, &note);
             }
             // Cancelación mutua de una nota aceptada: dos llamadas coincidentes (issuer y subject).
             Status::Accepted => {
                 Self::require_party(&env, &note, &who)?;
-                let key = DataKey::Resolve(note_id.clone());
+                let key = DataKey::CancelProp(note_id.clone());
                 let pending: Option<ResolveProposal> = env.storage().persistent().get(&key);
                 match pending {
                     Some(p) if p.proposer != who && p.outcome == Status::Cancelled => {
-                        env.storage().persistent().remove(&key);
                         note.status = Status::Cancelled;
+                        Self::clear_props(&env, &note_id);
                         Self::save_note(&env, &note);
                     }
                     _ => {
@@ -360,6 +438,7 @@ impl CuentasClaras {
         }
         note.status = Status::PaidClaimed;
         note.evidence_commit = evidence_commit;
+        Self::clear_props(&env, &note_id);
         Self::save_note(&env, &note);
         env.events()
             .publish((cclaras(), name(&env, "paid_claimed")), note_id);
@@ -372,16 +451,22 @@ impl CuentasClaras {
         if issuer != note.issuer {
             return Err(Error::NotParty);
         }
-        if note.status != Status::Accepted && note.status != Status::PaidClaimed {
+        // C5: también una nota vencida se confirma como pagada (tarde).
+        let estaba_vencida = note.status == Status::Overdue;
+        if note.status != Status::Accepted && note.status != Status::PaidClaimed && !estaba_vencida {
             return Err(Error::InvalidTransition);
         }
         let now = env.ledger().timestamp();
-        let on_time = now <= note.due_ts;
+        let on_time = !estaba_vencida && now <= note.due_ts;
         note.status = Status::Paid;
         note.paid_ts = Some(now);
+        Self::clear_props(&env, &note_id);
         Self::save_note(&env, &note);
 
         let mut stats = Self::load_stats(&env, &note.subject_id);
+        if estaba_vencida {
+            stats.overdue_open = stats.overdue_open.saturating_sub(1);
+        }
         if on_time {
             stats.paid_on_time += 1;
         } else {
@@ -401,18 +486,18 @@ impl CuentasClaras {
     pub fn touch(env: Env, note_id: BytesN<32>) -> Result<(), Error> {
         let mut note = Self::load_note(&env, &note_id)?;
         let now = env.ledger().timestamp();
+        let params = Self::params(&env);
         match note.status {
             Status::Accepted if now > note.due_ts => {
-                note.status = Status::Overdue;
-                Self::save_note(&env, &note);
-                let mut stats = Self::load_stats(&env, &note.subject_id);
-                stats.overdue_open += 1;
-                Self::save_stats(&env, &note.subject_id, &stats);
-                env.events()
-                    .publish((cclaras(), name(&env, "overdue")), note_id);
+                Self::marcar_vencida(&env, &mut note, &note_id);
             }
-            Status::Created if now > note.created_ts + Self::params(&env).accept_window => {
+            // C4: el aviso de pago no evita vencer; pasada la gracia sin confirmación, vence.
+            Status::PaidClaimed if now > note.due_ts + params.grace_period => {
+                Self::marcar_vencida(&env, &mut note, &note_id);
+            }
+            Status::Created if now > note.created_ts + params.accept_window => {
                 note.status = Status::Cancelled;
+                Self::clear_props(&env, &note_id);
                 Self::save_note(&env, &note);
                 env.events()
                     .publish((cclaras(), name(&env, "cancelled")), note_id);
@@ -437,6 +522,8 @@ impl CuentasClaras {
             return Err(Error::TooEarly);
         }
         note.status = Status::Defaulted;
+        note.defaulted_ts = Some(now); // C6: la ventana de disputa corre desde aquí
+        Self::clear_props(&env, &note_id);
         Self::save_note(&env, &note);
 
         let mut stats = Self::load_stats(&env, &note.subject_id);
@@ -460,17 +547,30 @@ impl CuentasClaras {
         let now = env.ledger().timestamp();
         let mut stats = Self::load_stats(&env, &note.subject_id);
 
+        if who != note.issuer && !Self::is_subject(&env, &note, &who) {
+            return Err(Error::NotParty);
+        }
+        // C3 (parcial): una nota entra a Disputed una sola vez. Una aclaración que nunca se
+        // resuelve se queda abierta en la cadena; el semáforo la pesa como vencida (#56).
+        if note.disputed_once {
+            return Err(Error::InvalidTransition);
+        }
+
         if who == note.issuer {
             // El emisor disputa un pago reclamado.
             if note.status != Status::PaidClaimed {
                 return Err(Error::InvalidTransition);
             }
         } else if Self::is_subject(&env, &note, &who) {
-            // El cliente disputa una nota vencida o incumplida, dentro de ventana.
-            // Ventana determinista desde el primer momento en que pudo marcarse incumplida
-            // (due_ts + gracia); cubre Overdue y Defaulted sin guardar defaulted_ts en cadena.
+            // El cliente disputa una nota vencida o incumplida, dentro de ventana (C6):
+            // - incumplida: hasta defaulted_ts + dispute_window (la bodega ya no puede esperar
+            //   a marcarla para dejarla fuera de la ventana);
+            // - vencida: hasta due_ts + gracia + dispute_window, como en la v3.
             let params = Self::params(&env);
-            let window_end = note.due_ts + params.grace_period + params.dispute_window;
+            let window_end = match (&note.status, note.defaulted_ts) {
+                (Status::Defaulted, Some(t)) => t + params.dispute_window,
+                _ => note.due_ts + params.grace_period + params.dispute_window,
+            };
             if now > window_end {
                 return Err(Error::WindowClosed);
             }
@@ -488,6 +588,8 @@ impl CuentasClaras {
         }
 
         note.status = Status::Disputed;
+        note.disputed_once = true;
+        Self::clear_props(&env, &note_id);
         Self::save_note(&env, &note);
         stats.disputes_open += 1;
         Self::save_stats(&env, &note.subject_id, &stats);
@@ -518,13 +620,13 @@ impl CuentasClaras {
             _ => return Err(Error::BadParams),
         }
 
-        let key = DataKey::Resolve(note_id.clone());
+        let key = DataKey::ResolveProp(note_id.clone());
         let pending: Option<ResolveProposal> = env.storage().persistent().get(&key);
         match pending {
             Some(p) if p.proposer != who && p.outcome == outcome => {
                 // La contraparte coincide: se cierra.
-                env.storage().persistent().remove(&key);
                 Self::apply_resolution(&env, &mut note, &outcome);
+                Self::clear_props(&env, &note_id);
                 Self::save_note(&env, &note);
 
                 let mut stats = Self::load_stats(&env, &note.subject_id);
@@ -717,28 +819,36 @@ impl CuentasClaras {
         bump(env, &key);
     }
 
-    /// Fija (o valida) el vínculo seudónimo <-> Address en la primera aceptación (spec v2, §5.1).
-    fn bind_subject(env: &Env, subject_id: &BytesN<32>, subject: &Address) -> Result<(), Error> {
-        let fwd = DataKey::SubjectAddr(subject_id.clone());
-        match env
-            .storage()
-            .persistent()
-            .get::<DataKey, Address>(&fwd)
+    /// C1/C2: un seudónimo, una dirección. Falla si el seudónimo ya tiene dirección o si la
+    /// dirección ya tiene seudónimo.
+    fn require_unbound(env: &Env, subject_id: &BytesN<32>, subject: &Address) -> Result<(), Error> {
+        let st = env.storage().persistent();
+        if st.has(&DataKey::SubjectAddr(subject_id.clone()))
+            || st.has(&DataKey::AddrSubject(subject.clone()))
         {
-            Some(bound) => {
-                if bound != *subject {
-                    return Err(Error::NotParty);
-                }
-            }
-            None => {
-                env.storage().persistent().set(&fwd, subject);
-                bump(env, &fwd);
-                let rev = DataKey::AddrSubject(subject.clone());
-                env.storage().persistent().set(&rev, subject_id);
-                bump(env, &rev);
-            }
+            return Err(Error::AlreadyBound);
         }
         Ok(())
+    }
+
+    /// C7: borra las propuestas pendientes (cancelar y resolver). Toda función que cambia
+    /// `note.status` la llama, para que una propuesta vieja no cierre un estado nuevo.
+    fn clear_props(env: &Env, note_id: &BytesN<32>) {
+        let st = env.storage().persistent();
+        st.remove(&DataKey::CancelProp(note_id.clone()));
+        st.remove(&DataKey::ResolveProp(note_id.clone()));
+    }
+
+    /// Pasa una nota a `Overdue` y suma `overdue_open` (desde `Accepted` o, C4, `PaidClaimed`).
+    fn marcar_vencida(env: &Env, note: &mut Note, note_id: &BytesN<32>) {
+        note.status = Status::Overdue;
+        Self::clear_props(env, note_id);
+        Self::save_note(env, note);
+        let mut stats = Self::load_stats(env, &note.subject_id);
+        stats.overdue_open += 1;
+        Self::save_stats(env, &note.subject_id, &stats);
+        env.events()
+            .publish((cclaras(), name(env, "overdue")), note_id.clone());
     }
 
     fn subject_id_of(env: &Env, subject: &Address) -> Result<BytesN<32>, Error> {
@@ -774,8 +884,10 @@ impl CuentasClaras {
 
     fn apply_resolution(env: &Env, note: &mut Note, outcome: &Status) {
         note.status = outcome.clone();
-        if *outcome == Status::Paid {
-            note.paid_ts = Some(env.ledger().timestamp());
+        match outcome {
+            Status::Paid => note.paid_ts = Some(env.ledger().timestamp()),
+            Status::Defaulted => note.defaulted_ts = Some(env.ledger().timestamp()), // C6
+            _ => {}
         }
     }
 

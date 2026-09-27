@@ -48,6 +48,12 @@ fn id(env: &Env, tag: u8) -> BytesN<32> {
     BytesN::from_array(env, &a)
 }
 
+/// Vínculo previo del cliente (contrato v4, C1): la plataforma invita y el cliente firma.
+fn vincular(client: &CuentasClarasClient, admin: &Address, subject_id: &BytesN<32>, addr: &Address) {
+    client.invite_subject(admin, subject_id, addr);
+    client.bind_subject(addr, subject_id);
+}
+
 // --- Camino feliz completo (invariantes 1, 7) -------------------------------
 
 #[test]
@@ -59,6 +65,7 @@ fn camino_feliz() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     let due = T0 + 7 * DAY;
 
     client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &due);
@@ -96,6 +103,7 @@ fn dos_emisores_issuers_count_2() {
     client.add_issuer(&admin, &b);
 
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
 
     let n1 = id(&env, 1);
     client.create_note(&a, &n1, &subj, &AmountBucket::B1k_5k, &(T0 + 7 * DAY));
@@ -140,6 +148,7 @@ fn aceptar_fuera_de_ventana_falla() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     client.create_note(&issuer, &note, &subj, &AmountBucket::B1k_5k, &(T0 + 100 * DAY));
 
     set_time(&env, T0 + 73 * HOUR); // ventana de aceptación: 72 h
@@ -164,6 +173,7 @@ fn mark_default_antes_de_gracia_falla() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     let due = T0 + 7 * DAY;
     client.create_note(&issuer, &note, &subj, &AmountBucket::B1k_5k, &due);
     client.accept_note(&mary, &note);
@@ -201,6 +211,7 @@ fn disputa_fuera_de_ventana_falla() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     let due = T0 + 7 * DAY;
     client.create_note(&issuer, &note, &subj, &AmountBucket::B1k_5k, &due);
     client.accept_note(&mary, &note);
@@ -209,8 +220,9 @@ fn disputa_fuera_de_ventana_falla() {
     set_time(&env, due + 31 * DAY);
     client.mark_default(&issuer, &note);
 
-    // Ventana de disputa: due + gracia(30d) + disputa(15d). Más allá: cerrada.
-    set_time(&env, due + 30 * DAY + 16 * DAY);
+    // Ventana de disputa de una incumplida (v4, C6): defaulted_ts + disputa(15d). Se marcó en
+    // due + 31d, así que cierra en due + 46d; un segundo después: cerrada.
+    set_time(&env, due + 31 * DAY + 15 * DAY + 1);
     assert_eq!(
         client.try_dispute(&mary, &note, &7u32),
         Err(Ok(Error::WindowClosed))
@@ -228,6 +240,7 @@ fn disputa_y_resolucion_mutua() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     let due = T0 + 7 * DAY;
     client.create_note(&issuer, &note, &subj, &AmountBucket::B1k_5k, &due);
     client.accept_note(&mary, &note);
@@ -268,6 +281,7 @@ fn lectura_sin_consentimiento_falla() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &note);
 
@@ -295,6 +309,7 @@ fn emisor_con_notas_necesita_permiso() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &note);
 
@@ -321,6 +336,7 @@ fn lectura_con_consentimiento_y_vencido() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &note);
 
@@ -360,6 +376,7 @@ fn consentimiento_excede_ttl_falla() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     client.create_note(&issuer, &note, &subj, &AmountBucket::B1k_5k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &note);
 
@@ -404,6 +421,7 @@ fn no_hay_get_stats_publico() {
 
     let note = id(&env, 1);
     let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
     client.create_note(&issuer, &note, &subj, &AmountBucket::B5k_20k, &(T0 + 7 * DAY));
     client.accept_note(&mary, &note);
 
@@ -422,4 +440,240 @@ fn no_hay_get_stats_publico() {
         client.try_read_stats(&tercero, &subj),
         Err(Ok(Error::NoConsent))
     );
+}
+
+// ===========================================================================
+// Regresión del contrato v4 (decisión #55; spec v4 §1.3). Cada prueba es una prueba de
+// concepto del auditor (apéndice A) al revés: comprueba que el ataque ya no funciona.
+// ===========================================================================
+
+fn base() -> (Env, CuentasClarasClient<'static>, Address, Address) {
+    let (env, client, admin) = setup();
+    let issuer = Address::generate(&env);
+    client.add_issuer(&admin, &issuer);
+    (env, client, admin, issuer)
+}
+
+#[test]
+fn r1_nadie_se_queda_el_seudonimo() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+    let atacante = Address::generate(&env);
+    let subj = id(&env, 100);
+    let n = id(&env, 1);
+
+    // Sin vínculo previo no hay nota: nadie puede adelantarse a aceptarla.
+    assert_eq!(client.subject_of(&subj), None);
+    assert_eq!(
+        client.try_create_note(&issuer, &n, &subj, &AmountBucket::B1k_5k, &(T0 + 7 * DAY)),
+        Err(Ok(Error::NotBound))
+    );
+
+    vincular(&client, &admin, &subj, &mary);
+    assert_eq!(client.subject_of(&subj), Some(mary.clone()));
+    client.create_note(&issuer, &n, &subj, &AmountBucket::B1k_5k, &(T0 + 7 * DAY));
+    // Otra dirección no acepta la nota de Doña Mary.
+    assert_eq!(client.try_accept_note(&atacante, &n), Err(Ok(Error::NotParty)));
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Created);
+    // Doña Mary sí.
+    client.accept_note(&mary, &n);
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Accepted);
+}
+
+#[test]
+fn r2_bodega_no_acepta_su_nota() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+
+    // Seudónimo vinculado a la dirección de la propia bodega: no puede fiarse a sí misma.
+    let propio = id(&env, 100);
+    vincular(&client, &admin, &propio, &issuer);
+    assert_eq!(
+        client.try_create_note(&issuer, &id(&env, 1), &propio, &AmountBucket::B50kPlus, &(T0 + 7 * DAY)),
+        Err(Ok(Error::SelfNote))
+    );
+
+    // Con Doña Mary vinculada, la bodega no firma por ella.
+    let subj = id(&env, 101);
+    vincular(&client, &admin, &subj, &mary);
+    let n = id(&env, 2);
+    client.create_note(&issuer, &n, &subj, &AmountBucket::B50kPlus, &(T0 + 7 * DAY));
+    assert_eq!(client.try_accept_note(&issuer, &n), Err(Ok(Error::NotParty)));
+    assert_eq!(client.read_stats(&mary, &subj).accepted, 0);
+}
+
+#[test]
+fn r3_un_seudonimo_una_direccion() {
+    let (env, client, admin, _issuer) = base();
+    let mary = Address::generate(&env);
+    let otra = Address::generate(&env);
+    let (x, y) = (id(&env, 100), id(&env, 101));
+
+    // Mientras la invitación está pendiente, la plataforma la puede reemplazar; solo firma
+    // la dirección invitada.
+    client.invite_subject(&admin, &x, &otra);
+    client.invite_subject(&admin, &x, &mary);
+    assert_eq!(client.try_bind_subject(&otra, &x), Err(Ok(Error::NotParty)));
+    client.bind_subject(&mary, &x);
+
+    // Una dirección ya vinculada no recibe otro seudónimo (C2: el permiso no queda huérfano).
+    assert_eq!(client.try_invite_subject(&admin, &y, &mary), Err(Ok(Error::AlreadyBound)));
+    // Volver a vincular el mismo seudónimo: tampoco. El vínculo nunca se sobrescribe.
+    assert_eq!(client.try_invite_subject(&admin, &x, &otra), Err(Ok(Error::AlreadyBound)));
+    assert_eq!(client.try_invite_subject(&admin, &x, &mary), Err(Ok(Error::AlreadyBound)));
+    assert_eq!(client.try_bind_subject(&mary, &x), Err(Ok(Error::NotParty))); // sin invitación
+    assert_eq!(client.subject_of(&x), Some(mary.clone()));
+
+    // Solo la plataforma invita.
+    let intruso = Address::generate(&env);
+    assert_eq!(client.try_invite_subject(&intruso, &y, &otra), Err(Ok(Error::NotParty)));
+}
+
+#[test]
+fn r4_pago_tardio_se_confirma() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+    let (subj, n, due) = (id(&env, 100), id(&env, 1), T0 + 7 * DAY);
+    vincular(&client, &admin, &subj, &mary);
+    client.create_note(&issuer, &n, &subj, &AmountBucket::B1k_5k, &due);
+    client.accept_note(&mary, &n);
+    set_time(&env, due + 1);
+    client.touch(&n);
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Overdue);
+
+    client.confirm_paid(&issuer, &n);
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Paid);
+    let s = client.read_stats(&mary, &subj);
+    assert_eq!((s.paid_late, s.paid_on_time, s.overdue_open), (1, 0, 0));
+}
+
+#[test]
+fn r5_disputa_una_sola_vez() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+    let (subj, n, due) = (id(&env, 100), id(&env, 1), T0 + 7 * DAY);
+    vincular(&client, &admin, &subj, &mary);
+    client.create_note(&issuer, &n, &subj, &AmountBucket::B1k_5k, &due);
+    client.accept_note(&mary, &n);
+    set_time(&env, due + 1);
+    client.touch(&n);
+    set_time(&env, due + 31 * DAY);
+    client.mark_default(&issuer, &n);
+
+    client.dispute(&mary, &n, &0u32);
+    client.resolve_mutual(&issuer, &n, &Status::Defaulted);
+    client.resolve_mutual(&mary, &n, &Status::Defaulted);
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Defaulted);
+
+    // La segunda disputa ya no entra, aunque la ventana siga abierta.
+    assert_eq!(client.try_dispute(&mary, &n, &0u32), Err(Ok(Error::InvalidTransition)));
+    let s = client.read_stats(&mary, &subj);
+    assert_eq!((s.defaulted, s.disputes_open, s.disputes_resolved), (1, 0, 1));
+
+    // Nota: una disputa que nunca se resuelve sigue abierta en la cadena (disputes_open = 1 y la
+    // nota fuera de overdue_open/defaulted). El contrato no la cierra sola; el semáforo, fuera de
+    // la cadena, pesa cada aclaración abierta como una vencida (decisión #56), así que abrir una
+    // aclaración no mejora el color.
+}
+
+#[test]
+fn r6_incumplida_tardia_se_puede_disputar() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+    let (subj, due) = (id(&env, 100), T0 + 7 * DAY);
+    vincular(&client, &admin, &subj, &mary);
+    let (n1, n2) = (id(&env, 1), id(&env, 2));
+    for n in [&n1, &n2] {
+        client.create_note(&issuer, n, &subj, &AmountBucket::B1k_5k, &due);
+        client.accept_note(&mary, n);
+    }
+
+    // La bodega espera a marcarla incumplida hasta due + 46 días (después de la ventana v3).
+    let marcado = due + 46 * DAY;
+    set_time(&env, marcado);
+    for n in [&n1, &n2] {
+        client.touch(n);
+        client.mark_default(&issuer, n);
+        assert_eq!(client.get_note(n).unwrap().defaulted_ts, Some(marcado));
+    }
+
+    // El mismo día, el cliente todavía puede disputar.
+    client.dispute(&mary, &n1, &0u32);
+    assert_eq!(client.get_note(&n1).unwrap().status, Status::Disputed);
+
+    // Pasada la ventana contada desde defaulted_ts, ya no.
+    set_time(&env, marcado + 15 * DAY + 1);
+    assert_eq!(client.try_dispute(&mary, &n2, &0u32), Err(Ok(Error::WindowClosed)));
+}
+
+#[test]
+fn r7_propuesta_vieja_no_cierra() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+    let (subj, n, due) = (id(&env, 100), id(&env, 1), T0 + 7 * DAY);
+    vincular(&client, &admin, &subj, &mary);
+    client.create_note(&issuer, &n, &subj, &AmountBucket::B1k_5k, &due);
+    client.accept_note(&mary, &n);
+    client.cancel_note(&issuer, &n); // propuesta de cancelar; Mary no la firma
+    set_time(&env, due + 1);
+    client.touch(&n);
+    client.dispute(&mary, &n, &0u32);
+
+    // Una sola llamada ya no cierra la disputa con la propuesta vieja.
+    client.resolve_mutual(&mary, &n, &Status::Cancelled);
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Disputed);
+    // Hace falta la contraparte, ahora sí.
+    client.resolve_mutual(&issuer, &n, &Status::Cancelled);
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Cancelled);
+}
+
+#[test]
+fn r8_aviso_de_pago_no_evita_vencer() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+    let (subj, n, due) = (id(&env, 100), id(&env, 1), T0 + 7 * DAY);
+    vincular(&client, &admin, &subj, &mary);
+    client.create_note(&issuer, &n, &subj, &AmountBucket::B1k_5k, &due);
+    client.accept_note(&mary, &n);
+    client.claim_paid(&mary, &n, &None);
+
+    // Dentro de la gracia, el aviso de pago sigue esperando la confirmación.
+    set_time(&env, due + 30 * DAY);
+    assert_eq!(client.try_touch(&n), Err(Ok(Error::InvalidTransition)));
+    // Pasados plazo y gracia sin confirmación, vence.
+    set_time(&env, due + 30 * DAY + 1);
+    client.touch(&n);
+    assert_eq!(client.get_note(&n).unwrap().status, Status::Overdue);
+    assert_eq!(client.read_stats(&mary, &subj).overdue_open, 1);
+}
+
+#[test]
+fn r9_init_exige_firma() {
+    let (env, _client, admin) = setup();
+    let contract_id = env.register(CuentasClaras, ());
+    let c2 = CuentasClarasClient::new(&env, &contract_id);
+    c2.init(&admin, &default_params());
+    let pidio_firma = env.auths().iter().any(|(quien, inv)| {
+        *quien == admin
+            && matches!(
+                &inv.function,
+                soroban_sdk::testutils::AuthorizedFunction::Contract((c, f, _))
+                    if *c == contract_id && *f == soroban_sdk::Symbol::new(&env, "init")
+            )
+    });
+    assert!(pidio_firma, "init debe pedir la firma del admin");
+}
+
+#[test]
+fn r10_plazo_con_tope() {
+    let (env, client, admin, issuer) = base();
+    let mary = Address::generate(&env);
+    let subj = id(&env, 100);
+    vincular(&client, &admin, &subj, &mary);
+    assert_eq!(
+        client.try_create_note(&issuer, &id(&env, 1), &subj, &AmountBucket::B1k_5k, &(T0 + 366 * DAY)),
+        Err(Ok(Error::BadParams))
+    );
+    // En el tope exacto (365 días) sí se crea.
+    client.create_note(&issuer, &id(&env, 2), &subj, &AmountBucket::B1k_5k, &(T0 + 365 * DAY));
 }
