@@ -21,6 +21,7 @@ Cómo leer este repositorio sin gastar de más:
 - [CLAUDE.md](CLAUDE.md): reglas y contexto para Claude Code
 - [Relevo para Claude Code](docs/relevo-claude-code.md): estado actual y prompt para retomar en una sesión nueva
 - [Cola de trabajo](docs/cola-de-trabajo.md): tareas que Claude Code recorre sola, con paradas
+- [Playbook para el próximo hackathon](docs/2026-10-04_playbook-proximo-hackathon.md): resultado (3.er lugar, Track Contenido) y aprendizajes de los finalistas
 - [Auditoría del 26-sep](docs/auditoria-2026-09-26.md): seguridad del contrato, la app y el sitio; plan de corrección
 - [Entrega GOYA HACK](pitch/2026-09-27_entrega-goya-hack.md): ruta crítica y textos para el panel y Stellar Apex; video en demo/video/
 - [Pitch v3](pitch/2026-09-26_pitch-3-minutos-v3.md), [guion de demo v3](pitch/2026-09-26_guion-demo-v3.md) y [prompt del deck v2](pitch/2026-09-26_prompt-claude-design-v2.md): la historia de Doña Mary, 5 pasos, sin permiso
