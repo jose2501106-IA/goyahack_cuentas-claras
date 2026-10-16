@@ -92,7 +92,7 @@ Todo dato sobre la CEDA lleva fuente, o se marca como *experiencia del equipo* o
 
 ## Equipo Palabra
 
-- José Hugo — experiencia operativa en la Central de Abasto (bodega de abarrotes), decisiones y datos de campo.
+- José Hugo — experiencia operativa, decisiones y datos de campo.
 - Claude (chat) — investigación, documentos, especificaciones, pitch.
 - Claude Code — contrato, backend, frontend, demo.
 
