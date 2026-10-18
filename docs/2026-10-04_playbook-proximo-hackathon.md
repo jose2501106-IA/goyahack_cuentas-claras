@@ -1,6 +1,6 @@
 # Playbook para el próximo hackathon de blockchain
 
-**Aprendizajes de GOYA HACK 2026, donde Cuentas Claras quedó en 3.er lugar del Track Contenido**
+**Aprendizajes de GOYA HACK 2026, donde Cuentas Claras quedó en 3.er lugar del Track Contenido y en 2.º lugar del Track Pollar**
 
 **Fecha:** 4-oct-2026.
 
@@ -22,7 +22,9 @@ Lo que no está escrito tal cual en una fuente va marcado *(inferencia)*.
 | Avalanche | Gremium | CryptoTrace Insight | Nodo |
 | Inteligencia Artificial | GoyaPay AI | Brevik | Metztli |
 | **Contenido** | Micopay App | GoyaPay AI | **Cuentas Claras** |
-| Pollar | Por definir | | |
+| Pollar | *(sin publicar)* | **Cuentas Claras** | *(sin publicar)* |
+
+**Actualización (17-oct-2026):** en la premiación del 16-oct-2026, los organizadores dieron a Cuentas Claras el 2.º lugar del Track Pollar. Cuentas Claras no integra el SDK de Pollar (quedó fuera de la ruta crítica; spec v2, sección 13) y el criterio de ese lugar no se publicó. Los demás lugares del track tampoco se han publicado.
 
 **La lectura:** ganó quien **movió dinero real en una demo que el juez podía usar**, **integró al patrocinador por nombre** y le dio a la IA **un papel necesario**. Cuentas Claras ganó por **la calidad del problema y de la investigación**, pero no movía dinero ni usaba al patrocinador *(inferencia, a partir de lo que tienen en común los finalistas)*.
 

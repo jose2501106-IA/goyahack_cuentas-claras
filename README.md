@@ -1,12 +1,13 @@
 # Cuentas Claras
 
-![GOYA HACK 2026 · Finalista · 3.er lugar Track Contenido](https://img.shields.io/badge/GOYA%20HACK%202026-Finalista%20%C2%B7%203.er%20lugar%20Track%20Contenido-B3261E?style=for-the-badge)
+![GOYA HACK 2026 · 2.º lugar Track Pollar](https://img.shields.io/badge/GOYA%20HACK%202026-2.%C2%BA%20lugar%20Track%20Pollar-5F6B7A?style=for-the-badge)
+![GOYA HACK 2026 · 3.er lugar Track Contenido](https://img.shields.io/badge/GOYA%20HACK%202026-3.er%20lugar%20Track%20Contenido-B3261E?style=for-the-badge)
 ![Stellar testnet · contrato v5](https://img.shields.io/badge/Stellar%20testnet-contrato%20v5-1E3A8A?style=for-the-badge)
 ![Pruebas](https://img.shields.io/badge/pruebas-22%20contrato%20%C2%B7%2036%20app%20%C2%B7%2069%20sitio-0F6E61?style=for-the-badge)
 
-> ## 🥉 Finalistas de GOYA HACK 2026 · 3.er lugar del Track Contenido
+> ## 🥈🥉 Dos premios en GOYA HACK 2026: 2.º lugar del Track Pollar y 3.er lugar del Track Contenido
 >
-> El 4 de octubre de 2026, CriptoUNAM anunció a los **12 finalistas** del hackathon oficial de CriptoUNAM y la Facultad de Ingeniería de la UNAM. **Cuentas Claras quedó en tercer lugar del Track Contenido**, junto a Micopay App (1.º) y GoyaPay AI (2.º). Es la primera vez que el Equipo Palabra llega a una final.
+> El 4 de octubre de 2026, CriptoUNAM anunció a los **12 finalistas** del hackathon oficial de CriptoUNAM y la Facultad de Ingeniería de la UNAM. **Cuentas Claras quedó en tercer lugar del Track Contenido**, junto a Micopay App (1.º) y GoyaPay AI (2.º). En la premiación del 16 de octubre de 2026 recibió además el **segundo lugar del Track Pollar**, patrocinado por [Pollar](https://pollar.xyz). Es la primera vez que el Equipo Palabra llega a una final.
 >
 > Lo construimos en un fin de semana, desde la Central de Abasto y para la Central de Abasto:
 > - un contrato en Stellar que hace cumplir dos firmas por cada nota;
@@ -22,7 +23,7 @@
 
 **Cuentas Claras es la bitácora de fiado co-firmada de la Central de Abasto de la Ciudad de México.** En la Central el fiado se da de palabra; Cuentas Claras hace que esa palabra quede firmada por los dos y viaje con quien la cumple. Cada nota de crédito la firman la bodega y el cliente desde su teléfono; ninguna de las dos puede alterarla ni borrarla; y el historial de cumplimiento es del cliente, que decide a quién mostrarlo. Registrado en Stellar (Soroban, testnet).
 
-Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de Ingeniería, Semana DIE 2026). Se presentó en el track **Blockchain (Stellar)**, y el jurado lo eligió **finalista: 3.er lugar del Track Contenido**. Evento del 22 al 27 de septiembre de 2026 (entrega extendida); finalistas anunciados el 4 de octubre de 2026.
+Proyecto para **GOYA HACK · Hackathon UNAM 2026** (CriptoUNAM × Facultad de Ingeniería, Semana DIE 2026). Se presentó en el track **Blockchain (Stellar)**, y el jurado lo eligió **finalista: 3.er lugar del Track Contenido**; en la premiación recibió también el **2.º lugar del Track Pollar**. Evento del 22 al 27 de septiembre de 2026 (entrega extendida); finalistas anunciados el 4 de octubre de 2026; premiación el 16 de octubre de 2026.
 
 > **Estado (26-sep-2026, 23:30):** contrato `cuentas_claras` v5 en Stellar testnet con 22 pruebas en verde. Ya no hay paso de «dar permiso» (decisión #57): la cadena es pública, una bodega consulta el historial con el código que el cliente le enseña, y cada consulta formal queda registrada. Cambios del contrato en el camino: se quitó `get_stats` (#42), el cliente se vincula a su seudónimo antes de su primera nota y ninguna bodega acepta su propia nota (#55), y se quitó el permiso (#57). **Sitio público: https://cuentas-claras-lemon.vercel.app** (gemelo digital del Pasillo A-B, la demo real verificable, «La app en tu mano» y «Pasillo vivo» con agentes simulados; 69 pruebas). App local que firma en testnet (36 pruebas del backend) y `demo/demo.sh` como respaldo. Entrega: domingo 27-sep (plazo extendido, decisión #43).
 
